@@ -107,7 +107,7 @@ function Company_Profile() {
   return (
     <div
       className="bg-gray-100 font-sans leading-normal tracking-normal"
-      style={{ backgroundColor: "#F8FEF0" }}
+      style={{ backgroundColor: "white" }}
     >
       <div className="container mx-auto px-4 py-8">
         {/* Navigation (Profile, Contract, Payment) */}
@@ -292,97 +292,105 @@ function Company_Profile() {
 
           {/* Achievements Section */}
           <div>
-            <div className="bg-green-500 text-white rounded-full px-4 py-3 mb-6 flex justify-between items-center">
-              <div className="text-left font-bold">Achievements</div>
-              <button
-                type="button"
-                onClick={handleAddAchievement}
-                className="w-10 h-6 flex items-center justify-center rounded-full bg-white bg-opacity-30 border border-black shadow-lg backdrop-blur-lg hover:bg-white hover:bg-opacity-50 hover:text-black focus:outline-none focus:ring-2 focus:ring-blue-500 text-2xl"
-              >
-                +
-              </button>
-            </div>
+            <div>
+              <div className="bg-green-500 text-white rounded-full px-4 py-3 mb-6 flex justify-between items-center">
+                <div className="text-left font-bold">Achievements</div>
+                <button
+                  type="button"
+                  onClick={handleAddAchievement}
+                  className="w-10 h-6 flex items-center justify-center rounded-full bg-white bg-opacity-30 border border-black shadow-lg backdrop-blur-lg hover:bg-white hover:bg-opacity-50 hover:text-black focus:outline-none focus:ring-2 focus:ring-blue-500 text-2xl"
+                >
+                  +
+                </button>
+              </div>
 
-            <div
-              className="bg-white rounded-lg shadow-lg p-6 mb-8"
-              style={{ backgroundColor: "#fef8f0" }}
-            >
-              {achievements.map((achievement, index) => (
-                <div key={index}>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
-                    <div className="m-2">
-                      <label
-                        htmlFor={`achievement-title-${index}`}
-                        className="block text-black-700 text-left"
-                      >
-                        Title
-                      </label>
-                      <input
-                        type="text"
-                        id={`achievement-title-${index}`}
-                        placeholder="   Enter Title"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-                        value={achievement.title}
-                        onChange={(e) =>
-                          handleAchievementChange(
-                            index,
-                            "title",
-                            e.target.value
-                          )
-                        }
-                      />
+              <div
+                className="bg-white rounded-lg shadow-lg p-6 mb-8"
+                style={{ backgroundColor: "#fef8f0" }}
+              >
+                {achievements.map((achievement, index) => (
+                  <div key={index}>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                      <div className="m-2">
+                        <label
+                          htmlFor={`achievement-title-${index}`}
+                          className="block text-black-700 text-left"
+                        >
+                          Title
+                        </label>
+                        <input
+                          type="text"
+                          id={`achievement-title-${index}`}
+                          placeholder="   Enter Title"
+                          className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                          value={achievement.title}
+                          onChange={(e) =>
+                            handleAchievementChange(
+                              index,
+                              "title",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="m-2">
+                        <label
+                          htmlFor={`achievement-date-${index}`}
+                          className="block text-black-700 text-left"
+                        >
+                          Date
+                        </label>
+                        <input
+                          type="date"
+                          id={`achievement-date-${index}`}
+                          className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                          value={achievement.date}
+                          onChange={(e) =>
+                            handleAchievementChange(
+                              index,
+                              "date",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="m-2">
+                        <label
+                          htmlFor={`achievement-certificate-${index}`}
+                          className="block text-black-700 text-left"
+                        >
+                          Certificate
+                        </label>
+                        <input
+                          type="file"
+                          id={`achievement-certificate-${index}`}
+                          className="mt-1 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                          onChange={(e) =>
+                            handleAchievementChange(
+                              index,
+                              "certificate",
+                              e.target.files[0]
+                            )
+                          }
+                        />
+                      </div>
                     </div>
-                    <div className="m-2">
-                      <label
-                        htmlFor={`achievement-date-${index}`}
-                        className="block text-black-700 text-left"
+                    <div className="flex justify-center">
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveAchievement(index)}
+                        className="text-red-600 hover:underline focus:outline-none mt-2"
                       >
-                        Date
-                      </label>
-                      <input
-                        type="date"
-                        id={`achievement-date-${index}`}
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-                        value={achievement.date}
-                        onChange={(e) =>
-                          handleAchievementChange(index, "date", e.target.value)
-                        }
-                      />
+                        Remove
+                      </button>
                     </div>
-                    <div className="m-2">
-                      <label
-                        htmlFor={`achievement-certificate-${index}`}
-                        className="block text-black-700 text-left"
-                      >
-                        Certificate
-                      </label>
-                      <input
-                        type="file"
-                        id={`achievement-certificate-${index}`}
-                        className="mt-1 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
-                        onChange={(e) =>
-                          handleAchievementChange(
-                            index,
-                            "certificate",
-                            e.target.files[0]
-                          )
-                        }
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveAchievement(index)}
-                      className="text-red-600 w-full hover:underline focus:outline-none mt-2"
-                    >
-                      Remove
-                    </button>
+                    {/* Horizontal line for separation */}
+                    {index < achievements.length - 1 && (
+                      <hr className="border-t border-black my-4" />
+                    )}
                   </div>
-                  {/* Horizontal line for separation */}
-                  {index < achievements.length - 1 && (
-                    <hr className="border-t border-black my-4" />
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 
@@ -449,10 +457,12 @@ function Company_Profile() {
                         }
                       ></textarea>
                     </div>
+                  </div>
+                  <div className="flex justify-center">
                     <button
                       type="button"
                       onClick={() => handleRemoveAdditionalInfo(index)}
-                      className="text-red-600 w-full mt-2 hover:underline focus:outline-none"
+                      className="text-red-600 mt-2 hover:underline focus:outline-none"
                     >
                       Remove
                     </button>
@@ -541,10 +551,12 @@ function Company_Profile() {
                         }
                       />
                     </div>
+                  </div>
+                  <div className="flex justify-center">
                     <button
                       type="button"
                       onClick={() => handleRemoveContract(index)}
-                      className="text-red-600 w-full mt-2 hover:underline focus:outline-none"
+                      className="text-red-600 mt-2 hover:underline focus:outline-none"
                     >
                       Remove
                     </button>
