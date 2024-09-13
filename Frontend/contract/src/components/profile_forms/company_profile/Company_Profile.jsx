@@ -120,7 +120,7 @@ function Company_Profile() {
         <form onSubmit={handleSubmit}>
           {/* Company Information Section */}
           <div>
-            <div className="bg-green-500 text-white font-bold rounded-full px-4 py-3 mb-6">
+            <div className="text-left bg-green-500 text-white font-bold rounded-full px-4 py-3 mb-6">
               Company Information
             </div>
 
