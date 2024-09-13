@@ -147,7 +147,7 @@ function Farmer_Profile() {
         <form onSubmit={handleSubmit}>
           {/* Farmer Information Section */}
           <div>
-            <div className="bg-green-500 text-white font-bold rounded-full px-4 py-3 mb-6">
+            <div className="text-left bg-green-500 text-white font-bold rounded-full px-4 py-3 mb-6">
               Farmer Information
             </div>
 
@@ -170,7 +170,7 @@ function Farmer_Profile() {
                         id="name"
                         name="name"
                         required
-                        placeholder="Enter name"
+                        placeholder="   Enter name"
                         className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
@@ -186,7 +186,7 @@ function Farmer_Profile() {
                         id="email"
                         name="email"
                         required
-                        placeholder="Enter email"
+                        placeholder="   Enter email"
                         className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
@@ -205,7 +205,7 @@ function Farmer_Profile() {
                         id="mobileNumber"
                         name="mobileNumber"
                         required
-                        placeholder="Enter Mobile Number"
+                        placeholder="   Enter Mobile Number"
                         className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
@@ -221,7 +221,7 @@ function Farmer_Profile() {
                         id="address"
                         name="address"
                         required
-                        placeholder="Enter Address"
+                        placeholder="   Enter Address"
                         className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
@@ -259,7 +259,7 @@ function Farmer_Profile() {
                         id="age"
                         name="age"
                         required
-                        placeholder="Enter Age"
+                        placeholder="   Enter Age"
                         className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
@@ -278,7 +278,7 @@ function Farmer_Profile() {
                         id="experience"
                         name="experience"
                         required
-                        placeholder="Enter Experience"
+                        placeholder="   Enter Experience"
                         className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
@@ -294,7 +294,7 @@ function Farmer_Profile() {
                         id="contractsMade"
                         name="contractsMade"
                         required
-                        placeholder="Enter Contracts Made"
+                        placeholder="   Enter Contracts Made"
                         className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
@@ -334,7 +334,7 @@ function Farmer_Profile() {
 
           {/* Farm Information Section */}
           <div>
-            <div className="bg-green-500 text-white font-bold rounded-full px-4 py-3 mb-6">
+            <div className=" text-left bg-green-500 text-white font-bold rounded-full px-4 py-3 mb-6">
               Farm Information
             </div>
 
@@ -354,7 +354,7 @@ function Farmer_Profile() {
                     id="farmAddress"
                     name="farmAddress"
                     required
-                    placeholder="Enter Farm Address"
+                    placeholder="   Enter Farm Address"
                     className="mt-1 block w-full h-20 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
@@ -370,7 +370,7 @@ function Farmer_Profile() {
                     id="landArea"
                     name="landArea"
                     required
-                    placeholder="Enter Land Area"
+                    placeholder="   Enter Land Area"
                     className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
@@ -474,7 +474,7 @@ function Farmer_Profile() {
                     type="text"
                     value={newCrop}
                     onChange={(e) => setNewCrop(e.target.value)}
-                    placeholder="Enter a crop"
+                    placeholder="   Enter a crop"
                     className="flex-grow h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 mr-2"
                   />
                   <button
@@ -509,7 +509,7 @@ function Farmer_Profile() {
           {/* Achievements Section */}
           <div>
             <div className="bg-green-500 text-white rounded-full px-4 py-3 mb-6 flex justify-between items-center">
-              <div className="text-left font-bold">Achievements</div>
+              <div className="font-bold">Achievements</div>
               <button
                 type="button"
                 onClick={handleAddAchievement}
@@ -536,7 +536,7 @@ function Farmer_Profile() {
                       <input
                         type="text"
                         id={`achievement-title-${index}`}
-                        placeholder="Enter Title"
+                        placeholder="   Enter Title"
                         className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={achievement.title}
                         onChange={(e) =>
@@ -631,7 +631,7 @@ function Farmer_Profile() {
                       <input
                         type="text"
                         id={`additional-title-${index}`}
-                        placeholder="Enter Title"
+                        placeholder="   Enter Title"
                         className="mt-1 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={info.title}
                         onChange={(e) =>
@@ -652,7 +652,7 @@ function Farmer_Profile() {
                       </label>
                       <textarea
                         id={`info-${index}`}
-                        placeholder="Enter additional info"
+                        placeholder="   Enter additional info"
                         className="mt-1 block w-full h-24 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={info.info}
                         onChange={(e) =>
@@ -712,7 +712,7 @@ function Farmer_Profile() {
                       <input
                         type="text"
                         id={`contract-title-${index}`}
-                        placeholder="Enter Title"
+                        placeholder="   Enter Title"
                         className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={contract.title}
                         onChange={(e) =>
