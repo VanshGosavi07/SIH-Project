@@ -412,15 +412,15 @@ function Farmer_Profile() {
                     <option value="">Select Farm Type</option>
                     <option value="GREENISH">GREENISH</option>
                     <option value="OTHER">OTHER</option>
-                    </select>
+                  </select>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="m-2">
+                <div className="m-2 p-2 bg-white rounded-md shadow-md w-full">
                   <label
                     htmlFor="landPictures"
-                    className="block text-black-700 text-left"
+                    className="block text-black-700 text-left mb-2"
                   >
                     Land Pictures*
                   </label>
@@ -432,21 +432,22 @@ function Farmer_Profile() {
                     multiple
                     accept="image/*"
                     onChange={handleLandPicturesChange}
-                    className="mt-1 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                    className="mt-1 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
-                <div className="m-2">
-                  <label className="block text-black-700 text-left">
+
+                <div className="m-2 p-2 bg-white rounded-md shadow-md w-full">
+                  <label className="block text-black-700 text-left mb-2">
                     Well*
                   </label>
-                  <div className="mt-1">
-                    <label className="inline-flex items-center mr-4">
+                  <div className="flex space-x-4">
+                    <label className="inline-flex items-center">
                       <input
                         type="radio"
                         name="well"
                         value="YES"
                         required
-                        className="form-radio h-5 w-5 text-green-600"
+                        className="form-radio h-5 w-5 text-blue-600"
                       />
                       <span className="ml-2">YES</span>
                     </label>
@@ -456,7 +457,7 @@ function Farmer_Profile() {
                         name="well"
                         value="NO"
                         required
-                        className="form-radio h-5 w-5 text-green-600"
+                        className="form-radio h-5 w-5 text-blue-600"
                       />
                       <span className="ml-2">NO</span>
                     </label>
