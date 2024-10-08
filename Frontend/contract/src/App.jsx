@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import Company_Profile from "./components/profile_forms/company_profile/Company_Profile";
 import Farmer_Profile from "./components/profile_forms/farmer_profile/Farmer_Profile";
 import Registeration from "./components/Registeration";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/company_profile" element={<Company_Profile />} />
           <Route path="/farmer_profile" element={<Farmer_Profile />} />
           <Route path="/register" element={<Registeration />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>
