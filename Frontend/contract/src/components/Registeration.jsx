@@ -16,8 +16,8 @@ function Registeration() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
+    e.preventDefault(); // Prevent the default form submission
+    console.log(formData); // Print form data to console
   };
 
   return (
@@ -28,7 +28,7 @@ function Registeration() {
           <img
             src={AgriConnectLogo}
             alt="AgriConnect"
-            className="h-20 w-20 rounded-full"
+            className="h-20 w-20 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-110"
           />
         </div>
 
@@ -42,6 +42,8 @@ function Registeration() {
               value={formData.firstName}
               onChange={handleChange}
               className="w-full border-b border-gray-300 focus:outline-none"
+              required
+              placeholder="Enter your first name"
             />
           </div>
           <div>
@@ -52,6 +54,8 @@ function Registeration() {
               value={formData.lastName}
               onChange={handleChange}
               className="w-full border-b border-gray-300 focus:outline-none"
+              required
+              placeholder="Enter your last name"
             />
           </div>
           <div>
@@ -62,6 +66,8 @@ function Registeration() {
               value={formData.emailId}
               onChange={handleChange}
               className="w-full border-b border-gray-300 focus:outline-none"
+              required
+              placeholder="Enter your email"
             />
           </div>
           <div>
@@ -72,6 +78,8 @@ function Registeration() {
               value={formData.userId}
               onChange={handleChange}
               className="w-full border-b border-gray-300 focus:outline-none"
+              required
+              placeholder="Enter your user ID"
             />
           </div>
           <div>
@@ -82,6 +90,8 @@ function Registeration() {
               value={formData.password}
               onChange={handleChange}
               className="w-full border-b border-gray-300 focus:outline-none"
+              required
+              placeholder="Enter your password"
             />
           </div>
           <div>
@@ -92,6 +102,8 @@ function Registeration() {
               value={formData.confirmPassword}
               onChange={handleChange}
               className="w-full border-b border-gray-300 focus:outline-none"
+              required
+              placeholder="Confirm your password"
             />
           </div>
           
@@ -99,7 +111,7 @@ function Registeration() {
           <div className="col-span-2 mt-6 flex justify-center">
             <button
               type="submit"
-              className="px-8 py-2 bg-yellow-500 text-white rounded-full focus:outline-none hover:bg-yellow-600"
+              className="px-8 py-2 bg-yellow-500 text-white rounded-full focus:outline-none hover:bg-yellow-600 z-10"
             >
               Register
             </button>
@@ -107,15 +119,15 @@ function Registeration() {
         </form>
 
         {/* Bottom Link */}
-        <div className="mt-4 text-center">
+        <div className="mt-4 text-center relative z-10">
           <span className="text-gray-600">Already have an account?</span>
-          <a href="#" className="text-green-500 ml-1">
+          <a href="/login" className="text-green-500 ml-1">
             Login
           </a>
         </div>
 
         {/* Decorative Waves */}
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 z-0"> {/* Added z-0 */}
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path
               fill="#4CAF50"
