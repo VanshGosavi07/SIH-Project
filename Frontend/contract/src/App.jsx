@@ -5,6 +5,7 @@ import Company_Profile from "./components/profile_forms/company_profile/Company_
 import Farmer_Profile from "./components/profile_forms/farmer_profile/Farmer_Profile";
 import Registeration from "./components/Registeration";
 import Login from "./components/Login";
+import CreateContract from "./components/Create_Contract";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/farmer_profile" element={<Farmer_Profile />} />
           <Route path="/register" element={<Registeration />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/create_contract" element={<CreateContract/>} />
         </Routes>
       </div>
     </Router>
