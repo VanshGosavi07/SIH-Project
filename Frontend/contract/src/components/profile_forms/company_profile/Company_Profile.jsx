@@ -14,6 +14,8 @@ function Company_Profile() {
     { title: "", date: "", certificate: null },
   ]);
 
+  const [companyType, setCompanyType] = useState("");
+
   const handleProfilePicChange = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -211,6 +213,7 @@ function Company_Profile() {
                         className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
+
                     <div className="m-2">
                       <label
                         htmlFor="company_type"
@@ -218,13 +221,39 @@ function Company_Profile() {
                       >
                         Company Type*
                       </label>
-                      <input
-                        type="text"
+                      <select
                         id="company_type"
                         required
-                        placeholder="   Enter Company Type"
-                        className="mt-1 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                      />
+                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        value={companyType}
+                        onChange={(e) => setCompanyType(e.target.value)}
+                      >
+                        <option value="">Select Company Type</option>
+                        <option value="Private Limited Company">
+                          Private Limited Company
+                        </option>
+                        <option value="Public Limited Company">
+                          Public Limited Company
+                        </option>
+                        <option value="Partnership Firm">
+                          Partnership Firm
+                        </option>
+                        <option value="Sole Proprietorship">
+                          Sole Proprietorship
+                        </option>
+                        <option value="Cooperative Society">
+                          Cooperative Society
+                        </option>
+                        <option value="Government Organization">
+                          Government Organization
+                        </option>
+                        <option value="Non-Governmental Organization (NGO)">
+                          Non-Governmental Organization (NGO)
+                        </option>
+                        <option value="Trust or Foundation">
+                          Trust or Foundation
+                        </option>
+                      </select>
                     </div>
                   </div>
 

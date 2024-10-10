@@ -17,6 +17,9 @@ function Farmer_Profile() {
   const [preferredCrops, setPreferredCrops] = useState([]);
   const [newCrop, setNewCrop] = useState("");
 
+  const [soilType, setSoilType] = useState("");
+  const [customSoilType, setCustomSoilType] = useState("");
+
   // Handle profile picture change
   const handleProfilePicChange = (event) => {
     const file = event.target.files[0];
@@ -46,7 +49,7 @@ function Farmer_Profile() {
       farmInfo: {
         farmAddress: event.target.farmAddress.value,
         landArea: event.target.landArea.value,
-        soilType: event.target.soilType.value,
+        soilType: soilType === "Others" ? customSoilType : soilType,
         farmType: event.target.farmType.value,
         landPictures: landPictures,
         well: event.target.well.value,
@@ -389,13 +392,40 @@ function Farmer_Profile() {
                     name="soilType"
                     required
                     className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                    onChange={(e) => {
+                      setSoilType(e.target.value);
+                      if (e.target.value !== "Others") {
+                        setCustomSoilType(""); // Clear custom input if not "Others"
+                      }
+                    }}
                   >
-                    <option value="">Select Soil Type</option>
+                    <option value="" disabled>
+                      Select Soil Type
+                    </option>
+                    <option value="Alluvial Soil">Alluvial Soil</option>
                     <option value="Black Soil">Black Soil</option>
-                    <option value="Red">Red</option>
-                    <option value="Mountain">Mountain</option>
+                    <option value="Red Soil">Red Soil</option>
+                    <option value="Laterite Soil">Laterite Soil</option>
+                    <option value="Arid Soil">Arid Soil</option>
+                    <option value="Saline Soil">Saline Soil</option>
+                    <option value="Peaty Soil">Peaty Soil</option>
+                    <option value="Forest Soil">Forest Soil</option>
+                    <option value="Mountain Soil">Mountain Soil</option>
+                    <option value="Others">Others</option>
                   </select>
+                  {soilType === "Others" && (
+                    <input
+                      type="text"
+                      id="custom_soil_type"
+                      required
+                      placeholder="Enter Custom Soil Type"
+                      className="mt-2 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                      value={customSoilType}
+                      onChange={(e) => setCustomSoilType(e.target.value)}
+                    />
+                  )}
                 </div>
+
                 <div className="m-2">
                   <label
                     htmlFor="farmType"
@@ -409,9 +439,31 @@ function Farmer_Profile() {
                     required
                     className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                   >
-                    <option value="">Select Farm Type</option>
-                    <option value="GREENISH">GREENISH</option>
-                    <option value="OTHER">OTHER</option>
+                    <option value="" disabled>
+                      Select Farm Type
+                    </option>
+                    <option value="Bagayti (Horticulture Farming)">
+                      Bagayti (Horticulture Farming)
+                    </option>
+                    <option value="Jirayat (Rainfed Farming)">
+                      Jirayat (Rainfed Farming)
+                    </option>
+                    <option value="Irrigated Farming">Irrigated Farming</option>
+                    <option value="Dryland Farming">Dryland Farming</option>
+                    <option value="Shifting Cultivation (Jhum Farming)">
+                      Shifting Cultivation (Jhum Farming)
+                    </option>
+                    <option value="Plantation Farming">
+                      Plantation Farming
+                    </option>
+                    <option value="Mixed Farming">Mixed Farming</option>
+                    <option value="Organic Farming">Organic Farming</option>
+                    <option value="Subsistence Farming">
+                      Subsistence Farming
+                    </option>
+                    <option value="Commercial Farming">
+                      Commercial Farming
+                    </option>
                   </select>
                 </div>
               </div>

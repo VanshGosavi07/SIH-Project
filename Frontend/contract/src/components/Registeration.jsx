@@ -3,12 +3,11 @@ import AgriConnectLogo from "D:/Project/SIH Project/Media/Logo.jpg";
 
 function Registeration() {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "", // Updated from firstName to name
     emailId: "",
     userId: "",
     password: "",
-    confirmPassword: "",
+    userType: "", // Added userType to state
   });
 
   const handleChange = (e) => {
@@ -35,39 +34,15 @@ function Registeration() {
         {/* Form Inputs */}
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-x-8 gap-y-4">
           <div>
-            <label className="block text-gray-700 mb-1">First Name</label>
+            <label className="block text-gray-700 mb-1">Name</label> {/* Changed from First Name to Name */}
             <input
               type="text"
-              name="firstName"
-              value={formData.firstName}
+              name="name" // Updated name attribute
+              value={formData.name} // Updated to use name
               onChange={handleChange}
               className="w-full border-b border-gray-300 focus:outline-none"
               required
-              placeholder="Enter your first name"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 mb-1">Last Name</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="w-full border-b border-gray-300 focus:outline-none"
-              required
-              placeholder="Enter your last name"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 mb-1">Email ID</label>
-            <input
-              type="email"
-              name="emailId"
-              value={formData.emailId}
-              onChange={handleChange}
-              className="w-full border-b border-gray-300 focus:outline-none"
-              required
-              placeholder="Enter your email"
+              placeholder="Enter your name"
             />
           </div>
           <div>
@@ -83,6 +58,35 @@ function Registeration() {
             />
           </div>
           <div>
+            <label className="block text-gray-700 mb-1">Email ID</label>
+            <input
+              type="email"
+              name="emailId"
+              value={formData.emailId}
+              onChange={handleChange}
+              className="w-full border-b border-gray-300 focus:outline-none"
+              required
+              placeholder="Enter your email"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">User Type</label>
+            <select
+              name="userType"
+              value={formData.userType}
+              onChange={handleChange}
+              className="w-full border-b border-gray-300 focus:outline-none bg-white"
+              required
+              placeholder="Select user type"
+            >
+              <option value="" disabled>
+                Select user type
+              </option>
+              <option value="farmer">Farmer</option>
+              <option value="company">Company</option>
+            </select>
+          </div>
+          <div>
             <label className="block text-gray-700 mb-1">Password</label>
             <input
               type="password"
@@ -94,19 +98,7 @@ function Registeration() {
               placeholder="Enter your password"
             />
           </div>
-          <div>
-            <label className="block text-gray-700 mb-1">Confirm Password</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="w-full border-b border-gray-300 focus:outline-none"
-              required
-              placeholder="Confirm your password"
-            />
-          </div>
-          
+
           {/* Register Button */}
           <div className="col-span-2 mt-6 flex justify-center">
             <button
