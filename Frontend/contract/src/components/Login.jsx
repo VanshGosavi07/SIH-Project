@@ -29,17 +29,20 @@ function Login() {
         </div>
 
         {/* Form Inputs */}
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-x-8 gap-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 gap-x-8 gap-y-4"
+        >
           <div>
-            <label className="block text-gray-700 mb-1">Email or Username</label>
+            <label className="block text-gray-700 mb-1">Email</label>
             <input
-              type="text"
-              name="emailOrUsername"
-              value={formData.emailOrUsername}
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               className="w-full border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required // Ensure the field is required
-              placeholder="Enter your email or username"
+              required
+              placeholder="Enter your email"
             />
           </div>
           <div>
@@ -54,7 +57,7 @@ function Login() {
               placeholder="Enter your password"
             />
           </div>
-          
+
           {/* Login Button */}
           <div className="mt-6 flex justify-center">
             <button

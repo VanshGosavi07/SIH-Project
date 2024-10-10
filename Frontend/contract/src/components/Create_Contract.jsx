@@ -10,17 +10,19 @@ function Create_Contract() {
   const [contractTitle, setContractTitle] = useState("");
   const [contractDescription, setContractDescription] = useState("");
   const [contractType, setContractType] = useState("");
+  const [customContractType, setCustomContractType] = useState("");
   const [durationMonths, setDurationMonths] = useState("");
   const [conditions, setConditions] = useState("");
   const [startDate, setStartDate] = useState("");
   const [landRequired, setLandRequired] = useState("");
   const [paymentType, setPaymentType] = useState("");
 
-  const [crops, setCrops] = useState([{ name: "", requirement: "" }]);
+  const [crops, setCrops] = useState([{ name: "", requirements: [] }]);
   const [rules, setRules] = useState([{ title: "", description: "" }]);
   const [legalClauses, setLegalClauses] = useState([
     { title: "", description: "" },
   ]);
+  const [newRequirement, setNewRequirement] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -35,7 +37,8 @@ function Create_Contract() {
       contractInfo: {
         contractTitle,
         contractDescription,
-        contractType,
+        contractType:
+          contractType === "Others" ? customContractType : contractType,
         durationMonths,
         conditions,
         startDate,
@@ -53,6 +56,21 @@ function Create_Contract() {
   const handleCropChange = (index, field, value) => {
     const updatedCrops = [...crops];
     updatedCrops[index][field] = value;
+    setCrops(updatedCrops);
+  };
+
+  const handleAddRequirement = (index) => {
+    const updatedCrops = [...crops];
+    if (newRequirement.trim() !== "") {
+      updatedCrops[index].requirements.push(newRequirement);
+      setCrops(updatedCrops);
+      setNewRequirement(""); // Clear the input after adding
+    }
+  };
+
+  const handleRemoveRequirement = (cropIndex, reqIndex) => {
+    const updatedCrops = [...crops];
+    updatedCrops[cropIndex].requirements.splice(reqIndex, 1);
     setCrops(updatedCrops);
   };
 
@@ -92,6 +110,13 @@ function Create_Contract() {
     const updatedLegalClauses = [...legalClauses];
     updatedLegalClauses[index][field] = value;
     setLegalClauses(updatedLegalClauses);
+  };
+
+  const handleContractTypeChange = (e) => {
+    setContractType(e.target.value);
+    if (e.target.value !== "Others") {
+      setCustomContractType("");
+    }
   };
 
   return (
@@ -177,7 +202,7 @@ function Create_Contract() {
                     Link*
                   </label>
                   <input
-                    type="text"
+                    type="url"
                     id="website_link"
                     required
                     placeholder="   Enter Website Link"
@@ -245,12 +270,35 @@ function Create_Contract() {
                     required
                     className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                     value={contractType}
-                    onChange={(e) => setContractType(e.target.value)}
+                    onChange={handleContractTypeChange}
                   >
                     <option value="">Select Contract Type</option>
-                    <option value="Service">Service</option>
-                    <option value="Product">Product</option>
+                    <option value="Vegetables">Vegetables</option>
+                    <option value="Fruits">Fruits</option>
+                    <option value="Grains">Grains</option>
+                    <option value="Flower">Flower</option>
+                    <option value="Herbs">Herbs</option>
+                    <option value="Nuts">Nuts</option>
+                    <option value="Pulses">Pulses</option>
+                    <option value="Roots and Tubers">Roots and Tubers</option>
+                    <option value="Spices">Spices</option>
+                    <option value="Trees">Trees</option>
+                    <option value="Ayurvedic">Ayurvedic</option>
+                    <option value="Equipments">Equipments</option>
+                    <option value="Animals">Animals</option>
+                    <option value="Others">Others</option>
                   </select>
+                  {contractType === "Others" && (
+                    <input
+                      type="text"
+                      id="custom_contract_type"
+                      required
+                      placeholder="Enter Custom Contract Type"
+                      className="mt-2 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                      value={customContractType}
+                      onChange={(e) => setCustomContractType(e.target.value)}
+                    />
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -352,9 +400,19 @@ function Create_Contract() {
                     value={paymentType}
                     onChange={(e) => setPaymentType(e.target.value)}
                   >
-                    <option value="">Select Payment Type</option>
+                    <option value="" disabled>Select Payment Type</option>
                     <option value="Cash">Cash</option>
                     <option value="Bank Transfer">Bank Transfer</option>
+                    <option value="Cheque">Cheque Payment</option>
+                    <option value="Advance">Advance Payment</option>
+                    <option value="Installment">Installment Payment</option>
+                    <option value="Deferred">Deferred Payment</option>
+                    <option value="Mobile Payments">
+                      Mobile Payments (UPI/Wallets)
+                    </option>
+                    <option value="Profit Sharing">
+                      Profit Sharing/Crop Sharing
+                    </option>
                   </select>
                 </div>
               </div>
@@ -393,21 +451,44 @@ function Create_Contract() {
                       />
                     </div>
                     <div className="m-2">
-                      <label
-                        htmlFor={`crop_requirement_${index}`}
-                        className="block text-black-700 text-left"
-                      >
-                        Requirement
+                      <label className="block text-black-700 text-left">
+                        Requirements
                       </label>
-                      <textarea
-                        id={`crop_requirement_${index}`}
-                        placeholder="   Enter Crop Requirements"
-                        className="mt-1 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                        value={crop.requirement}
-                        onChange={(e) =>
-                          handleCropChange(index, "requirement", e.target.value)
-                        }
-                      ></textarea>
+                      <div className="flex items-center mt-1">
+                        <input
+                          type="text"
+                          value={newRequirement}
+                          onChange={(e) => setNewRequirement(e.target.value)}
+                          placeholder="Enter Crop Requirement"
+                          className="flex-grow h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 mr-2"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleAddRequirement(index)}
+                          className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                        >
+                          Add Requirement
+                        </button>
+                      </div>
+                      <div className="mt-2">
+                        {crop.requirements.map((req, reqIndex) => (
+                          <span
+                            key={reqIndex}
+                            className="inline-block bg-green-100 text-green-800 px-2 py-1 rounded-full mr-2 mb-2"
+                          >
+                            {req}
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleRemoveRequirement(index, reqIndex)
+                              }
+                              className="ml-2 text-red-600 focus:outline-none"
+                            >
+                              ×
+                            </button>
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                   {index < crops.length - 1 && (
