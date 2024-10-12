@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AgriConnectLogo from "D:/Project/SIH Project/Media/Logo.jpg";
+import AgriConnectLogo from "../../../../Media/Logo.jpg";
 
 function Login() {
   const [formData, setFormData] = useState({
