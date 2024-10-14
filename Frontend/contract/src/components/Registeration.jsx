@@ -1,22 +1,36 @@
 import React, { useState } from "react";
 import AgriConnectLogo from "../../../../Media/Logo.jpg";
+import { validateRegistrationForm } from "./validation/V_Register";
 
 function Registeration() {
   const [formData, setFormData] = useState({
-    name: "", // Updated from firstName to name
+    name: "",
     emailId: "",
     userId: "",
     password: "",
-    userType: "", // Added userType to state
+    userType: "",
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    // Clear the error for this field when the user starts typing
+    setErrors({ ...errors, [name]: "" });
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the default form submission
-    console.log(formData); // Print form data to console
+    e.preventDefault();
+    const validationErrors = validateRegistrationForm(formData);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      // Form is valid, proceed with registration
+      console.log("Form is valid:", formData);
+      // Add your registration logic here
+    } else {
+      console.log("Form has errors:", validationErrors);
+    }
   };
 
   return (
@@ -34,16 +48,16 @@ function Registeration() {
         {/* Form Inputs */}
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-x-8 gap-y-4">
           <div>
-            <label className="block text-gray-700 mb-1">Name</label> {/* Changed from First Name to Name */}
+            <label className="block text-gray-700 mb-1">Name</label>
             <input
               type="text"
-              name="name" // Updated name attribute
-              value={formData.name} // Updated to use name
+              name="name"
+              value={formData.name}
               onChange={handleChange}
-              className="w-full border-b border-gray-300 focus:outline-none"
-              required
+              className={`w-full border-b ${errors.name ? "border-red-500" : "border-gray-300"} focus:outline-none`}
               placeholder="Enter your name"
             />
+            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
           </div>
           <div>
             <label className="block text-gray-700 mb-1">User ID</label>
@@ -52,10 +66,10 @@ function Registeration() {
               name="userId"
               value={formData.userId}
               onChange={handleChange}
-              className="w-full border-b border-gray-300 focus:outline-none"
-              required
+              className={`w-full border-b ${errors.userId ? "border-red-500" : "border-gray-300"} focus:outline-none`}
               placeholder="Enter your user ID"
             />
+            {errors.userId && <p className="text-red-500 text-sm mt-1">{errors.userId}</p>}
           </div>
           <div>
             <label className="block text-gray-700 mb-1">Email ID</label>
@@ -64,10 +78,10 @@ function Registeration() {
               name="emailId"
               value={formData.emailId}
               onChange={handleChange}
-              className="w-full border-b border-gray-300 focus:outline-none"
-              required
+              className={`w-full border-b ${errors.emailId ? "border-red-500" : "border-gray-300"} focus:outline-none`}
               placeholder="Enter your email"
             />
+            {errors.emailId && <p className="text-red-500 text-sm mt-1">{errors.emailId}</p>}
           </div>
           <div>
             <label className="block text-gray-700 mb-1">User Type</label>
@@ -75,16 +89,13 @@ function Registeration() {
               name="userType"
               value={formData.userType}
               onChange={handleChange}
-              className="w-full border-b border-gray-300 focus:outline-none bg-white"
-              required
-              placeholder="Select user type"
+              className={`w-full border-b ${errors.userType ? "border-red-500" : "border-gray-300"} focus:outline-none bg-white`}
             >
-              <option value="" disabled>
-                Select user type
-              </option>
+              <option value="" disabled>Select user type</option>
               <option value="farmer">Farmer</option>
               <option value="company">Company</option>
             </select>
+            {errors.userType && <p className="text-red-500 text-sm mt-1">{errors.userType}</p>}
           </div>
           <div>
             <label className="block text-gray-700 mb-1">Password</label>
@@ -93,10 +104,10 @@ function Registeration() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full border-b border-gray-300 focus:outline-none"
-              required
+              className={`w-full border-b ${errors.password ? "border-red-500" : "border-gray-300"} focus:outline-none`}
               placeholder="Enter your password"
             />
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
 
           {/* Register Button */}
@@ -119,7 +130,7 @@ function Registeration() {
         </div>
 
         {/* Decorative Waves */}
-        <div className="absolute bottom-0 left-0 right-0 z-0"> {/* Added z-0 */}
+        <div className="absolute bottom-0 left-0 right-0 z-0">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path
               fill="#4CAF50"
