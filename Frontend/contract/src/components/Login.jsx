@@ -92,7 +92,7 @@ function Login() {
         </form>
 
         {/* Bottom Link */}
-        <div className="mt-4 text-center relative z-10">
+        <div className="mt-4 text-center relative z-20">
           <span className="text-gray-600">Don't have an account?</span>
           <a href="/register" className="text-green-500 ml-1">
             Register
