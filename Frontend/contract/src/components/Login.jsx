@@ -1,19 +1,33 @@
 import React, { useState } from "react";
 import AgriConnectLogo from "../../../../Media/Logo.jpg";
+import { validateLoginForm } from "./validation/V_Login";
 
 function Login() {
   const [formData, setFormData] = useState({
-    emailOrUsername: "",
+    email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    // Clear the error for this field when the user starts typing
+    setErrors({ ...errors, [name]: "" });
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the default form submission
-    console.log(formData); // Print form data to console
+    e.preventDefault();
+    const validationErrors = validateLoginForm(formData);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      // Form is valid, proceed with login
+      console.log("Form is valid:", formData);
+      // Add your login logic here
+    } else {
+      console.log("Form has errors:", validationErrors);
+    }
   };
 
   return (
@@ -40,10 +54,14 @@ function Login() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
+              className={`w-full border-b ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
               placeholder="Enter your email"
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
           <div>
             <label className="block text-gray-700 mb-1">Password</label>
@@ -52,10 +70,14 @@ function Login() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required // Ensure the field is required
+              className={`w-full border-b ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
               placeholder="Enter your password"
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+            )}
           </div>
 
           {/* Login Button */}
