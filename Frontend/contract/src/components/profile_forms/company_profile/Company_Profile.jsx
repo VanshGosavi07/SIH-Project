@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Company_Profile() {
+function company_profile_form() {
   const [profilePic, setProfilePic] = useState(
     "https://via.placeholder.com/150"
   );
@@ -692,4 +692,4 @@ function Company_Profile() {
   );
 }
 
-export default Company_Profile;
+export default company_profile_form;
