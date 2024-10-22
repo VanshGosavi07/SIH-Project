@@ -28,7 +28,7 @@ const ImageSlider = () => {
 
   return (
     <div className="w-11/12 mx-auto py-8 px-4"> {/* Set to 80% width */}
-      <div className="  rounded-lg overflow-hidden ">
+      <div className=" rounded-lg overflow-hidden ">
         <Slider {...settings}>
           {images.map((image, index) => (
             <div key={index}>
