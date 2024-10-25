@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Navbar from "./Navbar";
 import ImageSlider from "./Slider";
 import Contract_Cards from "./Contracts/Contract_Cards";
+import Footer from "./Footer";
 
 // Expanded sample data for 12 cards with new fields
 const cardData = [
@@ -183,10 +184,7 @@ function Home() {
         />
       </svg>
 
-      <div
-        className="container mx-auto px-4 mx-135 "
-        style={{ backgroundColor: "gray" }}
-      >
+      <div className="container mx-auto px-4 mx-135 ">
         <div className="flex justify-center my-8">
           <h1
             className="text-4xl font-semibold text-center pt-12"
@@ -214,35 +212,7 @@ function Home() {
           </div>
         )}
       </div>
-      <div
-        className="pt-10"
-        style={{
-          backgroundColor: "#333",
-          color: "#fff",
-          padding: "20px 20px 20px 0",
-          marginTop:"80px"
-        }} // Added right padding
-      >
-        <div
-          className="container mx-auto text-center"
-          style={{ paddingRight: "20px" }}
-        >
-          {" "}
-          {/* Added padding right here */}
-          <p>© 2024 Your Company. All rights reserved.</p>
-          <div className="flex justify-center space-x-4">
-            <a href="#" className="text-white hover:text-gray-400">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-white hover:text-gray-400">
-              Terms of Service
-            </a>
-            <a href="#" className="text-white hover:text-gray-400">
-              Contact Us
-            </a>
-          </div>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }
