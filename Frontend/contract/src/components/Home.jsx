@@ -184,8 +184,8 @@ function Home() {
       </svg>
 
       <div
-        className="container mx-auto px-4 mx-135"
-        style={{ backgroundColor: "yellow" }}
+        className="container mx-auto px-4 mx-135 "
+        style={{ backgroundColor: "gray" }}
       >
         <div className="flex justify-center my-8">
           <h1
@@ -214,10 +214,21 @@ function Home() {
           </div>
         )}
       </div>
-      <footer
-        style={{ backgroundColor: "#333", color: "#fff", padding: "20px 0" }}
+      <div
+        className="pt-10"
+        style={{
+          backgroundColor: "#333",
+          color: "#fff",
+          padding: "20px 20px 20px 0",
+          marginTop:"80px"
+        }} // Added right padding
       >
-        <div className="container mx-auto text-center">
+        <div
+          className="container mx-auto text-center"
+          style={{ paddingRight: "20px" }}
+        >
+          {" "}
+          {/* Added padding right here */}
           <p>© 2024 Your Company. All rights reserved.</p>
           <div className="flex justify-center space-x-4">
             <a href="#" className="text-white hover:text-gray-400">
@@ -231,7 +242,7 @@ function Home() {
             </a>
           </div>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }
