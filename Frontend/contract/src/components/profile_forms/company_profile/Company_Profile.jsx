@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function company_profile_form() {
+  const location = useLocation();
+  const { name, emailId, userId, userType } = location.state || {};
+
   const [profilePic, setProfilePic] = useState(
     "https://via.placeholder.com/150"
   );
@@ -13,8 +17,15 @@ function company_profile_form() {
   const [contracts, setContracts] = useState([
     { title: "", date: "", certificate: null },
   ]);
-
   const [companyType, setCompanyType] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [companyEmail, setCompanyEmail] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setCompanyName(name || "");
+    setCompanyEmail(emailId || "");
+  }, [name, emailId]);
 
   const handleProfilePicChange = (event) => {
     const file = event.target.files[0];
@@ -30,6 +41,8 @@ function company_profile_form() {
 
     const formData = {
       companyInfo: {
+        name: companyName,
+        email: companyEmail,
         generativeId: event.target.generative_id.value,
         website: event.target.website.value,
         taxIdentificationNumber: event.target.tax_no.value,
@@ -53,6 +66,7 @@ function company_profile_form() {
 
     console.log("Form Data:", formData);
     alert("Form Submitted. Check console for data.");
+    navigate("/home");
   };
 
   const handleAddAchievement = () => {
@@ -136,6 +150,45 @@ function company_profile_form() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="m-2">
                       <label
+                        htmlFor="name"
+                        className="block text-black-700 text-left"
+                      >
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        placeholder="Enter Name"
+                        className="mt-1 block w-full bg-gray-100 h-10 pl-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        readOnly
+                      />
+                    </div>
+                    <div className="m-2">
+                      <label
+                        htmlFor="email"
+                        className="block text-black-700 text-left"
+                      >
+                        Email Id
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter Email Id"
+                        className="mt-1 block w-full bg-gray-100 h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2 pl-3"
+                        value={companyEmail}
+                        onChange={(e) => setCompanyEmail(e.target.value)}
+                        readOnly
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="m-2">
+                      <label
                         htmlFor="generative_id"
                         className="block text-black-700 text-left"
                       >
@@ -145,8 +198,8 @@ function company_profile_form() {
                         type="text"
                         id="generative_id"
                         required
-                        placeholder="   Enter Generative ID"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        placeholder="Enter Generative ID"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                     <div className="m-2">
@@ -159,8 +212,8 @@ function company_profile_form() {
                       <input
                         type="url"
                         id="website"
-                        placeholder="   Enter Website URL"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        placeholder="Enter Website URL"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                   </div>
@@ -177,8 +230,8 @@ function company_profile_form() {
                         type="text"
                         id="tax_no"
                         required
-                        placeholder="   Enter Tax Identification Number"
-                        className="mt-1 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        placeholder="Enter Tax Identification Number"
+                        className="mt-1 pl-3 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                     <div className="m-2">
@@ -192,8 +245,8 @@ function company_profile_form() {
                         type="text"
                         id="license_no"
                         required
-                        placeholder="   Enter License Number"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        placeholder="Enter License Number"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                   </div>
@@ -224,7 +277,7 @@ function company_profile_form() {
                       <select
                         id="company_type"
                         required
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                         value={companyType}
                         onChange={(e) => setCompanyType(e.target.value)}
                       >
@@ -268,8 +321,8 @@ function company_profile_form() {
                       <input
                         type="text"
                         id="product"
-                        placeholder="   Enter Company Product"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        placeholder="Enter Company Product"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                     <div className="m-2">
@@ -283,7 +336,7 @@ function company_profile_form() {
                         type="date"
                         id="establish_date"
                         required
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                   </div>
@@ -350,8 +403,8 @@ function company_profile_form() {
                         <input
                           type="text"
                           id={`achievement-title-${index}`}
-                          placeholder="   Enter Title"
-                          className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                          placeholder="Enter Title"
+                          className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                           value={achievement.title}
                           onChange={(e) =>
                             handleAchievementChange(
@@ -372,7 +425,7 @@ function company_profile_form() {
                         <input
                           type="date"
                           id={`achievement-date-${index}`}
-                          className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                          className="mt-1 pl-3 pr-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                           value={achievement.date}
                           onChange={(e) =>
                             handleAchievementChange(
@@ -393,7 +446,7 @@ function company_profile_form() {
                         <input
                           type="file"
                           id={`achievement-certificate-${index}`}
-                          className="mt-1 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                          className="mt-1 pl-3 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
                           onChange={(e) =>
                             handleAchievementChange(
                               index,
@@ -453,8 +506,8 @@ function company_profile_form() {
                       <input
                         type="text"
                         id={`additional-title-${index}`}
-                        placeholder="   Enter Title"
-                        className="mt-1 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        placeholder="Enter Title"
+                        className="mt-1 pl-3 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={info.title}
                         onChange={(e) =>
                           handleAdditionalInfoChange(
@@ -474,8 +527,8 @@ function company_profile_form() {
                       </label>
                       <textarea
                         id={`info-${index}`}
-                        placeholder="   Enter additional info"
-                        className="mt-1 block w-full h-24 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        placeholder="Enter additional info"
+                        className="mt-1 pl-3 block w-full h-24 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={info.info}
                         onChange={(e) =>
                           handleAdditionalInfoChange(
@@ -535,8 +588,8 @@ function company_profile_form() {
                       <input
                         type="text"
                         id={`contract-title-${index}`}
-                        placeholder="   Enter Title"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        placeholder="Enter Title"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={contract.title}
                         onChange={(e) =>
                           handleContractChange(index, "title", e.target.value)
@@ -553,7 +606,7 @@ function company_profile_form() {
                       <input
                         type="date"
                         id={`contract-date-${index}`}
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="mt-1 pl-3 pr-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={contract.date}
                         onChange={(e) =>
                           handleContractChange(index, "date", e.target.value)
@@ -570,7 +623,7 @@ function company_profile_form() {
                       <input
                         type="file"
                         id={`contract-certificate-${index}`}
-                        className="mt-1 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
                         onChange={(e) =>
                           handleContractChange(
                             index,
@@ -621,8 +674,8 @@ function company_profile_form() {
                     type="text"
                     id="contact_name"
                     required
-                    placeholder="   Enter Name"
-                    className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                    placeholder="Enter Name"
+                    className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
                 <div>
@@ -636,8 +689,8 @@ function company_profile_form() {
                     type="text"
                     id="contact_designation"
                     required
-                    placeholder="   Enter Designation"
-                    className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                    placeholder="Enter Designation"
+                    className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
               </div>
@@ -654,8 +707,8 @@ function company_profile_form() {
                     type="email"
                     id="contact_email"
                     required
-                    placeholder="   Enter Email"
-                    className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                    placeholder="Enter Email"
+                    className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
                 <div>
@@ -669,8 +722,8 @@ function company_profile_form() {
                     type="tel"
                     id="contact_phone"
                     required
-                    placeholder="   Enter Phone Number"
-                    className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                    placeholder="Enter Phone Number"
+                    className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
               </div>
