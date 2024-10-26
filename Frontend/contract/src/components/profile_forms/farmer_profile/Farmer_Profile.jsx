@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { validateFarmerProfile } from "./Validation";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Farmer_Profile() {
+  const location = useLocation();
+  const { name, emailId, userId, userType } = location.state || {}; // Access form data from location.state
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    name: name,
+    email: emailId,
     mobileNumber: "",
     address: "",
     gender: "",
@@ -76,6 +81,7 @@ function Farmer_Profile() {
     if (Object.keys(validationErrors).length === 0) {
       console.log("Form Data:", formData);
       alert("Form submitted successfully! Check console for data.");
+      navigate("/home");
     } else {
       console.log("Form has errors:", validationErrors);
     }
@@ -121,12 +127,15 @@ function Farmer_Profile() {
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="Enter name"
-                        className={`mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                        className={`mt-1 pl-3 block w-full h-10 border-gray-300 bg-gray-50 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                           errors.name ? "border-red-500" : ""
                         }`}
+                        readOnly
                       />
                       {errors.name && (
-                        <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.name}
+                        </p>
                       )}
                     </div>
                     <div className="m-2">
@@ -143,12 +152,15 @@ function Farmer_Profile() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="Enter email"
-                        className={`mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                        className={`mt-1 pl-3 block w-full h-10 bg-gray-50 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                           errors.email ? "border-red-500" : ""
                         }`}
+                        readOnly
                       />
                       {errors.email && (
-                        <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.email}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -168,12 +180,14 @@ function Farmer_Profile() {
                         value={formData.mobileNumber}
                         onChange={handleChange}
                         placeholder="Enter Mobile Number"
-                        className={`mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                        className={`mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                           errors.mobileNumber ? "border-red-500" : ""
                         }`}
                       />
                       {errors.mobileNumber && (
-                        <p className="text-red-500 text-sm mt-1">{errors.mobileNumber}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.mobileNumber}
+                        </p>
                       )}
                     </div>
                     <div className="m-2">
@@ -190,12 +204,14 @@ function Farmer_Profile() {
                         value={formData.address}
                         onChange={handleChange}
                         placeholder="Enter Address"
-                        className={`mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                        className={`mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                           errors.address ? "border-red-500" : ""
                         }`}
                       />
                       {errors.address && (
-                        <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.address}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -213,7 +229,7 @@ function Farmer_Profile() {
                         name="gender"
                         value={formData.gender}
                         onChange={handleChange}
-                        className={`mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                        className={`mt-1 pl-3 pr-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                           errors.gender ? "border-red-500" : ""
                         }`}
                       >
@@ -223,7 +239,9 @@ function Farmer_Profile() {
                         <option value="other">Other</option>
                       </select>
                       {errors.gender && (
-                        <p className="text-red-500 text-sm mt-1">{errors.gender}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.gender}
+                        </p>
                       )}
                     </div>
                     <div className="m-2">
@@ -240,12 +258,14 @@ function Farmer_Profile() {
                         value={formData.age}
                         onChange={handleChange}
                         placeholder="Enter Age"
-                        className={`mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                        className={`mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                           errors.age ? "border-red-500" : ""
                         }`}
                       />
                       {errors.age && (
-                        <p className="text-red-500 text-sm mt-1">{errors.age}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.age}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -265,12 +285,14 @@ function Farmer_Profile() {
                         value={formData.experience}
                         onChange={handleChange}
                         placeholder="Enter Experience"
-                        className={`mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                        className={`mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                           errors.experience ? "border-red-500" : ""
                         }`}
                       />
                       {errors.experience && (
-                        <p className="text-red-500 text-sm mt-1">{errors.experience}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.experience}
+                        </p>
                       )}
                     </div>
                     <div className="m-2">
@@ -287,12 +309,14 @@ function Farmer_Profile() {
                         value={formData.contractsMade}
                         onChange={handleChange}
                         placeholder="Enter Contracts Made"
-                        className={`mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                        className={`mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                           errors.contractsMade ? "border-red-500" : ""
                         }`}
                       />
                       {errors.contractsMade && (
-                        <p className="text-red-500 text-sm mt-1">{errors.contractsMade}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.contractsMade}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -353,12 +377,14 @@ function Farmer_Profile() {
                     value={formData.farmAddress}
                     onChange={handleChange}
                     placeholder="Enter Farm Address"
-                    className={`mt-1 block w-full h-20 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                    className={`mt-1 pl-3 pt-5 block w-full h-20 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                       errors.farmAddress ? "border-red-500" : ""
                     }`}
                   />
                   {errors.farmAddress && (
-                    <p className="text-red-500 text-sm mt-1">{errors.farmAddress}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.farmAddress}
+                    </p>
                   )}
                 </div>
                 <div className="m-2">
@@ -375,12 +401,14 @@ function Farmer_Profile() {
                     value={formData.landArea}
                     onChange={handleChange}
                     placeholder="Enter Land Area"
-                    className={`mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                    className={`mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                       errors.landArea ? "border-red-500" : ""
                     }`}
                   />
                   {errors.landArea && (
-                    <p className="text-red-500 text-sm mt-1">{errors.landArea}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.landArea}
+                    </p>
                   )}
                 </div>
               </div>
@@ -398,7 +426,7 @@ function Farmer_Profile() {
                     name="soilType"
                     value={formData.soilType}
                     onChange={handleChange}
-                    className={`mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                    className={`mt-1 pl-3 pr-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                       errors.soilType ? "border-red-500" : ""
                     }`}
                   >
@@ -417,7 +445,9 @@ function Farmer_Profile() {
                     <option value="Others">Others</option>
                   </select>
                   {errors.soilType && (
-                    <p className="text-red-500 text-sm mt-1">{errors.soilType}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.soilType}
+                    </p>
                   )}
                   {formData.soilType === "Others" && (
                     <input
@@ -433,7 +463,9 @@ function Farmer_Profile() {
                     />
                   )}
                   {errors.customSoilType && (
-                    <p className="text-red-500 text-sm mt-1">{errors.customSoilType}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.customSoilType}
+                    </p>
                   )}
                 </div>
 
@@ -449,7 +481,7 @@ function Farmer_Profile() {
                     name="farmType"
                     value={formData.farmType}
                     onChange={handleChange}
-                    className={`mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                    className={`mt-1 pl-3 pr-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 ${
                       errors.farmType ? "border-red-500" : ""
                     }`}
                   >
@@ -480,7 +512,9 @@ function Farmer_Profile() {
                     </option>
                   </select>
                   {errors.farmType && (
-                    <p className="text-red-500 text-sm mt-1">{errors.farmType}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.farmType}
+                    </p>
                   )}
                 </div>
               </div>
@@ -500,12 +534,14 @@ function Farmer_Profile() {
                     multiple
                     accept="image/*"
                     onChange={handleLandPicturesChange}
-                    className={`mt-1 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 ${
+                    className={`mt-1 pl-3 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 ${
                       errors.landPictures ? "border-red-500" : ""
                     }`}
                   />
                   {errors.landPictures && (
-                    <p className="text-red-500 text-sm mt-1">{errors.landPictures}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.landPictures}
+                    </p>
                   )}
                 </div>
 
@@ -521,7 +557,7 @@ function Farmer_Profile() {
                         value="YES"
                         checked={formData.well === "YES"}
                         onChange={handleChange}
-                        className="form-radio h-5 w-5 text-blue-600"
+                        className="form-radio h-5 w-5 pl-3 text-blue-600"
                       />
                       <span className="ml-2">YES</span>
                     </label>
@@ -551,9 +587,11 @@ function Farmer_Profile() {
                   <input
                     type="text"
                     value={formData.newCrop}
-                    onChange={(e) => setFormData({ ...formData, newCrop: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, newCrop: e.target.value })
+                    }
                     placeholder="Enter a crop"
-                    className="flex-grow h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 mr-2"
+                    className="flex-grow h-10 pl-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 mr-2"
                   />
                   <button
                     type="button"
@@ -561,7 +599,10 @@ function Farmer_Profile() {
                       if (formData.newCrop.trim() !== "") {
                         setFormData({
                           ...formData,
-                          preferredCrops: [...formData.preferredCrops, formData.newCrop.trim()],
+                          preferredCrops: [
+                            ...formData.preferredCrops,
+                            formData.newCrop.trim(),
+                          ],
                           newCrop: "",
                         });
                       }
@@ -581,9 +622,14 @@ function Farmer_Profile() {
                       <button
                         type="button"
                         onClick={() => {
-                          const updatedPreferredCrops = [...formData.preferredCrops];
+                          const updatedPreferredCrops = [
+                            ...formData.preferredCrops,
+                          ];
                           updatedPreferredCrops.splice(index, 1);
-                          setFormData({ ...formData, preferredCrops: updatedPreferredCrops });
+                          setFormData({
+                            ...formData,
+                            preferredCrops: updatedPreferredCrops,
+                          });
                         }}
                         className="ml-2 text-red-600 focus:outline-none"
                       >
@@ -593,7 +639,9 @@ function Farmer_Profile() {
                   ))}
                 </div>
                 {errors.preferredCrops && (
-                  <p className="text-red-500 text-sm mt-1">{errors.preferredCrops}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.preferredCrops}
+                  </p>
                 )}
               </div>
             </div>
@@ -608,7 +656,10 @@ function Farmer_Profile() {
                 onClick={() => {
                   setFormData({
                     ...formData,
-                    achievements: [...formData.achievements, { title: "", date: "", certificate: null }],
+                    achievements: [
+                      ...formData.achievements,
+                      { title: "", date: "", certificate: null },
+                    ],
                   });
                 }}
                 className="w-10 h-6 flex items-center justify-center rounded-full bg-white bg-opacity-30 border border-black shadow-lg backdrop-blur-lg hover:bg-white hover:bg-opacity-50 hover:text-black focus:outline-none focus:ring-2 focus:ring-blue-500 text-2xl"
@@ -635,7 +686,7 @@ function Farmer_Profile() {
                         type="text"
                         id={`achievement-title-${index}`}
                         placeholder="Enter Title"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={achievement.title}
                         onChange={(e) =>
                           handleAchievementChange(
@@ -656,7 +707,7 @@ function Farmer_Profile() {
                       <input
                         type="date"
                         id={`achievement-date-${index}`}
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={achievement.date}
                         onChange={(e) =>
                           handleAchievementChange(index, "date", e.target.value)
@@ -673,7 +724,7 @@ function Farmer_Profile() {
                       <input
                         type="file"
                         id={`achievement-certificate-${index}`}
-                        className="mt-1 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
                         onChange={(e) =>
                           handleAchievementChange(
                             index,
@@ -689,7 +740,10 @@ function Farmer_Profile() {
                     onClick={() => {
                       const updatedAchievements = [...formData.achievements];
                       updatedAchievements.splice(index, 1);
-                      setFormData({ ...formData, achievements: updatedAchievements });
+                      setFormData({
+                        ...formData,
+                        achievements: updatedAchievements,
+                      });
                     }}
                     className="text-red-600 mt-2 hover:underline focus:outline-none"
                   >
@@ -712,7 +766,10 @@ function Farmer_Profile() {
                 onClick={() => {
                   setFormData({
                     ...formData,
-                    additionalInfo: [...formData.additionalInfo, { title: "", info: "" }],
+                    additionalInfo: [
+                      ...formData.additionalInfo,
+                      { title: "", info: "" },
+                    ],
                   });
                 }}
                 className="w-10 h-6 flex items-center justify-center rounded-full bg-white bg-opacity-30 border border-black shadow-lg backdrop-blur-lg hover:bg-white hover:bg-opacity-50 hover:text-black focus:outline-none focus:ring-2 focus:ring-blue-500 text-2xl"
@@ -739,7 +796,7 @@ function Farmer_Profile() {
                         type="text"
                         id={`additional-title-${index}`}
                         placeholder="Enter Title"
-                        className="mt-1 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="mt-1 pl-3 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={info.title}
                         onChange={(e) =>
                           handleAdditionalInfoChange(
@@ -760,7 +817,7 @@ function Farmer_Profile() {
                       <textarea
                         id={`info-${index}`}
                         placeholder="Enter additional info"
-                        className="mt-1 block w-full h-24 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="mt-1 pl-3 pt-5 block w-full h-24 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={info.info}
                         onChange={(e) =>
                           handleAdditionalInfoChange(
@@ -776,11 +833,16 @@ function Farmer_Profile() {
                     <button
                       type="button"
                       onClick={() => {
-                        const updatedAdditionalInfo = [...formData.additionalInfo];
+                        const updatedAdditionalInfo = [
+                          ...formData.additionalInfo,
+                        ];
                         updatedAdditionalInfo.splice(index, 1);
-                        setFormData({ ...formData, additionalInfo: updatedAdditionalInfo });
+                        setFormData({
+                          ...formData,
+                          additionalInfo: updatedAdditionalInfo,
+                        });
                       }}
-                      className="text-red-600 mt-2 hover:underline focus:outline-none"
+                      className="text-red-600 mt-2  hover:underline focus:outline-none"
                     >
                       Remove
                     </button>
@@ -802,7 +864,10 @@ function Farmer_Profile() {
                 onClick={() => {
                   setFormData({
                     ...formData,
-                    contracts: [...formData.contracts, { title: "", date: "", certificate: null }],
+                    contracts: [
+                      ...formData.contracts,
+                      { title: "", date: "", certificate: null },
+                    ],
                   });
                 }}
                 className="w-10 h-6 flex items-center justify-center rounded-full bg-white bg-opacity-30 border border-black shadow-lg backdrop-blur-lg hover:bg-white hover:bg-opacity-50 hover:text-black focus:outline-none focus:ring-2 focus:ring-blue-500 text-2xl"
@@ -829,7 +894,7 @@ function Farmer_Profile() {
                         type="text"
                         id={`contract-title-${index}`}
                         placeholder="Enter Title"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={contract.title}
                         onChange={(e) =>
                           handleContractChange(index, "title", e.target.value)
@@ -846,7 +911,7 @@ function Farmer_Profile() {
                       <input
                         type="date"
                         id={`contract-date-${index}`}
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="mt-1 pl-3 pr-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={contract.date}
                         onChange={(e) =>
                           handleContractChange(index, "date", e.target.value)
@@ -863,7 +928,7 @@ function Farmer_Profile() {
                       <input
                         type="file"
                         id={`contract-certificate-${index}`}
-                        className="mt-1 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
                         onChange={(e) =>
                           handleContractChange(
                             index,
