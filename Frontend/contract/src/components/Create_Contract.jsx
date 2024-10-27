@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function Create_Contract() {
   const [companyName, setCompanyName] = useState("");
@@ -24,33 +25,43 @@ function Create_Contract() {
   ]);
   const [newRequirement, setNewRequirement] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
-      companyInfo: {
-        companyName,
-        contactEmail,
-        userId,
-        websiteLink,
-        address,
-      },
-      contractInfo: {
-        contractTitle,
-        contractDescription,
-        contractType:
-          contractType === "Others" ? customContractType : contractType,
-        durationMonths,
-        conditions,
-        startDate,
-        landRequired,
-        paymentType,
-      },
-      cropInfo: crops,
-      rules,
-      legalClauses,
+      company_name: companyName,
+      contact_email: contactEmail,
+      user_id: userId,
+      website_link: websiteLink,
+      address: address,
+      contract_title: contractTitle,
+      contract_description: contractDescription,
+      contract_type:
+        contractType === "Others" ? customContractType : contractType,
+      duration_months: durationMonths,
+      conditions: conditions,
+      start_date: startDate,
+      land_required: landRequired,
+      payment_type: paymentType,
+      crops: crops,
+      rules: rules,
+      legal_clauses: legalClauses,
     };
-    console.log("Form Data:", formData);
-    alert("Form Submitted. Check console for data.");
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/contracts/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Form Data:", response.data);
+      alert("Form Submitted Successfully.");
+    } catch (error) {
+      console.error("There was an error submitting the form!", error);
+      alert("Form Submission Failed.");
+    }
   };
 
   const handleCropChange = (index, field, value) => {
@@ -400,7 +411,9 @@ function Create_Contract() {
                     value={paymentType}
                     onChange={(e) => setPaymentType(e.target.value)}
                   >
-                    <option value="" disabled>Select Payment Type</option>
+                    <option value="" disabled>
+                      Select Payment Type
+                    </option>
                     <option value="Cash">Cash</option>
                     <option value="Bank Transfer">Bank Transfer</option>
                     <option value="Cheque">Cheque Payment</option>
