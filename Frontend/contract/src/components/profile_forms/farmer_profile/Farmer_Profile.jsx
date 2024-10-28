@@ -5,7 +5,7 @@ import axios from "axios";
 
 function Farmer_Profile() {
   const location = useLocation();
-  const { name, emailId, userId, userType } = location.state || {}; // Access form data from location.state
+  const { name, emailId, userId, userType } = location.state || {};
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -17,7 +17,7 @@ function Farmer_Profile() {
     age: "",
     experience: "",
     contractsMade: "",
-    profilePic: null, // Change to null to store file object
+    profilePic: null,
     farmAddress: "",
     landArea: "",
     soilType: "",
@@ -72,59 +72,41 @@ function Farmer_Profile() {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        // Submit farmer profile data
-        const profileData = {
-          name: formData.name,
-          email: formData.email,
-          mobile_number: formData.mobileNumber,
-          address: formData.address,
-          gender: formData.gender,
-          age: formData.age,
-          experience: formData.experience,
-          contracts_made: formData.contractsMade,
-          farm_address: formData.farmAddress,
-          land_area: formData.landArea,
-          soil_type: formData.soilType,
-          farm_type: formData.farmType,
-          preferred_crops: formData.preferredCrops,
-          achievements: formData.achievements,
-          additional_info: formData.additionalInfo,
-          contracts: formData.contracts,
-        };
+        const formDataToSend = new FormData();
+        formDataToSend.append("name", formData.name);
+        formDataToSend.append("email", formData.email);
+        formDataToSend.append("mobile_number", formData.mobileNumber);
+        formDataToSend.append("address", formData.address);
+        formDataToSend.append("gender", formData.gender);
+        formDataToSend.append("age", formData.age);
+        formDataToSend.append("experience", formData.experience);
+        formDataToSend.append("contracts_made", formData.contractsMade);
+        formDataToSend.append("farm_address", formData.farmAddress);
+        formDataToSend.append("land_area", formData.landArea);
+        formDataToSend.append("soil_type", formData.soilType);
+        formDataToSend.append("custom_soil_type", formData.customSoilType);
+        formDataToSend.append("farm_type", formData.farmType);
+        formDataToSend.append("preferred_crops", JSON.stringify(formData.preferredCrops));
+        formDataToSend.append("achievements", JSON.stringify(formData.achievements));
+        formDataToSend.append("additional_info", JSON.stringify(formData.additionalInfo));
+        formDataToSend.append("contracts", JSON.stringify(formData.contracts));
+        if (formData.profilePic) {
+          formDataToSend.append("image", formData.profilePic);
+        }
 
         const profileResponse = await axios.post(
           "http://127.0.0.1:8000/api/farmer_profiles/",
-          profileData,
+          formDataToSend,
           {
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
             },
           }
         );
 
         console.log("Profile Response:", profileResponse.data);
         alert("Farmer profile submitted successfully!");
-
-        // Now submit the profile picture if it exists
-        if (formData.profilePic) {
-          const profilePicData = new FormData();
-          profilePicData.append("image", formData.profilePic);
-          const profilePicResponse = await axios.post(
-            "http://127.0.0.1:8000/api/upload/",
-            profilePicData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-          console.log("Profile Pic Response:", profilePicResponse.data);
-          alert("Profile picture uploaded successfully!");
-        } else {
-          alert("No profile picture selected.");
-        }
-
-        navigate("/home"); // Redirect to a success page or another route
+        navigate("/home");
       } catch (error) {
         console.error("Error submitting farmer profile:", error);
         alert("Error submitting farmer profile. Please try again.");
@@ -133,6 +115,7 @@ function Farmer_Profile() {
       console.log("Form has errors:", validationErrors);
     }
   };
+
 
   return (
     <div

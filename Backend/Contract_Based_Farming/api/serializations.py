@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Contract, FarmerProfile, CompanyProfile, ProfilePic
+from .models import Contract, FarmerProfile, CompanyProfile
 
 
 # Create Contract
@@ -8,16 +8,6 @@ class ContractSerializer(serializers.ModelSerializer):
         model = Contract
         fields = '__all__'
 
-# Farmer Profile
-
-
-class FarmerProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FarmerProfile
-        fields = '__all__'
-
-
-
 # Company Profile
 class CompanyProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,12 +15,13 @@ class CompanyProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ImageUploadSerializer(serializers.ModelSerializer):
+# farmer profile
+class FarmerProfileSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
 
     class Meta:
-        model = ProfilePic
-        fields = ['image', 'image_url']
+        model = FarmerProfile
+        fields = '__all__'
 
     def get_image_url(self, obj):
         request = self.context.get('request')
