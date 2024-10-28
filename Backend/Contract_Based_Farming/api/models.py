@@ -37,43 +37,6 @@ class Contract(models.Model):
     def __str__(self):
         return self.contract_title
 
-# Farmer Profile
-
-
-class FarmerProfile(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    mobile_number = models.CharField(max_length=15)
-    address = models.TextField()
-    gender = models.CharField(max_length=10)
-    age = models.IntegerField()
-    experience = models.IntegerField()
-    contracts_made = models.IntegerField()
-    farm_address = models.TextField()
-    land_area = models.FloatField()
-    soil_type = models.CharField(max_length=50)
-    custom_soil_type = models.CharField(max_length=50, null=True, blank=True)
-    farm_type = models.CharField(max_length=50)
-    preferred_crops = models.JSONField(default=list)
-    achievements = models.JSONField(default=list)
-    additional_info = models.JSONField(default=list)
-    contracts = models.JSONField(default=list)
-
-    def __str__(self):
-        return self.name
-
-
-# Farmer Profile Pics
-class ProfilePic(models.Model):
-    farmer_profile = models.OneToOneField(
-        FarmerProfile, on_delete=models.CASCADE, related_name='profile_pic' ,null=True)
-    image = models.ImageField(upload_to='images/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.farmer_profile.name}'s Profile Picture"
-
-
 # Company Profile
 
 
@@ -109,3 +72,30 @@ class CompanyProfile(models.Model):
 
     def __str__(self):
         return f"{self.generative_id} - {self.company_type}"
+
+# Farmer Profile
+
+
+class FarmerProfile(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    mobile_number = models.CharField(max_length=15)
+    address = models.TextField()
+    gender = models.CharField(max_length=10)
+    age = models.IntegerField()
+    experience = models.IntegerField()
+    contracts_made = models.IntegerField()
+    farm_address = models.TextField()
+    land_area = models.FloatField()
+    soil_type = models.CharField(max_length=50)
+    custom_soil_type = models.CharField(max_length=50, null=True, blank=True)
+    farm_type = models.CharField(max_length=50)
+    preferred_crops = models.JSONField(default=list)
+    achievements = models.JSONField(default=list)
+    additional_info = models.JSONField(default=list)
+    contracts = models.JSONField(default=list)
+    image = models.ImageField(
+        upload_to='images/', null=True, blank=True)  # Add this line
+
+    def __str__(self):
+        return self.name

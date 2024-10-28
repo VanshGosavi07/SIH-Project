@@ -48,7 +48,7 @@ function Create_Contract() {
     };
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/contracts/",
+        "http://127.0.0.1:8000/api/contracts/",
         formData,
         {
           headers: {
