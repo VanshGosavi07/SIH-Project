@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { validateFarmerProfile } from "./Validation";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Farmer_Profile() {
   const location = useLocation();
@@ -16,7 +17,7 @@ function Farmer_Profile() {
     age: "",
     experience: "",
     contractsMade: "",
-    profilePic: "https://via.placeholder.com/150",
+    profilePic: null, // Change to null to store file object
     farmAddress: "",
     landArea: "",
     soilType: "",
@@ -25,9 +26,9 @@ function Farmer_Profile() {
     landPictures: [],
     well: "",
     preferredCrops: [],
-    achievements: [{ title: "", date: "", certificate: null }],
+    achievements: [{ title: "", date: "" }],
     additionalInfo: [{ title: "", info: "" }],
-    contracts: [{ title: "", date: "", certificate: null }],
+    contracts: [{ title: "", date: "" }],
   });
 
   const [errors, setErrors] = useState({});
@@ -40,16 +41,7 @@ function Farmer_Profile() {
 
   const handleProfilePicChange = (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setFormData({ ...formData, profilePic: reader.result });
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleLandPicturesChange = (event) => {
-    setFormData({ ...formData, landPictures: [...event.target.files] });
-    setErrors({ ...errors, landPictures: "" });
+    setFormData({ ...formData, profilePic: file });
   };
 
   const handleAchievementChange = (index, field, value) => {
@@ -73,15 +65,70 @@ function Farmer_Profile() {
     setErrors({ ...errors, [`contracts[${index}].${field}`]: "" });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const validationErrors = validateFarmerProfile(formData);
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      console.log("Form Data:", formData);
-      alert("Form submitted successfully! Check console for data.");
-      navigate("/home");
+      try {
+        // Submit farmer profile data
+        const profileData = {
+          name: formData.name,
+          email: formData.email,
+          mobile_number: formData.mobileNumber,
+          address: formData.address,
+          gender: formData.gender,
+          age: formData.age,
+          experience: formData.experience,
+          contracts_made: formData.contractsMade,
+          farm_address: formData.farmAddress,
+          land_area: formData.landArea,
+          soil_type: formData.soilType,
+          farm_type: formData.farmType,
+          preferred_crops: formData.preferredCrops,
+          achievements: formData.achievements,
+          additional_info: formData.additionalInfo,
+          contracts: formData.contracts,
+        };
+
+        const profileResponse = await axios.post(
+          "http://127.0.0.1:8000/api/farmer_profiles/",
+          profileData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("Profile Response:", profileResponse.data);
+        alert("Farmer profile submitted successfully!");
+
+        // Now submit the profile picture if it exists
+        if (formData.profilePic) {
+          const profilePicData = new FormData();
+          profilePicData.append("image", formData.profilePic);
+          const profilePicResponse = await axios.post(
+            "http://127.0.0.1:8000/api/upload/",
+            profilePicData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          console.log("Profile Pic Response:", profilePicResponse.data);
+          alert("Profile picture uploaded successfully!");
+        } else {
+          alert("No profile picture selected.");
+        }
+
+        navigate("/home"); // Redirect to a success page or another route
+      } catch (error) {
+        console.error("Error submitting farmer profile:", error);
+        alert("Error submitting farmer profile. Please try again.");
+      }
     } else {
       console.log("Form has errors:", validationErrors);
     }
@@ -324,30 +371,25 @@ function Farmer_Profile() {
 
                 {/* Profile Picture */}
                 <div className="flex flex-col items-center justify-center w-full md:w-1/3">
-                  <div className="relative">
-                    <img
-                      className="rounded-full w-48 h-48 object-cover"
-                      src={formData.profilePic}
-                      alt="Profile Picture"
-                      id="profile-pic"
-                    />
+                  <div className="m-4 text-center">
                     <label
-                      htmlFor="upload-pic"
-                      className="absolute text-left right-0 bottom-0 rounded-full bg-gray-800 p-2 cursor-pointer"
+                      htmlFor="profilePic"
+                      className="block text-gray-700 text-lg font-semibold mb-2"
                     >
-                      <i className="text-white text-xl">📷</i>
-                      <input
-                        type="file"
-                        id="upload-pic"
-                        className="hidden"
-                        onChange={handleProfilePicChange}
-                        accept="image/*"
-                      />
+                      Profile Picture
                     </label>
+                    <input
+                      type="file"
+                      id="profilePic"
+                      name="profilePic"
+                      onChange={handleProfilePicChange}
+                      className="mt-1 block w-full h-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200 ease-in-out hover:border-green-400"
+                      accept="image/*"
+                    />
+                    <p className="mt-2 text-sm text-gray-600">
+                      Upload a clear picture (JPG, PNG, GIF).
+                    </p>
                   </div>
-                  <p className="mt-2 text-sm text-black-600">
-                    Upload Profile Picture
-                  </p>
                 </div>
               </div>
             </div>
@@ -521,31 +563,6 @@ function Farmer_Profile() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="m-2 p-2 bg-white rounded-md shadow-md w-full">
-                  <label
-                    htmlFor="landPictures"
-                    className="block text-black-700 text-left mb-2"
-                  >
-                    Land Pictures*
-                  </label>
-                  <input
-                    type="file"
-                    id="landPictures"
-                    name="landPictures"
-                    multiple
-                    accept="image/*"
-                    onChange={handleLandPicturesChange}
-                    className={`mt-1 pl-3 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 ${
-                      errors.landPictures ? "border-red-500" : ""
-                    }`}
-                  />
-                  {errors.landPictures && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.landPictures}
-                    </p>
-                  )}
-                </div>
-
-                <div className="m-2 p-2 bg-white rounded-md shadow-md w-full">
                   <label className="block text-black-700 text-left mb-2">
                     Well*
                   </label>
@@ -658,7 +675,7 @@ function Farmer_Profile() {
                     ...formData,
                     achievements: [
                       ...formData.achievements,
-                      { title: "", date: "", certificate: null },
+                      { title: "", date: "" },
                     ],
                   });
                 }}
@@ -711,26 +728,6 @@ function Farmer_Profile() {
                         value={achievement.date}
                         onChange={(e) =>
                           handleAchievementChange(index, "date", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="m-2">
-                      <label
-                        htmlFor={`achievement-certificate-${index}`}
-                        className="block text-black-700 text-left"
-                      >
-                        Certificate
-                      </label>
-                      <input
-                        type="file"
-                        id={`achievement-certificate-${index}`}
-                        className="mt-1 pl-3 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
-                        onChange={(e) =>
-                          handleAchievementChange(
-                            index,
-                            "certificate",
-                            e.target.files[0]
-                          )
                         }
                       />
                     </div>
@@ -915,26 +912,6 @@ function Farmer_Profile() {
                         value={contract.date}
                         onChange={(e) =>
                           handleContractChange(index, "date", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="m-2">
-                      <label
-                        htmlFor={`contract-certificate-${index}`}
-                        className="block text-black-700 text-left"
-                      >
-                        Certificate
-                      </label>
-                      <input
-                        type="file"
-                        id={`contract-certificate-${index}`}
-                        className="mt-1 pl-3 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
-                        onChange={(e) =>
-                          handleContractChange(
-                            index,
-                            "certificate",
-                            e.target.files[0]
-                          )
                         }
                       />
                     </div>
