@@ -34,8 +34,13 @@ class Contract(models.Model):
     # Stores list of legal clauses with title and description
     legal_clauses = models.JSONField(default=list)
 
-    def __str__(self):
-        return self.contract_title
+    # Add this field for the crop image
+    crop_image = models.ImageField(
+        upload_to='contracts/', null=True, blank=True)
+
+
+def __str__(self):
+    return self.contract_title
 
 # Company Profile
 
