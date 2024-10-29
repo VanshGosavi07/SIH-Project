@@ -22,8 +22,15 @@ function Default() {
           { href: "/create_contract", label: "Create Contract" },
           { href: "/Farmer_profile", label: "Farmer Profile Page" },
           { href: "/Company_profile", label: "Company Profile Page" },
-          { href: "/farmer_profile_form", label: "Complete Farmer Profile Form" },
-          { href: "/company_profile_form", label: "Complete Company Profile Form" },
+          {
+            href: "/farmer_profile_form",
+            label: "Complete Farmer Profile Form",
+          },
+          {
+            href: "/company_profile_form",
+            label: "Complete Company Profile Form",
+          },
+          { href: "/contract_page/2", label: "Contract Page with id" },
         ].map((link) => (
           <a
             key={link.href}
@@ -34,11 +41,6 @@ function Default() {
           </a>
         ))}
       </div>
-
-      {/* Footer */}
-      <footer className="absolute bottom-5 text-sm text-white">
-        &copy; 2024 AgriConnect. All rights reserved.
-      </footer>
     </div>
   );
 }

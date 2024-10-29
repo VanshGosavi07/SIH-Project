@@ -1,9 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Contract_Cards({ card }) {
+  const navigate = useNavigate();
+
   // Function to handle "More Info" button click
   const handleMoreInfo = () => {
-    console.log(`Card ID: ${card.id}, Company Name: ${card.company_name}`);
+    navigate(`/contract_page/${card.id}`);
   };
 
   return (

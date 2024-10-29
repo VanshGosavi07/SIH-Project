@@ -11,7 +11,7 @@ import Company_Profile_Page from "./components/profiles pages/Company_Profile_pa
 import Farmer_Profile_Page from "./components/profiles pages/Farmer_Profile_Page";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import Contract_Page from "./components/Contracts/Contract_Page";
 
 function App() {
   return (
@@ -23,10 +23,11 @@ function App() {
           <Route path="/farmer_profile_form" element={<Farmer_Profile />} />
           <Route path="/register" element={<Registeration />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/create_contract" element={<CreateContract/>} />
-          <Route path="/home" element={<Home/>}/>
+          <Route path="/create_contract" element={<CreateContract />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/company_profile" element={<Company_Profile_Page />} />
           <Route path="/farmer_profile" element={<Farmer_Profile_Page />} />
+          <Route path="/contract_page/:id" element={<Contract_Page />} />
         </Routes>
       </div>
     </Router>
