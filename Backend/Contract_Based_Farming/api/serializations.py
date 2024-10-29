@@ -15,6 +15,7 @@ class CompanyProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 # farmer profile
 class FarmerProfileSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()

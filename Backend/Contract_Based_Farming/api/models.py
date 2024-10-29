@@ -1,8 +1,6 @@
 from django.db import models
 
 # Create Contract
-
-
 class Contract(models.Model):
     # Company Information
     company_name = models.CharField(max_length=255)
@@ -34,14 +32,15 @@ class Contract(models.Model):
     # Stores list of legal clauses with title and description
     legal_clauses = models.JSONField(default=list)
 
+    # Add this field for the crop image
+    crop_image = models.ImageField(
+        upload_to='contracts/', null=True, blank=True)
+
     def __str__(self):
         return self.contract_title
 
 # Company Profile
-
-
 class CompanyProfile(models.Model):
-    # Company Information
     generative_id = models.CharField(max_length=100)
     website = models.URLField(blank=True, null=True)
     tax_identification_number = models.CharField(max_length=50)
@@ -50,21 +49,13 @@ class CompanyProfile(models.Model):
     company_type = models.CharField(max_length=100)
     company_product = models.CharField(max_length=100, blank=True, null=True)
     establish_date = models.DateField()
-    profile_pic = models.ImageField(null=True)
+    profile_pic = models.ImageField(
+        upload_to='company_profile_pics/', null=True, blank=True)  # Ensure this line is present
 
-    # Achievements
-    # Store as a list of dictionaries with title, date, and certificate URL
     achievements = models.JSONField()
-
-    # Additional Information
-    # Store as a list of dictionaries with title and info
     additional_info = models.JSONField()
-
-    # Previous Contracts
-    # Store as a list of dictionaries with title, date, and certificate URL
     previous_contracts = models.JSONField()
 
-    # Primary Contact Person
     contact_name = models.CharField(max_length=100)
     contact_designation = models.CharField(max_length=100)
     contact_email = models.EmailField()
@@ -73,9 +64,8 @@ class CompanyProfile(models.Model):
     def __str__(self):
         return f"{self.generative_id} - {self.company_type}"
 
+
 # Farmer Profile
-
-
 class FarmerProfile(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
@@ -95,7 +85,7 @@ class FarmerProfile(models.Model):
     additional_info = models.JSONField(default=list)
     contracts = models.JSONField(default=list)
     image = models.ImageField(
-        upload_to='images/', null=True, blank=True)  # Add this line
+        upload_to='farmer_profile_pics/', null=True, blank=True)  # Add this line
 
     def __str__(self):
         return self.name
