@@ -5,21 +5,15 @@ function company_profile_form() {
   const location = useLocation();
   const { name, emailId, userId, userType } = location.state || {};
 
-  const [profilePic, setProfilePic] = useState(
-    "https://via.placeholder.com/150"
-  );
-  const [achievements, setAchievements] = useState([
-    { title: "", date: "", certificate: null },
-  ]);
+  const [achievements, setAchievements] = useState([{ title: "", date: "" }]);
   const [additionalInfo, setAdditionalInfo] = useState([
     { title: "", info: "" },
   ]);
-  const [contracts, setContracts] = useState([
-    { title: "", date: "", certificate: null },
-  ]);
+  const [contracts, setContracts] = useState([{ title: "", date: "" }]);
   const [companyType, setCompanyType] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companyEmail, setCompanyEmail] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,53 +21,58 @@ function company_profile_form() {
     setCompanyEmail(emailId || "");
   }, [name, emailId]);
 
-  const handleProfilePicChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setProfilePic(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const formData = {
-      companyInfo: {
-        name: companyName,
-        email: companyEmail,
-        generativeId: event.target.generative_id.value,
-        website: event.target.website.value,
-        taxIdentificationNumber: event.target.tax_no.value,
-        licenseNumber: event.target.license_no.value,
-        numberOfContracts: event.target.contracts.value,
-        companyType: event.target.company_type.value,
-        companyProduct: event.target.product.value,
-        establishDate: event.target.establish_date.value,
-        profilePic: profilePic,
-      },
-      achievements: achievements,
-      additionalInfo: additionalInfo,
-      Previouscontracts: contracts,
-      primaryContact: {
-        name: event.target.contact_name.value,
-        designation: event.target.contact_designation.value,
-        email: event.target.contact_email.value,
-        phone: event.target.contact_phone.value,
-      },
-    };
+    const formData = new FormData();
+    formData.append("generative_id", event.target.generative_id.value);
+    formData.append("website", event.target.website.value);
+    formData.append("tax_identification_number", event.target.tax_no.value);
+    formData.append("license_number", event.target.license_no.value);
+    formData.append("number_of_contracts", event.target.contracts.value);
+    formData.append("company_type", event.target.company_type.value);
+    formData.append("company_product", event.target.product.value);
+    formData.append("establish_date", event.target.establish_date.value);
+    formData.append("profile_pic", profilePic);
+    formData.append("achievements", JSON.stringify(achievements));
+    formData.append("additional_info", JSON.stringify(additionalInfo));
+    formData.append("previous_contracts", JSON.stringify(contracts));
+    formData.append("contact_name", event.target.contact_name.value);
+    formData.append(
+      "contact_designation",
+      event.target.contact_designation.value
+    );
+    formData.append("contact_email", event.target.contact_email.value);
+    formData.append("contact_phone", event.target.contact_phone.value);
 
-    console.log("Form Data:", formData);
-    alert("Form Submitted. Check console for data.");
-    navigate("/home");
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/company-profiles/",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        console.log("Form Data:", await response.json());
+        alert("Form Submitted. Check console for data.");
+        navigate("/home");
+      } else {
+        console.error("Error submitting form:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   const handleAddAchievement = () => {
-    setAchievements([
-      ...achievements,
-      { title: "", date: "", certificate: null },
-    ]);
+    setAchievements([...achievements, { title: "", date: "" }]);
+  };
+
+  const handleProfilePicChange = (event) => {
+    const file = event.target.files[0];
+    setProfilePic(file); // Update profile picture state
   };
 
   const handleRemoveAchievement = (index) => {
@@ -105,7 +104,7 @@ function company_profile_form() {
   };
 
   const handleAddContract = () => {
-    setContracts([...contracts, { title: "", date: "", certificate: null }]);
+    setContracts([...contracts, { title: "", date: "" }]);
   };
 
   const handleRemoveContract = (index) => {
@@ -344,25 +343,24 @@ function company_profile_form() {
 
                 {/* Profile Picture */}
                 <div className="flex flex-col items-center justify-center w-full md:w-1/3">
-                  <div className="relative">
-                    <img
-                      className="rounded-full w-48 h-48 object-cover"
-                      src={profilePic}
-                      alt="Profile Picture"
-                      id="profile-pic"
-                    />
+                  <div className="m-4 text-center">
                     <label
-                      htmlFor="upload-pic"
-                      className="absolute text-left right-0 bottom-0 rounded-full bg-gray-800 p-2 cursor-pointer"
+                      htmlFor="profilePic"
+                      className="block text-gray-700 text-lg font-semibold mb-2"
                     >
-                      <i className="text-white text-xl">📷</i>
-                      <input
-                        type="file"
-                        id="upload-pic"
-                        className="hidden"
-                        onChange={handleProfilePicChange}
-                      />
+                      Profile Picture
                     </label>
+                    <input
+                      type="file"
+                      id="profilePic"
+                      name="profilePic"
+                      onChange={handleProfilePicChange}
+                      className="mt-1 block w-full h-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200 ease-in-out hover:border-green-400"
+                      accept="image/*"
+                    />
+                    <p className="mt-2 text-sm text-gray-600">
+                      Upload a clear picture (JPG, PNG, GIF).
+                    </p>
                   </div>
                   <p className="mt-2 text-sm text-black-600">
                     Upload Profile Picture
@@ -432,26 +430,6 @@ function company_profile_form() {
                               index,
                               "date",
                               e.target.value
-                            )
-                          }
-                        />
-                      </div>
-                      <div className="m-2">
-                        <label
-                          htmlFor={`achievement-certificate-${index}`}
-                          className="block text-black-700 text-left"
-                        >
-                          Certificate
-                        </label>
-                        <input
-                          type="file"
-                          id={`achievement-certificate-${index}`}
-                          className="mt-1 pl-3 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
-                          onChange={(e) =>
-                            handleAchievementChange(
-                              index,
-                              "certificate",
-                              e.target.files[0]
                             )
                           }
                         />
@@ -610,26 +588,6 @@ function company_profile_form() {
                         value={contract.date}
                         onChange={(e) =>
                           handleContractChange(index, "date", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="m-2">
-                      <label
-                        htmlFor={`contract-certificate-${index}`}
-                        className="block text-black-700 text-left"
-                      >
-                        Certificate
-                      </label>
-                      <input
-                        type="file"
-                        id={`contract-certificate-${index}`}
-                        className="mt-1 pl-3 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
-                        onChange={(e) =>
-                          handleContractChange(
-                            index,
-                            "certificate",
-                            e.target.files[0]
-                          )
                         }
                       />
                     </div>

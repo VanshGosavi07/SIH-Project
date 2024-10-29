@@ -23,9 +23,11 @@ class ContractViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
+
 class CompanyProfileViewSet(viewsets.ModelViewSet):
     queryset = CompanyProfile.objects.all()
     serializer_class = CompanyProfileSerializer
+
 
 
 class FarmerProfileListCreateView(generics.ListCreateAPIView):
