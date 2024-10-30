@@ -5,12 +5,15 @@ import axios from "axios";
 
 function Farmer_Profile() {
   const location = useLocation();
-  const { name, emailId, userId, userType } = location.state || {};
+  const { name, emailId, userId, userType, password } = location.state || {};
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: name,
     email: emailId,
+    userId: userId,
+    userType: userType,
+    password: password,
     mobileNumber: "",
     address: "",
     gender: "",
@@ -75,6 +78,9 @@ function Farmer_Profile() {
         const formDataToSend = new FormData();
         formDataToSend.append("name", formData.name);
         formDataToSend.append("email", formData.email);
+        formDataToSend.append("user_id", formData.userId);
+        formDataToSend.append("user_type", formData.userType);
+        formDataToSend.append("password", formData.password);
         formDataToSend.append("mobile_number", formData.mobileNumber);
         formDataToSend.append("address", formData.address);
         formDataToSend.append("gender", formData.gender);
@@ -86,9 +92,18 @@ function Farmer_Profile() {
         formDataToSend.append("soil_type", formData.soilType);
         formDataToSend.append("custom_soil_type", formData.customSoilType);
         formDataToSend.append("farm_type", formData.farmType);
-        formDataToSend.append("preferred_crops", JSON.stringify(formData.preferredCrops));
-        formDataToSend.append("achievements", JSON.stringify(formData.achievements));
-        formDataToSend.append("additional_info", JSON.stringify(formData.additionalInfo));
+        formDataToSend.append(
+          "preferred_crops",
+          JSON.stringify(formData.preferredCrops)
+        );
+        formDataToSend.append(
+          "achievements",
+          JSON.stringify(formData.achievements)
+        );
+        formDataToSend.append(
+          "additional_info",
+          JSON.stringify(formData.additionalInfo)
+        );
         formDataToSend.append("contracts", JSON.stringify(formData.contracts));
         if (formData.profilePic) {
           formDataToSend.append("image", formData.profilePic);
@@ -106,7 +121,7 @@ function Farmer_Profile() {
 
         console.log("Profile Response:", profileResponse.data);
         alert("Farmer profile submitted successfully!");
-        navigate("/home");
+        navigate("/login");
       } catch (error) {
         console.error("Error submitting farmer profile:", error);
         alert("Error submitting farmer profile. Please try again.");
@@ -115,7 +130,6 @@ function Farmer_Profile() {
       console.log("Form has errors:", validationErrors);
     }
   };
-
 
   return (
     <div

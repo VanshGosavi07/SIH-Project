@@ -9,14 +9,14 @@ class ContractSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 # Company Profile
+
+
 class CompanyProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompanyProfile
         fields = '__all__'
 
 
-
-# farmer profile
 class FarmerProfileSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
 

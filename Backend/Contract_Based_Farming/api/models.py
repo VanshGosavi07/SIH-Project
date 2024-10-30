@@ -1,6 +1,9 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password
 
 # Create Contract
+
+
 class Contract(models.Model):
     # Company Information
     company_name = models.CharField(max_length=255)
@@ -40,7 +43,14 @@ class Contract(models.Model):
         return self.contract_title
 
 # Company Profile
+
+
 class CompanyProfile(models.Model):
+    name = models.CharField(max_length=100, null=True)
+    email = models.EmailField(null=True, unique=True)
+    user_id = models.CharField(max_length=100, null=True)
+    user_type = models.CharField(max_length=50, null=True)
+    password = models.CharField(max_length=100, null=True)
     generative_id = models.CharField(max_length=100)
     website = models.URLField(blank=True, null=True)
     tax_identification_number = models.CharField(max_length=50)
@@ -50,7 +60,8 @@ class CompanyProfile(models.Model):
     company_product = models.CharField(max_length=100, blank=True, null=True)
     establish_date = models.DateField()
     profile_pic = models.ImageField(
-        upload_to='company_profile_pics/', null=True, blank=True)  # Ensure this line is present
+        # Ensure this line is present
+        upload_to='company_profile_pics/', null=True, blank=True)
 
     achievements = models.JSONField()
     additional_info = models.JSONField()
@@ -61,31 +72,47 @@ class CompanyProfile(models.Model):
     contact_email = models.EmailField()
     contact_phone = models.CharField(max_length=15)
 
+    def save(self, *args, **kwargs):
+        if not self.pk:  # Only hash the password if it's a new object
+            self.password = make_password(self.password)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.generative_id} - {self.company_type}"
 
 
 # Farmer Profile
 class FarmerProfile(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
+    name = models.CharField(max_length=100, null=True)
+    email = models.EmailField(null=True, unique=True)
+    user_id = models.CharField(max_length=100, null=True)
+    user_type = models.CharField(max_length=50, null=True)
+    password = models.CharField(max_length=100, null=True)
+
     mobile_number = models.CharField(max_length=15)
     address = models.TextField()
     gender = models.CharField(max_length=10)
     age = models.IntegerField()
     experience = models.IntegerField()
     contracts_made = models.IntegerField()
+    image = models.ImageField(
+        upload_to='farmer_profile_pics/', null=True, blank=True)  # Add this line
+
     farm_address = models.TextField()
     land_area = models.FloatField()
     soil_type = models.CharField(max_length=50)
     custom_soil_type = models.CharField(max_length=50, null=True, blank=True)
     farm_type = models.CharField(max_length=50)
+    well = models.BooleanField(null=True)
     preferred_crops = models.JSONField(default=list)
     achievements = models.JSONField(default=list)
     additional_info = models.JSONField(default=list)
     contracts = models.JSONField(default=list)
-    image = models.ImageField(
-        upload_to='farmer_profile_pics/', null=True, blank=True)  # Add this line
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  # Only hash the password if it's a new object
+            self.password = make_password(self.password)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

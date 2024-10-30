@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function company_profile_form() {
   const location = useLocation();
-  const { name, emailId, userId, userType } = location.state || {};
+  const { name, emailId, userId, userType, password } = location.state || {};
 
   const [achievements, setAchievements] = useState([{ title: "", date: "" }]);
   const [additionalInfo, setAdditionalInfo] = useState([
@@ -25,12 +25,17 @@ function company_profile_form() {
     event.preventDefault();
 
     const formData = new FormData();
+    formData.append("name", companyName);
+    formData.append("email", companyEmail);
+    formData.append("user_id", userId);
+    formData.append("user_type", userType);
+    formData.append("password", password);
     formData.append("generative_id", event.target.generative_id.value);
     formData.append("website", event.target.website.value);
     formData.append("tax_identification_number", event.target.tax_no.value);
     formData.append("license_number", event.target.license_no.value);
     formData.append("number_of_contracts", event.target.contracts.value);
-    formData.append("company_type", event.target.company_type.value);
+    formData.append("company_type", companyType);
     formData.append("company_product", event.target.product.value);
     formData.append("establish_date", event.target.establish_date.value);
     formData.append("profile_pic", profilePic);
@@ -60,9 +65,11 @@ function company_profile_form() {
         navigate("/home");
       } else {
         console.error("Error submitting form:", response.statusText);
+        alert("Error submitting form: " + response.statusText);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      alert("Error submitting form: " + error.message);
     }
   };
 
