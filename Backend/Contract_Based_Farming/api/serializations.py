@@ -2,13 +2,10 @@ from rest_framework import serializers
 from .models import Contract, FarmerProfile, CompanyProfile
 
 
-# Create Contract
 class ContractSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contract
         fields = '__all__'
-
-# Company Profile
 
 
 class CompanyProfileSerializer(serializers.ModelSerializer):
@@ -29,3 +26,10 @@ class FarmerProfileSerializer(serializers.ModelSerializer):
         if request is not None and obj.image:
             return request.build_absolute_uri(obj.image.url)
         return None
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+    user_type = serializers.ChoiceField(
+        choices=[('farmer', 'Farmer'), ('company', 'Company')])

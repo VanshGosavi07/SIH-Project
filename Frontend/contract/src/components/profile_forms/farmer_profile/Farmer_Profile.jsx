@@ -85,6 +85,7 @@ function Farmer_Profile() {
         formDataToSend.append("address", formData.address);
         formDataToSend.append("gender", formData.gender);
         formDataToSend.append("age", formData.age);
+        formDataToSend.append("well", formData.well);
         formDataToSend.append("experience", formData.experience);
         formDataToSend.append("contracts_made", formData.contractsMade);
         formDataToSend.append("farm_address", formData.farmAddress);
