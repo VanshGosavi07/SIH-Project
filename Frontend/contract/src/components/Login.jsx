@@ -31,10 +31,20 @@ function Login() {
           "http://127.0.0.1:8000/api/login/",
           formData
         );
+
+        const token = response.data.access; // Change to access token if needed
+        console.log("Token from response:", token); // Print the token in the console
+
+        // Save the token to local storage
+        localStorage.setItem("authToken", token);
+
+        // Retrieve the token from local storage to confirm it was set
+        const tokennew = localStorage.getItem("authToken");
+        console.log("Token from local storage:", tokennew); // Print the token from local storage
+
         setLoginStatus(response.data.message);
         alert("Login Successfully");
         navigate("/home");
-        navi;
       } catch (error) {
         if (error.response) {
           setLoginStatus(error.response.data.error);

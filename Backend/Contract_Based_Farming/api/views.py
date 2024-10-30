@@ -1,3 +1,5 @@
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework import status, generics
 from .models import Contract, FarmerProfile, CompanyProfile
@@ -5,7 +7,7 @@ from .serializations import ContractSerializer, FarmerProfileSerializer, Company
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
-
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class ContractViewSet(viewsets.ModelViewSet):
     queryset = Contract.objects.all()
@@ -51,7 +53,22 @@ class LoginView(APIView):
                 user = CompanyProfile.objects.filter(email=email).first()
 
             if user and check_password(password, user.password):
-                return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                    "message": "Login successful",
+                    "refresh": str(refresh),
+                    "access": str(refresh.access_token)
+                }, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "Invalid email or password"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        token = Token.objects.filter(user=request.user)
+        if token.exists():
+            token.delete()
+        return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
