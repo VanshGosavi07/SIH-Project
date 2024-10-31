@@ -1,94 +1,52 @@
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-from django.contrib.auth.hashers import make_password
-
-# Create Contract
+from django.contrib.auth import get_user_model
 
 
-class Contract(models.Model):
-    # Company Information
-    company_name = models.CharField(max_length=255)
-    contact_email = models.EmailField()
-    user_id = models.CharField(max_length=255)
-    website_link = models.URLField()
-    address = models.TextField()
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
-    # Contract Information
-    contract_title = models.CharField(max_length=255)
-    contract_description = models.TextField(blank=True, null=True)
-    contract_type = models.CharField(max_length=255)
-    custom_contract_type = models.CharField(
-        max_length=255, blank=True, null=True)
-    duration_months = models.PositiveIntegerField()
-    conditions = models.TextField(blank=True, null=True)
-    start_date = models.DateField(blank=True, null=True)
-    land_required = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_type = models.CharField(max_length=255)
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
 
-    # Crop Information
-    crops = models.JSONField(default=list)
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
 
-    # Additional Rules and Regulations
-    # Stores list of rules with title and description
-    rules = models.JSONField(default=list)
+        return self.create_user(email, password, **extra_fields)
 
-    # Legal Clauses
-    # Stores list of legal clauses with title and description
-    legal_clauses = models.JSONField(default=list)
 
-    # Add this field for the crop image
-    crop_image = models.ImageField(
-        upload_to='contracts/', null=True, blank=True)
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(max_length=255, unique=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.contract_title
-
-# Company Profile
+        return self.email
 
 
-class CompanyProfile(models.Model):
+class Farmer_User(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, null=True)
     email = models.EmailField(null=True, unique=True)
-    user_id = models.CharField(max_length=100, null=True)
+    farmer_user_id = models.CharField(
+        max_length=100, null=True)  # Renamed field
     user_type = models.CharField(max_length=50, null=True)
     password = models.CharField(max_length=100, null=True)
-    generative_id = models.CharField(max_length=100)
-    website = models.URLField(blank=True, null=True)
-    tax_identification_number = models.CharField(max_length=50)
-    license_number = models.CharField(max_length=50)
-    number_of_contracts = models.PositiveIntegerField(blank=True, null=True)
-    company_type = models.CharField(max_length=100)
-    company_product = models.CharField(max_length=100, blank=True, null=True)
-    establish_date = models.DateField()
-    profile_pic = models.ImageField(
-        # Ensure this line is present
-        upload_to='company_profile_pics/', null=True, blank=True)
-
-    achievements = models.JSONField()
-    additional_info = models.JSONField()
-    previous_contracts = models.JSONField()
-
-    contact_name = models.CharField(max_length=100)
-    contact_designation = models.CharField(max_length=100)
-    contact_email = models.EmailField()
-    contact_phone = models.CharField(max_length=15)
-
-    def save(self, *args, **kwargs):
-        if not self.pk:  # Only hash the password if it's a new object
-            self.password = make_password(self.password)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.generative_id} - {self.company_type}"
-
-
-# Farmer Profile
-class FarmerProfile(models.Model):
-    name = models.CharField(max_length=100, null=True)
-    email = models.EmailField(null=True, unique=True)
-    user_id = models.CharField(max_length=100, null=True)
-    user_type = models.CharField(max_length=50, null=True)
-    password = models.CharField(max_length=100, null=True)
-
     mobile_number = models.CharField(max_length=15)
     address = models.TextField()
     gender = models.CharField(max_length=10)
@@ -96,8 +54,7 @@ class FarmerProfile(models.Model):
     experience = models.IntegerField()
     contracts_made = models.IntegerField()
     image = models.ImageField(
-        upload_to='farmer_profile_pics/', null=True, blank=True)  # Add this line
-
+        upload_to='farmer_profile_pics/', null=True, blank=True)
     farm_address = models.TextField()
     land_area = models.FloatField()
     soil_type = models.CharField(max_length=50)
@@ -109,10 +66,35 @@ class FarmerProfile(models.Model):
     additional_info = models.JSONField(default=list)
     contracts = models.JSONField(default=list)
 
-    def save(self, *args, **kwargs):
-        if not self.pk:  # Only hash the password if it's a new object
-            self.password = make_password(self.password)
-        super().save(*args, **kwargs)
+    def __str__(self):
+        return self.name
+
+
+class Company_User(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, null=True)
+    email = models.EmailField(null=True, unique=True)
+    company_user_id = models.CharField(
+        max_length=100, null=True)  # Renamed field
+    user_type = models.CharField(max_length=50, null=True)
+    password = models.CharField(max_length=100, null=True)
+    generative_id = models.CharField(max_length=100)
+    website = models.URLField(blank=True, null=True)
+    tax_identification_number = models.CharField(max_length=50)
+    license_number = models.CharField(max_length=50)
+    number_of_contracts = models.PositiveIntegerField(blank=True, null=True)
+    company_type = models.CharField(max_length=100)
+    company_product = models.CharField(max_length=100, blank=True, null=True)
+    establish_date = models.DateField()
+    profile_pic = models.ImageField(
+        upload_to='company_profile_pics/', null=True, blank=True)
+    achievements = models.JSONField()
+    additional_info = models.JSONField()
+    previous_contracts = models.JSONField()
+    contact_name = models.CharField(max_length=100)
+    contact_designation = models.CharField(max_length=100)
+    contact_email = models.EmailField()
+    contact_phone = models.CharField(max_length=15)
 
     def __str__(self):
         return self.name
