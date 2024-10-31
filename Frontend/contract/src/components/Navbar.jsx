@@ -1,4 +1,6 @@
 import AgriConnectLogo from "../../../../Media/Logo.jpg";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   Disclosure,
   DisclosureButton,
@@ -31,6 +33,39 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    const accessToken = localStorage.getItem("authToken");
+
+    if (!refreshToken || !accessToken) {
+      alert("No tokens found");
+      return;
+    }
+
+    try {
+      await axios.post(
+        "http://127.0.0.1:8000/api/logout/",
+        { refresh: refreshToken },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      // Clear tokens from local storage
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("refreshToken");
+
+      alert("Logged out successfully");
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      alert("Failed to log out");
+    }
+  };
+  
   return (
     <Disclosure as="nav" className="bg-green-600 w-full">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -150,9 +185,12 @@ export default function Navbar() {
                   </a>
                 </MenuItem>
                 <MenuItem>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700">
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700"
+                  >
                     Sign out
-                  </a>
+                  </button>
                 </MenuItem>
               </MenuItems>
             </Menu>

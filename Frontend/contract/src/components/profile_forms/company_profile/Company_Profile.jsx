@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function company_profile_form() {
   const location = useLocation();
@@ -27,7 +28,6 @@ function company_profile_form() {
     const formData = new FormData();
     formData.append("name", companyName);
     formData.append("email", companyEmail);
-    formData.append("user_id", userId);
     formData.append("user_type", userType);
     formData.append("password", password);
     formData.append("generative_id", event.target.generative_id.value);
@@ -38,7 +38,10 @@ function company_profile_form() {
     formData.append("company_type", companyType);
     formData.append("company_product", event.target.product.value);
     formData.append("establish_date", event.target.establish_date.value);
-    formData.append("profile_pic", profilePic);
+
+    if (profilePic) {
+      formData.append("profile_pic", event.target.profilePic.files[0]);
+    }
     formData.append("achievements", JSON.stringify(achievements));
     formData.append("additional_info", JSON.stringify(additionalInfo));
     formData.append("previous_contracts", JSON.stringify(contracts));
@@ -51,25 +54,16 @@ function company_profile_form() {
     formData.append("contact_phone", event.target.contact_phone.value);
 
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/company-profiles/",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (response.ok) {
-        console.log("Form Data:", await response.json());
-        alert("Form Submitted. Check console for data.");
-        navigate("/home");
-      } else {
-        console.error("Error submitting form:", response.statusText);
-        alert("Error submitting form: " + response.statusText);
-      }
+      const response = await axios.post("http://127.0.0.1:8000/api/register/company/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response.data);
+      alert("Profile updated successfully!");
+      navigate("/login");
     } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("Error submitting form: " + error.message);
+      console.error(error);
     }
   };
 

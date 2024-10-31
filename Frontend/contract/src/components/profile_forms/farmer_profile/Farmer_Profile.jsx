@@ -70,65 +70,58 @@ function Farmer_Profile() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const validationErrors = validateFarmerProfile(formData);
-    setErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
-      try {
-        const formDataToSend = new FormData();
-        formDataToSend.append("name", formData.name);
-        formDataToSend.append("email", formData.email);
-        formDataToSend.append("user_id", formData.userId);
-        formDataToSend.append("user_type", formData.userType);
-        formDataToSend.append("password", formData.password);
-        formDataToSend.append("mobile_number", formData.mobileNumber);
-        formDataToSend.append("address", formData.address);
-        formDataToSend.append("gender", formData.gender);
-        formDataToSend.append("age", formData.age);
-        formDataToSend.append("well", formData.well);
-        formDataToSend.append("experience", formData.experience);
-        formDataToSend.append("contracts_made", formData.contractsMade);
-        formDataToSend.append("farm_address", formData.farmAddress);
-        formDataToSend.append("land_area", formData.landArea);
-        formDataToSend.append("soil_type", formData.soilType);
-        formDataToSend.append("custom_soil_type", formData.customSoilType);
-        formDataToSend.append("farm_type", formData.farmType);
-        formDataToSend.append(
-          "preferred_crops",
-          JSON.stringify(formData.preferredCrops)
-        );
-        formDataToSend.append(
-          "achievements",
-          JSON.stringify(formData.achievements)
-        );
-        formDataToSend.append(
-          "additional_info",
-          JSON.stringify(formData.additionalInfo)
-        );
-        formDataToSend.append("contracts", JSON.stringify(formData.contracts));
-        if (formData.profilePic) {
-          formDataToSend.append("image", formData.profilePic);
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("user_id", formData.userId);
+    formDataToSend.append("user_type", formData.userType);
+    formDataToSend.append("password", formData.password);
+    formDataToSend.append("mobile_number", formData.mobileNumber);
+    formDataToSend.append("address", formData.address);
+    formDataToSend.append("gender", formData.gender);
+    formDataToSend.append("age", formData.age);
+    formDataToSend.append("experience", formData.experience);
+    formDataToSend.append("contracts_made", formData.contractsMade);
+    formDataToSend.append("farm_address", formData.farmAddress);
+    formDataToSend.append("land_area", formData.landArea);
+    formDataToSend.append("soil_type", formData.soilType);
+    formDataToSend.append("custom_soil_type", formData.customSoilType);
+    formDataToSend.append("farm_type", formData.farmType);
+    formDataToSend.append("well", formData.well ? "True" : "False");
+    formDataToSend.append(
+      "preferred_crops",
+      JSON.stringify(formData.preferredCrops)
+    );
+    formDataToSend.append(
+      "achievements",
+      JSON.stringify(formData.achievements)
+    );
+    formDataToSend.append(
+      "additional_info",
+      JSON.stringify(formData.additionalInfo)
+    );
+    formDataToSend.append("contracts", JSON.stringify(formData.contracts));
+    if (formData.profilePic) {
+      formDataToSend.append("profile_pic", formData.profilePic);
+    }
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/register/farmer/",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-
-        const profileResponse = await axios.post(
-          "http://127.0.0.1:8000/api/farmer_profiles/",
-          formDataToSend,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-
-        console.log("Profile Response:", profileResponse.data);
-        alert("Farmer profile submitted successfully!");
-        navigate("/login");
-      } catch (error) {
-        console.error("Error submitting farmer profile:", error);
-        alert("Error submitting farmer profile. Please try again.");
-      }
-    } else {
-      console.log("Form has errors:", validationErrors);
+      );
+      console.log(response.data);
+      alert("Profile updated successfully!");
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      setErrors(error.response.data);
     }
   };
 

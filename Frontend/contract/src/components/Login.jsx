@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AgriConnectLogo from "../../../../Media/Logo.jpg";
 import { validateLoginForm } from "./validation/V_Login";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -13,6 +13,7 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [loginStatus, setLoginStatus] = useState("");
   const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -28,20 +29,23 @@ function Login() {
     if (Object.keys(validationErrors).length === 0) {
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/login/",
+          `http://127.0.0.1:8000/api/login/${formData.user_type}/`,
           formData
         );
 
-        const token = response.data.access; // Change to access token if needed
-        console.log("Token from response:", token); // Print the token in the console
+        const { access, refresh } = response.data; // Destructure access and refresh tokens
+        console.log("Access Token from response:", access); // Print the access token in the console
+        console.log("Refresh Token from response:", refresh); // Print the refresh token in the console
 
-        // Save the token to local storage
-        localStorage.setItem("authToken", token);
+        // Save the tokens to local storage
+        localStorage.setItem("authToken", access);
+        localStorage.setItem("refreshToken", refresh);
 
-        // Retrieve the token from local storage to confirm it was set
-        const tokennew = localStorage.getItem("authToken");
-        console.log("Token from local storage:", tokennew); // Print the token from local storage
-
+        // Retrieve the tokens from local storage to confirm they were set
+        const storedAccessToken = localStorage.getItem("authToken");
+        const storedRefreshToken = localStorage.getItem("refreshToken");
+        console.log("Access Token from local storage:", storedAccessToken); // Print the access token from local storage
+        console.log("Refresh Token from local storage:", storedRefreshToken); // Print the refresh token from local storage
         setLoginStatus(response.data.message);
         alert("Login Successfully");
         navigate("/home");
