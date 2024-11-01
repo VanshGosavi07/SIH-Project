@@ -98,3 +98,39 @@ class Company_User(models.Model):
 
     def __str__(self):
         return self.name
+
+
+User = get_user_model()
+
+
+class Contract(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='contracts')
+
+    # Contract Information
+    contract_title = models.CharField(max_length=255)
+    contract_description = models.TextField(blank=True, null=True)
+    contract_type = models.CharField(max_length=255)
+    custom_contract_type = models.CharField(
+        max_length=255, blank=True, null=True)
+    duration_months = models.PositiveIntegerField()
+    conditions = models.TextField(blank=True, null=True)
+    start_date = models.DateField(blank=True, null=True)
+    land_required = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_type = models.CharField(max_length=255)
+
+    # Crop Information
+    crops = models.JSONField(default=list)
+
+    # Additional Rules and Regulations
+    rules = models.JSONField(default=list)
+
+    # Legal Clauses
+    legal_clauses = models.JSONField(default=list)
+
+    # Add this field for the crop image
+    crop_image = models.ImageField(
+        upload_to='contracts/', null=True, blank=True)
+
+    def __str__(self):
+        return self.contract_title

@@ -29,12 +29,8 @@ function Create_Contract() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const formData = new FormData();
-    formData.append("company_name", companyName);
-    formData.append("contact_email", contactEmail);
-    formData.append("user_id", userId);
-    formData.append("website_link", websiteLink);
-    formData.append("address", address);
     formData.append("contract_title", contractTitle);
     formData.append("contract_description", contractDescription);
     formData.append(
@@ -53,7 +49,22 @@ function Create_Contract() {
     if (cropImage) {
       formData.append("crop_image", cropImage); // Append the crop image if it exists
     }
+    const logData = {
+      contract_title: contractTitle,
+      contract_description: contractDescription,
+      contract_type:
+        contractType === "Others" ? customContractType : contractType,
+      duration_months: durationMonths,
+      conditions: conditions,
+      start_date: startDate,
+      land_required: landRequired,
+      payment_type: paymentType,
+      crops: crops,
+      rules: rules,
+      legal_clauses: legalClauses,
+    };
 
+    console.log(logData);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/contracts/",
@@ -61,14 +72,15 @@ function Create_Contract() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
         }
       );
-      console.log("Form Data:", response.data);
-      alert("Form Submitted Successfully.");
+      console.log("Contract created successfully:", response.data);
+      alert("Contract created successfully!");
     } catch (error) {
-      console.error("There was an error submitting the form!", error);
-      alert("Form Submission Failed.");
+      console.error("Error creating contract:", error.response.data);
+      alert("Failed to create contract.");
     }
   };
 
@@ -201,20 +213,19 @@ function Create_Contract() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="m-2">
                     <label
-                      htmlFor="user_id"
+                      htmlFor="address"
                       className="block text-black-700 text-left"
                     >
-                      User ID*
+                      Address*
                     </label>
-                    <input
-                      type="text"
-                      id="user_id"
+                    <textarea
+                      id="address"
                       required
-                      placeholder="   Enter User ID"
-                      className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                      value={userId}
-                      onChange={(e) => setUserId(e.target.value)}
-                    />
+                      placeholder="   Enter Full Address"
+                      className="mt-1 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    ></textarea>
                   </div>
                   <div className="m-2">
                     <label
@@ -233,22 +244,6 @@ function Create_Contract() {
                       onChange={(e) => setWebsiteLink(e.target.value)}
                     />
                   </div>
-                </div>
-                <div className="m-2">
-                  <label
-                    htmlFor="address"
-                    className="block text-black-700 text-left"
-                  >
-                    Address*
-                  </label>
-                  <textarea
-                    id="address"
-                    required
-                    placeholder="   Enter Full Address"
-                    className="mt-1 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                  ></textarea>
                 </div>
               </div>
             </div>
