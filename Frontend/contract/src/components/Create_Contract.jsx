@@ -5,8 +5,6 @@ import Navbar from "./Navbar";
 function Create_Contract() {
   const [companyName, setCompanyName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
-  const [userId, setUserId] = useState("");
-  const [websiteLink, setWebsiteLink] = useState("");
   const [address, setAddress] = useState("");
 
   const [contractTitle, setContractTitle] = useState("");
@@ -165,10 +163,10 @@ function Create_Contract() {
             </h1>
           </nav>
           <form onSubmit={handleSubmit}>
-            {/* Company Information Section */}
+            {/* User Information Section */}
             <div>
               <div className="text-left bg-green-500 text-white font-bold rounded-full px-4 py-3 mb-6">
-                Company Information
+                User Information
               </div>
               <div
                 className="bg-white rounded-lg shadow-lg p-6 mb-8"
@@ -226,23 +224,6 @@ function Create_Contract() {
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                     ></textarea>
-                  </div>
-                  <div className="m-2">
-                    <label
-                      htmlFor="website_link"
-                      className="block text-black-700 text-left"
-                    >
-                      Link*
-                    </label>
-                    <input
-                      type="url"
-                      id="website_link"
-                      required
-                      placeholder="   Enter Website Link"
-                      className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                      value={websiteLink}
-                      onChange={(e) => setWebsiteLink(e.target.value)}
-                    />
                   </div>
                 </div>
               </div>

@@ -22,7 +22,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "Home", href: "#", current: true },
+  { name: "Home", href: "/home", current: true },
   { name: "Search", href: "#", current: false },
   { name: "Cart", href: "#", current: false },
   { name: "Message", href: "#", current: false },
@@ -65,7 +65,7 @@ export default function Navbar() {
       alert("Failed to log out");
     }
   };
-  
+
   return (
     <Disclosure as="nav" className="bg-green-600 w-full">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -89,7 +89,7 @@ export default function Navbar() {
           {/* Navbar Links */}
           <div className="hidden sm:ml-6 sm:flex items-center space-x-4 flex-grow justify-center">
             <a
-              href="#"
+              href="/home"
               className="text-white hover:bg-green-700 hover:text-white rounded-md p-2 flex items-center"
             >
               <HomeIcon className="h-6 w-6" aria-hidden="true" />
@@ -147,6 +147,7 @@ export default function Navbar() {
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 space-x-4 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
               type="button"
+              onClick={() => navigate("/create_contract")}
               className="relative flex items-center text-white px-2 py-1 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-green-600"
             >
               <PlusIcon className="h-5 w-5 mr-0 sm:mr-2" aria-hidden="true" />
@@ -202,7 +203,7 @@ export default function Navbar() {
       <DisclosurePanel className="sm:hidden">
         <div className="space-y-1 px-2 pb-3 pt-2">
           <a
-            href="#"
+            href="/home"
             className="text-white hover:bg-green-700 block rounded-md px-3 py-2 text-base font-medium"
           >
             Home
