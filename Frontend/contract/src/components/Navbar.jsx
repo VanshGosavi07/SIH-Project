@@ -57,12 +57,23 @@ export default function Navbar() {
       // Clear tokens from local storage
       localStorage.removeItem("authToken");
       localStorage.removeItem("refreshToken");
+      localStorage.removeItem("profileImageUrl");
 
       alert("Logged out successfully");
       navigate("/login");
     } catch (error) {
       console.error("Logout error:", error);
       alert("Failed to log out");
+    }
+  };
+  const handleProfileClick = () => {
+    const userType = localStorage.getItem("user_type");
+    if (userType === "farmer") {
+      navigate("/farmer_profile");
+    } else if (userType === "company") {
+      navigate("/company_profile");
+    } else {
+      alert("User type not recognized");
     }
   };
 
@@ -169,16 +180,24 @@ export default function Navbar() {
                   <span className="sr-only">Open user menu</span>
                   <img
                     alt="User profile"
-                    src="https://randomuser.me/api/portraits/men/75.jpg"
+                    src={
+                      localStorage.getItem("profileImageUrl") === "no"
+                        ? "https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
+                        : "http://127.0.0.1:8000/" +
+                          localStorage.getItem("profileImageUrl")
+                    }
                     className="h-8 w-8 rounded-full border-2 border-white"
                   />
                 </MenuButton>
               </div>
               <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-gray-200 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <MenuItem>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700">
+                  <button
+                    onClick={handleProfileClick}
+                    className="block px-4 py-2 text-sm text-gray-700"
+                  >
                     Your Profile
-                  </a>
+                  </button>
                 </MenuItem>
                 <MenuItem>
                   <a href="#" className="block px-4 py-2 text-sm text-gray-700">

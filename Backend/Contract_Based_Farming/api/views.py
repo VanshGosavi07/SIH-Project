@@ -123,9 +123,14 @@ def login_farmer(request):
         return Response({'error': 'Invalid email or password.'}, status=status.HTTP_401_UNAUTHORIZED)
 
     refresh = RefreshToken.for_user(user)
+    farmer_user = Farmer_User.objects.get(user=user)
+    profile_image_url = farmer_user.image.url if farmer_user.image else "no"
+    user_type = farmer_user.user_type if farmer_user.user_type else "Farmer"
     return Response({
         'refresh': str(refresh),
         'access': str(refresh.access_token),
+        'profile_image_url': profile_image_url,
+        'user_type': user_type
     }, status=status.HTTP_200_OK)
 
 
@@ -145,9 +150,14 @@ def login_company(request):
         return Response({'error': 'Invalid email or password.'}, status=status.HTTP_401_UNAUTHORIZED)
 
     refresh = RefreshToken.for_user(user)
+    company_user = Company_User.objects.get(user=user)
+    profile_image_url = company_user.profile_pic.url if company_user.profile_pic else "no"
+    user_type = company_user.user_type if company_user.user_type else "company"
     return Response({
         'refresh': str(refresh),
         'access': str(refresh.access_token),
+        'profile_image_url': profile_image_url,
+        'user_type': user_type
     }, status=status.HTTP_200_OK)
 
 

@@ -33,24 +33,33 @@ function Login() {
           formData
         );
 
-        const { access, refresh } = response.data; // Destructure access and refresh tokens
+        const { access, refresh, profile_image_url, user_type } = response.data; // Destructure access and refresh tokens
         console.log("Access Token from response:", access); // Print the access token in the console
         console.log("Refresh Token from response:", refresh); // Print the refresh token in the console
 
         // Save the tokens to local storage
         localStorage.setItem("authToken", access);
         localStorage.setItem("refreshToken", refresh);
+        localStorage.setItem("profileImageUrl", profile_image_url);
+        localStorage.setItem("user_type", user_type);
 
         // Retrieve the tokens from local storage to confirm they were set
         const storedAccessToken = localStorage.getItem("authToken");
         const storedRefreshToken = localStorage.getItem("refreshToken");
+        const storedProfileImageUrl = localStorage.getItem("profileImageUrl");
+
         console.log("Access Token from local storage:", storedAccessToken); // Print the access token from local storage
         console.log("Refresh Token from local storage:", storedRefreshToken); // Print the refresh token from local storage
+        console.log(
+          "Profile Image URL from local storage:",
+          storedProfileImageUrl
+        );
         setLoginStatus(response.data.message);
         alert("Login Successfully");
         navigate("/home");
       } catch (error) {
         if (error.response) {
+          alert("Wrong Credentials");
           setLoginStatus(error.response.data.error);
         }
       }
