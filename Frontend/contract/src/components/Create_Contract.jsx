@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +26,30 @@ function Create_Contract() {
   ]);
   const [newRequirement, setNewRequirement] = useState("");
   const [cropImage, setCropImage] = useState(null);
+  const [profileData, setProfileData] = useState(null);
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await axios.get("http://127.0.0.1:8000/api/profile/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setProfileData(response.data);
+        console.log(response.data); // Log the profile data to the console\
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+        alert("error");
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  if (!profileData) {
+    return <div>Loading...</div>;
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -187,9 +211,10 @@ function Create_Contract() {
                       type="text"
                       id="company_name"
                       required
-                      placeholder="   Enter Company Name"
-                      className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                      value={companyName}
+                      placeholder="Enter Company Name"
+                      className="mt-1 bg-gray-100 text-left pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                      value={profileData.name}
+                      readOnly
                       onChange={(e) => setCompanyName(e.target.value)}
                     />
                   </div>
@@ -204,29 +229,12 @@ function Create_Contract() {
                       type="email"
                       id="contact_email"
                       required
-                      placeholder="   Enter Contact Email"
-                      className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                      value={contactEmail}
+                      placeholder="Enter Contact Email"
+                      className="mt-1 pl-3 bg-gray-100 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                      value={profileData.email}
+                      readOnly
                       onChange={(e) => setContactEmail(e.target.value)}
                     />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="m-2">
-                    <label
-                      htmlFor="address"
-                      className="block text-black-700 text-left"
-                    >
-                      Address*
-                    </label>
-                    <textarea
-                      id="address"
-                      required
-                      placeholder="   Enter Full Address"
-                      className="mt-1 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                    ></textarea>
                   </div>
                 </div>
               </div>
@@ -253,8 +261,8 @@ function Create_Contract() {
                       type="text"
                       id="contract_title"
                       required
-                      placeholder="   Enter Contract Title"
-                      className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                      placeholder="Enter Contract Title"
+                      className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       value={contractTitle}
                       onChange={(e) => setContractTitle(e.target.value)}
                     />
@@ -269,7 +277,7 @@ function Create_Contract() {
                     <select
                       id="contract_type"
                       required
-                      className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                      className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       value={contractType}
                       onChange={handleContractTypeChange}
                     >
@@ -314,8 +322,8 @@ function Create_Contract() {
                       type="number"
                       id="land_required"
                       required
-                      placeholder="   Enter Land Required"
-                      className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                      placeholder="Enter Land Required"
+                      className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       value={landRequired}
                       onChange={(e) => setLandRequired(e.target.value)}
                     />
@@ -330,8 +338,8 @@ function Create_Contract() {
                     <input
                       type="text"
                       id="conditions"
-                      placeholder="   Enter Additional Conditions"
-                      className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                      placeholder="Enter Additional Conditions"
+                      className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       value={conditions}
                       onChange={(e) => setConditions(e.target.value)}
                     />
@@ -349,8 +357,8 @@ function Create_Contract() {
                       type="number"
                       id="duration_months"
                       required
-                      placeholder="   Enter Duration in Months"
-                      className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                      placeholder="Enter Duration in Months"
+                      className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       value={durationMonths}
                       onChange={(e) => setDurationMonths(e.target.value)}
                     />
@@ -365,7 +373,7 @@ function Create_Contract() {
                     <input
                       type="date"
                       id="start_date"
-                      className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                      className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
                     />
@@ -381,8 +389,8 @@ function Create_Contract() {
                     </label>
                     <textarea
                       id="contract_description"
-                      placeholder="   Enter Contract Description"
-                      className="mt-1 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                      placeholder="Enter Contract Description"
+                      className="mt-1 pl-3 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       value={contractDescription}
                       onChange={(e) => setContractDescription(e.target.value)}
                     ></textarea>
@@ -397,7 +405,7 @@ function Create_Contract() {
                     <select
                       id="payment_type"
                       required
-                      className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                      className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       value={paymentType}
                       onChange={(e) => setPaymentType(e.target.value)}
                     >
@@ -445,8 +453,8 @@ function Create_Contract() {
                           type="text"
                           id={`crop_name_${index}`}
                           required
-                          placeholder="   Enter Crop Name"
-                          className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                          placeholder="Enter Crop Name"
+                          className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                           value={crop.name}
                           onChange={(e) =>
                             handleCropChange(index, "name", e.target.value)
@@ -524,7 +532,7 @@ function Create_Contract() {
                         type="file"
                         id="crop_image"
                         onChange={handleCropImageChange}
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className="w-full pl-3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                       />
                     </div>
                   </div>
@@ -561,8 +569,8 @@ function Create_Contract() {
                         <input
                           type="text"
                           id={`rule_title_${index}`}
-                          placeholder="   Enter Rule Title"
-                          className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                          placeholder="Enter Rule Title"
+                          className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                           value={rule.title}
                           onChange={(e) =>
                             handleRuleChange(index, "title", e.target.value)
@@ -578,8 +586,8 @@ function Create_Contract() {
                         </label>
                         <textarea
                           id={`rule_description_${index}`}
-                          placeholder="   Enter Rule Description"
-                          className="mt-1 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                          placeholder="Enter Rule Description"
+                          className="mt-1 pl-3 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                           value={rule.description}
                           onChange={(e) =>
                             handleRuleChange(
@@ -635,8 +643,8 @@ function Create_Contract() {
                         <input
                           type="text"
                           id={`clause_title_${index}`}
-                          placeholder="   Enter Legal Clause Title"
-                          className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                          placeholder="Enter Legal Clause Title"
+                          className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                           value={clause.title}
                           onChange={(e) =>
                             handleLegalClauseChange(
@@ -656,8 +664,8 @@ function Create_Contract() {
                         </label>
                         <textarea
                           id={`clause_description_${index}`}
-                          placeholder="   Enter Legal Clause Description"
-                          className="mt-1 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                          placeholder="Enter Legal Clause Description"
+                          className="mt-1 pl-3 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                           value={clause.description}
                           onChange={(e) =>
                             handleLegalClauseChange(
