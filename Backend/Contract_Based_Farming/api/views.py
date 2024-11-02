@@ -1,3 +1,4 @@
+from .serializations import FarmerUserSerializer, CompanyUserSerializer
 from .models import Farmer_User, Company_User, CustomUser, Contract
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework.decorators import api_view, permission_classes
@@ -190,3 +191,19 @@ class ContractViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_profile(request):
+    user = request.user
+    if hasattr(user, 'farmer_user'):
+        profile = user.farmer_user
+        serializer = FarmerUserSerializer(profile)
+    elif hasattr(user, 'company_user'):
+        profile = user.company_user
+        serializer = CompanyUserSerializer(profile)
+    else:
+        return Response({'error': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)

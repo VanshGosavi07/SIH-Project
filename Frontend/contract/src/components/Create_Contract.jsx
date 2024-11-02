@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Navbar from "./Navbar";
+import { useNavigate } from "react-router-dom";
 
 function Create_Contract() {
+  const navigate = useNavigate();
   const [companyName, setCompanyName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [address, setAddress] = useState("");
@@ -76,6 +78,7 @@ function Create_Contract() {
       );
       console.log("Contract created successfully:", response.data);
       alert("Contract created successfully!");
+      navigate("/home");
     } catch (error) {
       console.error("Error creating contract:", error.response.data);
       alert("Failed to create contract.");

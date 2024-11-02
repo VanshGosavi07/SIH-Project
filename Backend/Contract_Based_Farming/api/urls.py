@@ -1,6 +1,6 @@
 # urls.py
 from django.urls import path, include
-from .views import register_farmer, register_company, login_farmer, login_company, logout
+from .views import register_farmer, register_company, login_farmer, login_company, logout, get_user_profile
 from rest_framework.routers import DefaultRouter
 from .views import ContractViewSet
 router = DefaultRouter()
@@ -12,5 +12,6 @@ urlpatterns = [
     path('api/login/farmer/', login_farmer, name='login_farmer'),
     path('api/login/company/', login_company, name='login_company'),
     path('api/logout/', logout, name='logout'),
+    path('api/profile/', get_user_profile, name='get_user_profile'),
     path('api/', include(router.urls)),
 ]
