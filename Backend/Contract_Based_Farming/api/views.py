@@ -14,6 +14,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.exceptions import PermissionDenied
 from .serializations import ContractSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializations import MyTokenObtainPairSerializer
 
 
 @api_view(['POST'])
@@ -207,3 +209,7 @@ def get_user_profile(request):
         return Response({'error': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

@@ -113,7 +113,7 @@ export default function Navbar() {
               <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
             </a>
             <a
-              href="#"
+              href="/chat"
               className="text-white hover:bg-green-700 hover:text-white rounded-md p-2"
             >
               <ChatBubbleLeftIcon className="h-6 w-6" aria-hidden="true" />
@@ -240,7 +240,7 @@ export default function Navbar() {
             Cart
           </a>
           <a
-            href="#"
+            href="/chat"
             className="text-white hover:bg-green-700 block rounded-md px-3 py-2 text-base font-medium"
           >
             <ChatBubbleLeftIcon className="h-6 w-6" aria-hidden="true" />

@@ -1,4 +1,5 @@
 import "./App.css";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Default from "./components/Default";
 import Company_Profile from "./components/profile_forms/company_profile/Company_Profile";
@@ -12,8 +13,11 @@ import Farmer_Profile_Page from "./components/profiles pages/Farmer_Profile_Page
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Contract_Page from "./components/Contracts/Contract_Page";
+import Sidebar from "./components/Chat/Sidebar";
+import ChatArea from "./components/Chat/ChatArea";
 
 function App() {
+  const [selectedUserId, setSelectedUserId] = useState(null);
   return (
     <Router>
       <div className="w-full min-h-screen">
@@ -28,6 +32,15 @@ function App() {
           <Route path="/company_profile" element={<Company_Profile_Page />} />
           <Route path="/farmer_profile" element={<Farmer_Profile_Page />} />
           <Route path="/contract_page/:id" element={<Contract_Page />} />
+          <Route
+            path="/chat"
+            element={
+              <div className="chat-container">
+                <Sidebar onSelectUser={setSelectedUserId} />
+                <ChatArea selectedUserId={selectedUserId} />
+              </div>
+            }
+          />
         </Routes>
       </div>
     </Router>
