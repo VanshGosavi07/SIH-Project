@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 
 export default function ContractPage() {
   const { id } = useParams();
   const [contract, setContract] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchContract = async () => {
@@ -28,14 +29,67 @@ export default function ContractPage() {
     fetchContract();
   }, [id]);
 
-  useEffect(() => {
-    if (contract) {
-      console.log("Contract address:", contract);
-    }
-  }, [contract]);
+  const handleMakeDeal = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const contractLink = `http://localhost:5173/contract_page/${id}`;
+      const message = `
+       <div class="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto my-4">
 
-  const handleMakeDeal = () => {
-    console.log(`Chat with ${id}`);
+  <p class="text-lg font-semibold text-gray-800 mb-2">
+    <strong>Title:</strong> <span class="font-normal">${contract.contract_title}</span>
+  </p>
+
+  <p class="text-gray-700 mb-2">
+    <strong>Type:</strong> <span class="font-medium">${contract.contract_type}</span>
+  </p>
+
+  <p class="text-gray-700 mb-2">
+    <strong>Land Required:</strong> <span class="font-medium">${contract.land_required}</span> Hectares
+  </p>
+
+  <p class="text-gray-700 mb-2">
+    <strong>Conditions:</strong> <span class="font-medium">${contract.conditions}</span>
+  </p>
+
+  <p class="text-gray-700 mb-2">
+    <strong>Duration:</strong> <span class="font-medium">${contract.duration_months}</span> Months
+  </p>
+
+
+  <p class="text-gray-700 mb-2">
+    <strong>Description:</strong> <span class="font-medium">${contract.contract_description}</span>
+  </p>
+
+  <p class="text-gray-700 mb-4">
+    <strong>Payment Type:</strong> <span class="font-medium">${contract.payment_type}</span>
+  </p>
+
+  <p class="text-blue-500 hover:underline">
+    For more details, visit: <a href="${contractLink}" target="_blank">${contractLink}</a>
+  </p>
+    <p class="text-gray-700 mb-4">
+    I am interested in your contract, so please proceed with further negotiation.
+  </p>
+</div>
+
+      `;
+      await axios.post(
+        `http://127.0.0.1:8000/api/messages/`,
+        {
+          receiver: contract.user.id,
+          message: message,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      navigate(`/chat/`);
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
   };
 
   if (!contract) {
@@ -73,7 +127,7 @@ export default function ContractPage() {
             {contract.company_name &&
               renderField("Company Name", contract.company_name)}
             {contract.user.email &&
-              renderField("User Email/Username",contract.user.email)}
+              renderField("User Email/Username", contract.user.email)}
             {contract.website_link &&
               renderField(
                 "Link",

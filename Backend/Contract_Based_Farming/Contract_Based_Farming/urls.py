@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenRefreshView
-from chat.views import get_user_list, get_chat_history, get_current_user, get_chat_users, get_user_detail
+from chat.views import get_user_list, get_chat_history, get_current_user, get_chat_users, get_user_detail, create_message
 from api.views import MyTokenObtainPairView
 
 urlpatterns = [
@@ -17,4 +17,5 @@ urlpatterns = [
     path('api/user/me/', get_current_user, name='get_current_user'),
     path('chat/users/', get_chat_users, name='get_chat_users'),
     path('user/<int:user_id>/', get_user_detail, name='get_user_detail'),
+    path('api/messages/', create_message, name='create_message'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

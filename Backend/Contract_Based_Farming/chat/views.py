@@ -76,3 +76,26 @@ def get_user_detail(request, user_id):
         return Response(serializer.data)
     except User.DoesNotExist:
         return Response({'error': 'User not found.'}, status=404)
+
+
+# In Backend/Contract_Based_Farming/chat/views.py
+
+User = get_user_model()
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_message(request):
+    sender = request.user
+    receiver_id = request.data.get('receiver')
+    message_text = request.data.get('message')
+    try:
+        receiver = User.objects.get(id=receiver_id)
+        chat_message = ChatMessage.objects.create(
+            sender=sender,
+            receiver=receiver,
+            message=message_text
+        )
+        return Response({'message': 'Message sent successfully.'}, status=201)
+    except User.DoesNotExist:
+        return Response({'error': 'Receiver not found.'}, status=404)
