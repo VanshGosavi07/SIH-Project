@@ -10,6 +10,7 @@ function ChatArea({ selectedUserId }) {
   const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState(null);
   const [currentUserEmail, setCurrentUserEmail] = useState("");
+  const [chatUserEmail, setChatUserEmail] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -64,6 +65,21 @@ function ChatArea({ selectedUserId }) {
         .catch((error) => {
           console.log("Error fetching chat history", error);
         });
+
+      // Fetch the user's details and log the name
+      axios
+        .get(`http://127.0.0.1:8000/user/${selectedUserId}/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setChatUserEmail(response.data.email);
+          console.log("Chatting with:", response.data.email);
+        })
+        .catch((error) => {
+          console.log("Error fetching user details", error);
+        });
     }
   }, [selectedUserId]);
 
@@ -80,13 +96,24 @@ function ChatArea({ selectedUserId }) {
         sx={{
           display: "flex",
           flexDirection: "column",
-                   height: "calc(100vh - 64px)",
-          marginLeft: "360px", 
+          height: "calc(100vh - 64px)",
+          marginLeft: "360px",
           bgcolor: "#e8f5e9",
           marginTop: "5px",
         }}
       >
         <Divider />
+        <Box
+          sx={{
+            width: "100%",
+            backgroundColor: "#26D07C",
+            color: "black",
+            textAlign: "center",
+            padding: "10px 20px",
+          }}
+        >
+          {chatUserEmail}
+        </Box>
         <Box
           sx={{
             flex: 1,

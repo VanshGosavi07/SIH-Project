@@ -1,3 +1,4 @@
+from .serializers import UserGetSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -44,5 +45,34 @@ def get_current_user(request):
     return Response({
         'id': user.id,
         'email': user.email,
-        'name': user.name, 
+        'name': user.name,
     })
+
+
+User = get_user_model()
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_chat_users(request):
+    request_user = request.user
+    chat_users = User.objects.filter(
+        Q(sent_messages__receiver=request_user) | Q(
+            received_messages__sender=request_user)
+    ).distinct()
+    serializer = UserGetSerializer(chat_users, many=True)
+    return Response(serializer.data)
+
+
+User = get_user_model()
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_detail(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        serializer = UserGetSerializer(user)
+        return Response(serializer.data)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found.'}, status=404)

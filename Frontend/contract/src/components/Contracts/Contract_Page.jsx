@@ -28,6 +28,12 @@ export default function ContractPage() {
     fetchContract();
   }, [id]);
 
+  useEffect(() => {
+    if (contract) {
+      console.log("Contract address:", contract);
+    }
+  }, [contract]);
+
   const handleMakeDeal = () => {
     console.log(`Chat with ${id}`);
   };
@@ -66,8 +72,8 @@ export default function ContractPage() {
           <>
             {contract.company_name &&
               renderField("Company Name", contract.company_name)}
-            {contract.contact_email &&
-              renderField("Email", contract.contact_email)}
+            {contract.user.email &&
+              renderField("User Email/Username",contract.user.email)}
             {contract.website_link &&
               renderField(
                 "Link",

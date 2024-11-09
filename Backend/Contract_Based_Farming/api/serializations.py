@@ -2,13 +2,21 @@ from .models import Farmer_User, Company_User
 from .models import Contract
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from .models import CustomUser
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'email', 'name']
 
 
 class ContractSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
     class Meta:
         model = Contract
         fields = '__all__'
-        read_only_fields = ['user']
 
 
 class FarmerUserSerializer(serializers.ModelSerializer):

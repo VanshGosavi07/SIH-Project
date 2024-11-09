@@ -1,3 +1,5 @@
+from rest_framework import viewsets
+from .models import Contract
 from .serializations import FarmerUserSerializer, CompanyUserSerializer
 from .models import Farmer_User, Company_User, CustomUser, Contract
 from django.contrib.auth.hashers import make_password, check_password
@@ -183,16 +185,6 @@ class ContractViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
-    def create(self, request, *args, **kwargs):
-        data = request.data.copy()
-        if 'crop_image' in request.FILES:
-            data['crop_image'] = request.FILES['crop_image']
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 @api_view(['GET'])

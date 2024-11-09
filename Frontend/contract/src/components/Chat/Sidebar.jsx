@@ -5,8 +5,10 @@ import UserItem from "./UserItem";
 export default function Sidebar({ onSelectUser }) {
   const BASE_URL = "http://127.0.0.1:8000";
   const [userList, setUserList] = useState([]);
+  const [filteredUserList, setFilteredUserList] = useState([]);
   const [userLoader, setUserLoader] = useState(true);
   const [searchInput, setSearchInput] = useState("");
+  const [initialChatUsers, setInitialChatUsers] = useState([]);
 
   const getAuthtokenFromLocalStorage = () => {
     return localStorage.getItem("authToken");
@@ -15,6 +17,7 @@ export default function Sidebar({ onSelectUser }) {
   useEffect(() => {
     const authtoken = getAuthtokenFromLocalStorage();
     if (authtoken) {
+      // Fetch all users
       axios
         .get(`${BASE_URL}/api/user`, {
           headers: {
@@ -28,18 +31,35 @@ export default function Sidebar({ onSelectUser }) {
         .catch((error) => {
           console.log("Error making API request", error);
         });
+
+      // Fetch users with whom the logged-in user has at least one chat
+      axios
+        .get(`${BASE_URL}/chat/users`, {
+          headers: {
+            Authorization: `Bearer ${authtoken}`,
+          },
+        })
+        .then((response) => {
+          setInitialChatUsers(response.data);
+          setFilteredUserList(response.data);
+        })
+        .catch((error) => {
+          console.log("Error fetching chat users", error);
+        });
     }
   }, []);
 
   const handleSearch = () => {
-    console.log(searchInput);
+    const filteredUsers = userList.filter((user) =>
+      user.email.toLowerCase().includes(searchInput.toLowerCase())
+    );
+    setFilteredUserList(filteredUsers);
     setSearchInput("");
   };
 
   return (
     <div className="sidebar w-80 bg-black text-green-900 p-5 fixed left-0 top-0 h-full overflow-y-auto shadow-lg">
       <div className="mb-4 flex items-center">
-        
         <input
           type="text"
           value={searchInput}
@@ -57,7 +77,7 @@ export default function Sidebar({ onSelectUser }) {
       {userLoader ? (
         <p className="text-center">Loading...</p>
       ) : (
-        userList.map((user) => (
+        filteredUserList.map((user) => (
           <UserItem
             key={user.id}
             id={user.id}
