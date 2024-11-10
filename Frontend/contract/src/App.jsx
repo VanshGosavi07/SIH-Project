@@ -15,14 +15,23 @@ import "slick-carousel/slick/slick-theme.css";
 import Contract_Page from "./components/Contracts/Contract_Page";
 import Sidebar from "./components/Chat/Sidebar";
 import ChatArea from "./components/Chat/ChatArea";
+import { LanguageProvider } from "./Context/LanguageContext";
 
 function App() {
   const [selectedUserId, setSelectedUserId] = useState(null);
+
   return (
     <Router>
       <div className="w-full min-h-screen">
         <Routes>
-          <Route path="/" element={<Default />} />
+          <Route
+            path="/"
+            element={
+              <LanguageProvider>
+                <Default />
+              </LanguageProvider>
+            }
+          />
           <Route path="/company_profile_form" element={<Company_Profile />} />
           <Route path="/farmer_profile_form" element={<Farmer_Profile />} />
           <Route path="/register" element={<Registeration />} />
