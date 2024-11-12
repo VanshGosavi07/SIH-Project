@@ -15,6 +15,8 @@ export default function Company_Profile_Page() {
   const [visibleContracts, setVisibleContracts] = useState(6);
   const [userContracts, setUserContracts] = useState([]);
   const [contractsToShow, setContractsToShow] = useState(6);
+  const [completedContracts, setCompletedContracts] = useState([]);
+  const [currentcontract, setCurrentContract] = useState([]);
   const currentUserID = localStorage.getItem("Current_User_id");
 
   const sliderSettings = {
@@ -79,13 +81,117 @@ export default function Company_Profile_Page() {
             : null,
         }));
         setUserContracts(contracts);
-        console.log(contracts); // Log the user contracts data to the console
       } catch (error) {
         console.error("Error fetching user contracts:", error);
       }
     };
 
     fetchUserContracts();
+  }, [currentUserID]);
+
+  useEffect(() => {
+    const fetchCompletedContracts = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/contracts/completed/${currentUserID}/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const contracts = response.data.map((contract) => ({
+          ...contract,
+          crop_image: contract.crop_image
+            ? `http://127.0.0.1:8000${contract.crop_image}`
+            : null,
+        }));
+        setCompletedContracts(contracts);
+        console.log("Completed Contracts:", contracts);
+      } catch (error) {
+        console.error("Error fetching Completed contracts:", error);
+      }
+    };
+
+    fetchCompletedContracts();
+  }, [currentUserID]);
+
+  useEffect(() => {
+    const fetchInitiatedContracts = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/contracts/initiated/${currentUserID}/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const contracts = response.data.map((contract) => ({
+          ...contract,
+          crop_image: contract.crop_image
+            ? `http://127.0.0.1:8000${contract.crop_image}`
+            : null,
+        }));
+
+        setCurrentContract((prevContracts) => {
+          const combinedContracts = [...prevContracts, ...contracts];
+          const uniqueContracts = Array.from(
+            new Map(
+              combinedContracts.map((contract) => [contract.id, contract])
+            ).values()
+          );
+          return uniqueContracts;
+        });
+
+        console.log("Initiated Contracts:", response.data);
+      } catch (error) {
+        console.error("Error fetching initiated contracts:", error);
+      }
+    };
+
+    fetchInitiatedContracts();
+  }, [currentUserID]);
+
+  useEffect(() => {
+    const fetchInProgressContracts = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/contracts/in-progress/${currentUserID}/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const contracts = response.data.map((contract) => ({
+          ...contract,
+          crop_image: contract.crop_image
+            ? `http://127.0.0.1:8000${contract.crop_image}`
+            : null,
+        }));
+
+        setCurrentContract((prevContracts) => {
+          const combinedContracts = [...prevContracts, ...contracts];
+          const uniqueContracts = Array.from(
+            new Map(
+              combinedContracts.map((contract) => [contract.id, contract])
+            ).values()
+          );
+          return uniqueContracts;
+        });
+
+        console.log("In Progress Contracts:", response.data);
+      } catch (error) {
+        console.error("Error fetching In Progress contracts:", error);
+      }
+    };
+
+    fetchInProgressContracts();
   }, [currentUserID]);
 
   const handleContractTypeClick = (type) => {
@@ -357,16 +463,46 @@ export default function Company_Profile_Page() {
               </div>
             )}
 
-          {(contractType === "Completed Contract" ||
-            contractType === "Current Contract") && (
-            <div className="flex justify-center">
-              <div className="w-1/2 px-4 py-6 text-center border">
-                <p className="text-gray-700">
-                  Displaying information for:{" "}
-                  <span className="font-semibold">{contractType}</span>
-                </p>
+          {contractType === "Completed Contract" && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {completedContracts
+                  .slice(0, contractsToShow)
+                  .map((contract) => (
+                    <Contract_Cards key={contract.id} card={contract} />
+                  ))}
               </div>
-            </div>
+              {completedContracts.length > contractsToShow && (
+                <div className="text-center mt-6">
+                  <button
+                    onClick={loadMoreContracts}
+                    className="px-6 py-3 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600 focus:outline-none"
+                  >
+                    Load More
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+
+          {contractType === "Current Contract" && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {currentcontract.slice(0, contractsToShow).map((contract) => (
+                  <Contract_Cards key={contract.id} card={contract} />
+                ))}
+              </div>
+              {currentcontract.length > contractsToShow && (
+                <div className="text-center mt-6">
+                  <button
+                    onClick={loadMoreContracts}
+                    className="px-6 py-3 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600 focus:outline-none"
+                  >
+                    Load More
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
         {/* Contracts Section ends */}

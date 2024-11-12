@@ -1,3 +1,7 @@
+from .serializations import ContractManagementSerializer, ContractSerializer
+from .models import ContractManagement, Contract
+from .serializations import ContractManagementSerializer
+from .models import ContractManagement
 from rest_framework import viewsets
 from .models import Contract, ContractManagement
 from .serializations import FarmerUserSerializer, CompanyUserSerializer
@@ -18,6 +22,7 @@ from rest_framework.exceptions import PermissionDenied
 from .serializations import ContractSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializations import MyTokenObtainPairSerializer, ContractManagementSerializer
+from django.db.models import Q
 
 
 @api_view(['POST'])
@@ -224,3 +229,65 @@ def get_user_contracts(request, user_id):
         return Response(serializer.data, status=200)
     except Contract.DoesNotExist:
         return Response({'error': 'No contracts found for this user.'}, status=404)
+
+    from rest_framework.decorators import api_view, permission_classes
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_initiated_contracts(request, user_id):
+    try:
+        contract_managements = ContractManagement.objects.filter(
+            (Q(contract_post_person_id=user_id) | Q(
+                deal_person_id=user_id)) & Q(status='Initiated')
+        )
+        contract_ids = contract_managements.values_list(
+            'contract_id', flat=True)
+        contracts = Contract.objects.filter(id__in=contract_ids)
+        serializer = ContractSerializer(contracts, many=True)
+        return Response(serializer.data, status=200)
+    except ContractManagement.DoesNotExist:
+        return Response({'error': 'No initiated contracts found for this user.'}, status=404)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_in_progress_contracts(request, user_id):
+    try:
+        contract_managements = ContractManagement.objects.filter(
+            (Q(contract_post_person_id=user_id) | Q(
+                deal_person_id=user_id)) & Q(status='In Progress')
+        )
+        contract_ids = contract_managements.values_list(
+            'contract_id', flat=True)
+        contracts = Contract.objects.filter(id__in=contract_ids)
+        serializer = ContractSerializer(contracts, many=True)
+        return Response(serializer.data, status=200)
+    except ContractManagement.DoesNotExist:
+        return Response({'error': 'No in-progress contracts found for this user.'}, status=404)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_completed_contracts(request, user_id):
+    try:
+        contract_managements = ContractManagement.objects.filter(
+            (Q(contract_post_person_id=user_id) | Q(
+                deal_person_id=user_id)) & Q(status='Completed')
+        )
+        contract_ids = contract_managements.values_list(
+            'contract_id', flat=True)
+        contracts = Contract.objects.filter(id__in=contract_ids)
+        serializer = ContractSerializer(contracts, many=True)
+        return Response(serializer.data, status=200)
+    except ContractManagement.DoesNotExist:
+        return Response({'error': 'No completed contracts found for this user.'}, status=404)
+    try:
+        contracts = ContractManagement.objects.filter(
+            (Q(contract_post_person_id=user_id) | Q(
+                deal_person_id=user_id)) & Q(status='Completed')
+        )
+        serializer = ContractManagementSerializer(contracts, many=True)
+        return Response(serializer.data, status=200)
+    except ContractManagement.DoesNotExist:
+        return Response({'error': 'No completed contracts found for this user.'}, status=404)
