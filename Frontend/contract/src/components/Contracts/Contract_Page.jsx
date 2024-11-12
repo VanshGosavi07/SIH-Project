@@ -70,12 +70,18 @@ export default function ContractPage() {
     For more details, visit: <a href="${contractLink}" target="_blank">${contractLink}</a>
   </p>
     <p class="text-gray-700 mb-4">
-    I am interested in your contract, so please proceed with further negotiation. and let me know if you are interested in my proposal. If you are interested in my proposal then i will click on the below button to Initialised the Contract.
+    I am interested in your contract, so please proceed with further negotiation. and let me know if you are interested in my proposal. If you are interested in my proposal click on the below button to Initialised the Contract.
   </p>
     <div class="text-center">
+    ${currentUserID !== contract.user.id ? `
             <button onclick="handleDealClick('${id}', '${contract.user.id}', '${currentUserID}')" class="px-6 py-3 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600 focus:outline-none">
               Make a Deal
             </button>
+            ` : `
+    <p class="text-red-500">
+      You cannot make a deal with your own contract.
+    </p>
+  `}
     </div>
 </div>
 
@@ -121,6 +127,7 @@ export default function ContractPage() {
       <span className="text-gray-600">{value}</span>
     </p>
   );
+  const currentUserID = localStorage.getItem("Current_User_id");
 
   return (
     <>
@@ -224,26 +231,24 @@ export default function ContractPage() {
         )}
 
         {/* Make Contract Deal Button */}
-        <div className="text-center mt-10">
-          <button
-            onClick={handleMakeDeal}
-            className="px-6 py-3 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600 focus:outline-none"
-          >
-            Make Contract Deal
-          </button>
-        </div>
+        {currentUserID &&
+          contract?.user?.id &&
+          currentUserID !== contract.user.id.toString() && (
+            <div className="text-center mt-10">
+              <button
+                onClick={handleMakeDeal}
+                className="px-6 py-3 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600 focus:outline-none"
+              >
+                Make Contract Deal
+              </button>
+            </div>
+          )}
       </div>
     </>
   );
 }
 
 window.handleDealClick = async (contractId, ownerId, currentUserId) => {
-  console.log("Deal is done");
-  console.log("Contract ID:", contractId);
-  console.log("Contract Owner ID:", ownerId);
-  console.log("Current User ID:", currentUserId);
-  console.log("Status: Initiated");
-
   try {
     const token = localStorage.getItem("authToken");
     const response = await axios.post(
@@ -279,7 +284,6 @@ window.handleDealClick = async (contractId, ownerId, currentUserId) => {
       }
     );
     console.log("Chat message sent:", chatResponse.data);
-    
   } catch (error) {
     console.error("Error creating contract management record:", error);
     alert("Failed to create contract management record");
