@@ -213,3 +213,14 @@ class ContractManagementViewSet(viewsets.ModelViewSet):
     queryset = ContractManagement.objects.all()
     serializer_class = ContractManagementSerializer
     permission_classes = [IsAuthenticated]
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_contracts(request, user_id):
+    try:
+        contracts = Contract.objects.filter(user_id=user_id)
+        serializer = ContractSerializer(contracts, many=True)
+        return Response(serializer.data, status=200)
+    except Contract.DoesNotExist:
+        return Response({'error': 'No contracts found for this user.'}, status=404)

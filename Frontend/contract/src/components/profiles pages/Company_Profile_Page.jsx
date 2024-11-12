@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../Navbar";
 import Slider from "react-slick";
-import card1 from "../../../../../Media/card1.jpg";
-import card2 from "../../../../../Media/card2.jpg";
-import card3 from "../../../../../Media/card3.jpg";
-import potato from "../../../../../Media/b1.jpg";
-import fruit from "../../../../../Media/b2.jpg";
+import Contract_Cards from "../Contracts/Contract_Cards";
 import farm1 from "../../../../../Media/s1.jpg";
 import farm2 from "../../../../../Media/s2.jpg";
 import farm3 from "../../../../../Media/s3.jpg";
@@ -16,6 +12,11 @@ import Footer from "../Footer";
 export default function Company_Profile_Page() {
   const [profileData, setProfileData] = useState(null);
   const [contractType, setContractType] = useState("Completed Contract");
+  const [visibleContracts, setVisibleContracts] = useState(6);
+  const [userContracts, setUserContracts] = useState([]);
+  const [contractsToShow, setContractsToShow] = useState(6);
+  const currentUserID = localStorage.getItem("Current_User_id");
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -50,7 +51,6 @@ export default function Company_Profile_Page() {
           },
         });
         setProfileData(response.data);
-        console.log(response.data); // Log the profile data to the console\
       } catch (error) {
         console.error("Error fetching profile data:", error);
         alert("error");
@@ -59,9 +59,42 @@ export default function Company_Profile_Page() {
 
     fetchProfileData();
   }, []);
+
+  useEffect(() => {
+    const fetchUserContracts = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/contracts/user/${currentUserID}/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const contracts = response.data.map((contract) => ({
+          ...contract,
+          crop_image: contract.crop_image
+            ? `http://127.0.0.1:8000${contract.crop_image}`
+            : null,
+        }));
+        setUserContracts(contracts);
+        console.log(contracts); // Log the user contracts data to the console
+      } catch (error) {
+        console.error("Error fetching user contracts:", error);
+      }
+    };
+
+    fetchUserContracts();
+  }, [currentUserID]);
+
   const handleContractTypeClick = (type) => {
     setContractType(type);
     console.log(`Selected contract type: ${type}`);
+  };
+
+  const loadMoreContracts = () => {
+    setContractsToShow((prev) => prev + 6);
   };
 
   if (!profileData) {
@@ -304,16 +337,37 @@ export default function Company_Profile_Page() {
               Current Contract
             </button>
           </div>
-
-          {/* Main Content Centered with Smaller Width */}
-          <div className="flex justify-center">
-            <div className="w-1/2 px-4 py-6 text-center border">
-              <p className="text-gray-700">
-                Displaying information for:{" "}
-                <span className="font-semibold">{contractType}</span>
-              </p>
+          {contractType === "Post Contract" && Array.isArray(userContracts) && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {userContracts.slice(0, contractsToShow).map((contract) => (
+                <Contract_Cards key={contract.id} card={contract} />
+              ))}
             </div>
-          </div>
+          )}
+          {contractType === "Post Contract" &&
+            Array.isArray(userContracts) &&
+            userContracts.length > contractsToShow && (
+              <div className="text-center mt-6">
+                <button
+                  onClick={loadMoreContracts}
+                  className="px-6 py-3 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600 focus:outline-none"
+                >
+                  Load More
+                </button>
+              </div>
+            )}
+
+          {(contractType === "Completed Contract" ||
+            contractType === "Current Contract") && (
+            <div className="flex justify-center">
+              <div className="w-1/2 px-4 py-6 text-center border">
+                <p className="text-gray-700">
+                  Displaying information for:{" "}
+                  <span className="font-semibold">{contractType}</span>
+                </p>
+              </div>
+            </div>
+          )}
         </div>
         {/* Contracts Section ends */}
 
