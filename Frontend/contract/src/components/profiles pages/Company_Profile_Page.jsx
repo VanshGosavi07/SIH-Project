@@ -15,7 +15,7 @@ import Footer from "../Footer";
 
 export default function Company_Profile_Page() {
   const [profileData, setProfileData] = useState(null);
-
+  const [contractType, setContractType] = useState("Completed Contract");
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -59,6 +59,10 @@ export default function Company_Profile_Page() {
 
     fetchProfileData();
   }, []);
+  const handleContractTypeClick = (type) => {
+    setContractType(type);
+    console.log(`Selected contract type: ${type}`);
+  };
 
   if (!profileData) {
     return <div>Loading...</div>;
@@ -257,6 +261,62 @@ export default function Company_Profile_Page() {
         </div>
         {/* Card Section ends */}
 
+        {/* Contracts Section */}
+        <div className="container mx-auto mt-10 mb-10 px-4 sm:px-6 lg:px-20 max-w-6xl">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center w-full">
+              <i className="fa-solid fa-trophy fa-2x text-green-500 mr-4"></i>
+              <strong className="text-xl bg-green-600 text-white px-6 py-3 rounded-full w-full text-center">
+                {contractType} Details
+              </strong>
+            </div>
+          </div>
+
+          <div className="flex justify-around space-x-2 mb-6 mt-6">
+            <button
+              onClick={() => handleContractTypeClick("Completed Contract")}
+              className={`py-2 px-3 rounded w-1/4 ${
+                contractType === "Completed Contract"
+                  ? "bg-green-600 text-white"
+                  : "bg-green-200 text-green-600"
+              } hover:bg-green-700 hover:text-white transition-all duration-200`}
+            >
+              Completed Contract
+            </button>
+            <button
+              onClick={() => handleContractTypeClick("Post Contract")}
+              className={`py-2 px-3 rounded w-1/4 ${
+                contractType === "Post Contract"
+                  ? "bg-green-600 text-white"
+                  : "bg-green-200 text-green-600"
+              } hover:bg-green-700 hover:text-white transition-all duration-200`}
+            >
+              Post Contract
+            </button>
+            <button
+              onClick={() => handleContractTypeClick("Current Contract")}
+              className={`py-2 px-3 rounded w-1/4 ${
+                contractType === "Current Contract"
+                  ? "bg-green-600 text-white"
+                  : "bg-green-200 text-green-600"
+              } hover:bg-green-700 hover:text-white transition-all duration-200`}
+            >
+              Current Contract
+            </button>
+          </div>
+
+          {/* Main Content Centered with Smaller Width */}
+          <div className="flex justify-center">
+            <div className="w-1/2 px-4 py-6 text-center border">
+              <p className="text-gray-700">
+                Displaying information for:{" "}
+                <span className="font-semibold">{contractType}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        {/* Contracts Section ends */}
+
         {/* Achievements Section */}
         <div className="mx-auto my-10 px-4 sm:px-6 lg:px-20 max-w-6xl">
           <div className="p-6">
@@ -300,81 +360,6 @@ export default function Company_Profile_Page() {
           </div>
         </div>
         {/* Achievements ends */}
-
-        {/* Previous Contracts Section with Slider */}
-        <div className="container mx-auto my-10 px-4 sm:px-6 lg:px-20 max-w-6xl">
-          <div className="p-6">
-            <div className="flex items-center mb-5">
-              <i className="fa-solid fa-id-card-clip fa-2x text-green-500"></i>
-              <strong className="text-xl bg-green-600 text-white px-6 py-3 rounded-full w-full text-center">
-                Previous Contracts
-              </strong>
-            </div>
-            <Slider {...sliderSettings}>
-              {Array.isArray(previousContracts) &&
-              previousContracts.length > 0 ? (
-                previousContracts.map((contract, index) => (
-                  <div className="p-2" key={index}>
-                    <div className="bg-green-100 shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 duration-300 border border-green-200">
-                      <img
-                        src={potato} // Replace with actual image path if available
-                        className="w-full h-40 object-cover transition-transform duration-300 hover:scale-105"
-                        alt="Contract Image" // Update this if you have different images for contracts
-                      />
-                      <div className="p-4">
-                        <h5 className="font-bold text-green-800 text-lg mb-2">
-                          {contract.title} {/* Display contract title */}
-                        </h5>
-                        <table className="table-auto w-full mt-2">
-                          <tbody>
-                            <tr>
-                              <td className="font-bold">Company:</td>
-                              <td>{contract.company}</td>{" "}
-                              {/* Display company name */}
-                            </tr>
-                            <tr>
-                              <td className="font-bold">Contract Type:</td>
-                              <td>{contract.type}</td>{" "}
-                              {/* Display contract type */}
-                            </tr>
-                            <tr>
-                              <td className="font-bold">Duration:</td>
-                              <td>{contract.duration}</td>{" "}
-                              {/* Display duration */}
-                            </tr>
-                            <tr>
-                              <td className="font-bold">Start Date:</td>
-                              <td>{contract.start_date}</td>{" "}
-                              {/* Display start date */}
-                            </tr>
-                            <tr>
-                              <td className="font-bold">End Date:</td>
-                              <td>{contract.end_date}</td>{" "}
-                              {/* Display end date */}
-                            </tr>
-                          </tbody>
-                        </table>
-                        <a
-                          href="#"
-                          className="bg-green-600 text-white py-2 px-4 rounded mt-4 block text-center transition-colors duration-300 hover:bg-green-700"
-                        >
-                          Learn More...
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="flex items-center justify-center p-6">
-                  <p className="text-gray-500">
-                    No previous contracts available.
-                  </p>
-                </div>
-              )}
-            </Slider>
-          </div>
-        </div>
-        {/* Previous Contracts Section with Slider ends */}
 
         {/* Images Section with Slider */}
         <div className="container mx-auto my-5">

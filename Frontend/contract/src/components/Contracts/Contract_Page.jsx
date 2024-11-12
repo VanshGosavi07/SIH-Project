@@ -33,6 +33,7 @@ export default function ContractPage() {
     try {
       const token = localStorage.getItem("authToken");
       const contractLink = `http://localhost:5173/contract_page/${id}`;
+      const currentUserEmail = "its temp now @gmail.com";
       const message = `
        <div class="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto my-4">
 
@@ -71,6 +72,11 @@ export default function ContractPage() {
     <p class="text-gray-700 mb-4">
     I am interested in your contract, so please proceed with further negotiation.
   </p>
+    <div class="text-center">
+            <button onclick="handleDealClick('${id}', '${contract.user.email}', '${currentUserEmail}')" class="px-6 py-3 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600 focus:outline-none">
+              Make a Deal
+            </button>
+    </div>
 </div>
 
       `;
@@ -230,3 +236,11 @@ export default function ContractPage() {
     </>
   );
 }
+
+window.handleDealClick = (contractId, ownerEmail, currentUserEmail) => {
+  console.log("Deal is done");
+  console.log("Contract ID:", contractId);
+  console.log("Contract Owner Email:", ownerEmail);
+  console.log("Current User Email:", currentUserEmail);
+  alert("Deal is done");
+};
