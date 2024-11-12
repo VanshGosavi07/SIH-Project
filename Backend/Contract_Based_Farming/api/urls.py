@@ -1,10 +1,11 @@
 from django.urls import path, include
 from .views import register_farmer, register_company, login_farmer, login_company, logout, get_user_profile, MyTokenObtainPairView
 from rest_framework.routers import DefaultRouter
-from .views import ContractViewSet
+from .views import ContractViewSet,ContractManagementViewSet
 
 router = DefaultRouter()
 router.register(r'contracts', ContractViewSet)
+router.register(r'contract-management', ContractManagementViewSet)
 
 urlpatterns = [
     path('api/register/farmer/', register_farmer, name='register_farmer'),

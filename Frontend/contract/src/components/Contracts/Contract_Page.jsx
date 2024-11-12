@@ -33,7 +33,7 @@ export default function ContractPage() {
     try {
       const token = localStorage.getItem("authToken");
       const contractLink = `http://localhost:5173/contract_page/${id}`;
-      const currentUserEmail = "its temp now @gmail.com";
+      const currentUserID = localStorage.getItem("Current_User_id");
       const message = `
        <div class="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto my-4">
 
@@ -70,10 +70,10 @@ export default function ContractPage() {
     For more details, visit: <a href="${contractLink}" target="_blank">${contractLink}</a>
   </p>
     <p class="text-gray-700 mb-4">
-    I am interested in your contract, so please proceed with further negotiation.
+    I am interested in your contract, so please proceed with further negotiation. and let me know if you are interested in my proposal. If you are interested in my proposal then i will click on the below button to Initialised the Contract.
   </p>
     <div class="text-center">
-            <button onclick="handleDealClick('${id}', '${contract.user.email}', '${currentUserEmail}')" class="px-6 py-3 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600 focus:outline-none">
+            <button onclick="handleDealClick('${id}', '${contract.user.id}', '${currentUserID}')" class="px-6 py-3 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600 focus:outline-none">
               Make a Deal
             </button>
     </div>
@@ -237,10 +237,51 @@ export default function ContractPage() {
   );
 }
 
-window.handleDealClick = (contractId, ownerEmail, currentUserEmail) => {
+window.handleDealClick = async (contractId, ownerId, currentUserId) => {
   console.log("Deal is done");
   console.log("Contract ID:", contractId);
-  console.log("Contract Owner Email:", ownerEmail);
-  console.log("Current User Email:", currentUserEmail);
-  alert("Deal is done");
+  console.log("Contract Owner ID:", ownerId);
+  console.log("Current User ID:", currentUserId);
+  console.log("Status: Initiated");
+
+  try {
+    const token = localStorage.getItem("authToken");
+    const response = await axios.post(
+      `http://127.0.0.1:8000/api/contract-management/`,
+      {
+        contract_post_person: ownerId,
+        deal_person: currentUserId,
+        contract: contractId,
+        status: "Initiated",
+        sub_status: "Initiated",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Contract management record created:", response.data);
+    alert("Deal is done and contract management record created");
+    const chatResponse = await axios.post(
+      `http://127.0.0.1:8000/api/messages/`,
+      {
+        receiver: ownerId,
+        message:
+          "The contract has been initiated. Please accept this contract so we can customize it according to our requirements.",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Chat message sent:", chatResponse.data);
+    
+  } catch (error) {
+    console.error("Error creating contract management record:", error);
+    alert("Failed to create contract management record");
+  }
 };

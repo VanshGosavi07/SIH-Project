@@ -135,3 +135,36 @@ class Contract(models.Model):
 
     def __str__(self):
         return self.contract_title
+
+
+User = get_user_model()
+
+
+class ContractManagement(models.Model):
+    STATUS_CHOICES = [
+        ('Initiated', 'Initiated'),
+        ('In Progress', 'In Progress'),
+        ('Completed', 'Completed'),
+    ]
+
+    SUB_STATUS_CHOICES = [
+        ('Initiated', 'Initiated'),
+        ('Production Stage', 'Production Stage'),
+        ('Harvest and Collection Stage', 'Harvest and Collection Stage'),
+        ('Payment', 'Payment'),
+        ('Completed', 'Completed'),
+    ]
+
+    contract_post_person = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='posted_contracts')
+    deal_person = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='deals')
+    contract = models.ForeignKey(
+        Contract, unique=True, on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default='Initiated')
+    sub_status = models.CharField(
+        max_length=30, choices=SUB_STATUS_CHOICES, default='Initiated')
+
+    def __str__(self):
+        return f"{self.contract.contract_title} - {self.status}"

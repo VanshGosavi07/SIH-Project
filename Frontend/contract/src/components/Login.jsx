@@ -33,7 +33,8 @@ function Login() {
           formData
         );
 
-        const { access, refresh, profile_image_url, user_type } = response.data; // Destructure access and refresh tokens
+        const { access, refresh, profile_image_url, user_type, user_id } =
+          response.data; // Destructure access and refresh tokens
         console.log("Access Token from response:", access); // Print the access token in the console
         console.log("Refresh Token from response:", refresh); // Print the refresh token in the console
 
@@ -42,6 +43,7 @@ function Login() {
         localStorage.setItem("refreshToken", refresh);
         localStorage.setItem("profileImageUrl", profile_image_url);
         localStorage.setItem("user_type", user_type);
+        localStorage.setItem("Current_User_id", user_id);
 
         // Retrieve the tokens from local storage to confirm they were set
         const storedAccessToken = localStorage.getItem("authToken");
@@ -54,6 +56,7 @@ function Login() {
           "Profile Image URL from local storage:",
           storedProfileImageUrl
         );
+        console.log("User id from local storage:", user_id);
         setLoginStatus(response.data.message);
         alert("Login Successfully");
         navigate("/home");

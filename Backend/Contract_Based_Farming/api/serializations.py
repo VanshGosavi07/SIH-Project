@@ -1,3 +1,4 @@
+from .models import ContractManagement
 from .models import Farmer_User, Company_User
 from .models import Contract
 from rest_framework import serializers
@@ -38,3 +39,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims
         token['id'] = user.id
         return token
+
+
+class ContractManagementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContractManagement
+        fields = '__all__'

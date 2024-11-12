@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .models import Contract
+from .models import Contract, ContractManagement
 from .serializations import FarmerUserSerializer, CompanyUserSerializer
 from .models import Farmer_User, Company_User, CustomUser, Contract
 from django.contrib.auth.hashers import make_password, check_password
@@ -17,7 +17,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.exceptions import PermissionDenied
 from .serializations import ContractSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializations import MyTokenObtainPairSerializer
+from .serializations import MyTokenObtainPairSerializer, ContractManagementSerializer
 
 
 @api_view(['POST'])
@@ -135,7 +135,8 @@ def login_farmer(request):
         'refresh': str(refresh),
         'access': str(refresh.access_token),
         'profile_image_url': profile_image_url,
-        'user_type': user_type
+        'user_type': user_type,
+        'user_id': farmer_user.user_id,
     }, status=status.HTTP_200_OK)
 
 
@@ -162,7 +163,8 @@ def login_company(request):
         'refresh': str(refresh),
         'access': str(refresh.access_token),
         'profile_image_url': profile_image_url,
-        'user_type': user_type
+        'user_type': user_type,
+        'user_id': company_user.user_id,
     }, status=status.HTTP_200_OK)
 
 
@@ -205,3 +207,9 @@ def get_user_profile(request):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+class ContractManagementViewSet(viewsets.ModelViewSet):
+    queryset = ContractManagement.objects.all()
+    serializer_class = ContractManagementSerializer
+    permission_classes = [IsAuthenticated]
