@@ -70,7 +70,7 @@ export default function Company_Profile_Page() {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/contracts/user/${15}/`,
+          `http://127.0.0.1:8000/api/contracts/user/${currentUserID}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -98,7 +98,7 @@ export default function Company_Profile_Page() {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/contracts/completed/${8}/`,
+          `http://127.0.0.1:8000/api/contracts/completed/${currentUserID}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -127,7 +127,7 @@ export default function Company_Profile_Page() {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/contracts/initiated/${15}/`,
+          `http://127.0.0.1:8000/api/contracts/initiated/${currentUserID}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

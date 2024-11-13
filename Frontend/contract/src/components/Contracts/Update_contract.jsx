@@ -8,6 +8,7 @@ function Update_contract() {
   const [companyName, setCompanyName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [requirementsto, setrequirementsto] = useState("");
 
   const [contractTitle, setContractTitle] = useState("");
   const [contractDescription, setContractDescription] = useState("");
@@ -48,7 +49,7 @@ function Update_contract() {
 
     fetchProfileData();
   }, []);
-  
+
   useEffect(() => {
     const fetchContract = async () => {
       try {
@@ -63,6 +64,8 @@ function Update_contract() {
         );
         setContract(response.data);
         console.log("Contract Data:", response.data);
+        setrequirementsto(response.data.crops[0].requirements[0]);
+        console.log(response.data.crops[0].requirements[0]);
       } catch (error) {
         console.error("Error fetching contract data:", error);
       }
@@ -112,7 +115,9 @@ function Update_contract() {
       legal_clauses: legalClauses,
     };
 
-    console.log(logData);
+    console.log("data :", logData);
+    alert("Contract updated SuccesFully");
+    navigate("/home");
   };
 
   const handleCropChange = (index, field, value) => {
@@ -461,7 +466,7 @@ function Update_contract() {
                           required
                           placeholder="Enter Crop Name"
                           className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                          value={crop.name}
+                          value={contract.crops[0].name}
                           onChange={(e) =>
                             handleCropChange(index, "name", e.target.value)
                           }
@@ -474,7 +479,7 @@ function Update_contract() {
                         <div className="flex items-center mt-1">
                           <input
                             type="text"
-                            value={newRequirement}
+                            value={requirementsto}
                             onChange={(e) => setNewRequirement(e.target.value)}
                             placeholder="Enter Crop Requirement"
                             className="flex-grow h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 mr-2"
@@ -547,7 +552,7 @@ function Update_contract() {
                           id={`rule_title_${index}`}
                           placeholder="Enter Rule Title"
                           className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                          value={rule.title}
+                          value={contract.rules[0].title}
                           onChange={(e) =>
                             handleRuleChange(index, "title", e.target.value)
                           }
@@ -564,7 +569,7 @@ function Update_contract() {
                           id={`rule_description_${index}`}
                           placeholder="Enter Rule Description"
                           className="mt-1 pl-3 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                          value={rule.description}
+                          value={contract.rules[0].description}
                           onChange={(e) =>
                             handleRuleChange(
                               index,
@@ -621,7 +626,7 @@ function Update_contract() {
                           id={`clause_title_${index}`}
                           placeholder="Enter Legal Clause Title"
                           className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                          value={clause.title}
+                          value={contract.legal_clauses[0].title}
                           onChange={(e) =>
                             handleLegalClauseChange(
                               index,
@@ -642,7 +647,7 @@ function Update_contract() {
                           id={`clause_description_${index}`}
                           placeholder="Enter Legal Clause Description"
                           className="mt-1 pl-3 block w-full h-24 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
-                          value={clause.description}
+                          value={contract.legal_clauses[0].description}
                           onChange={(e) =>
                             handleLegalClauseChange(
                               index,
