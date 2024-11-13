@@ -16,6 +16,8 @@ import Contract_Page from "./components/Contracts/Contract_Page";
 import Sidebar from "./components/Chat/Sidebar";
 import ChatArea from "./components/Chat/ChatArea";
 import { LanguageProvider } from "./Context/LanguageContext";
+import Manged_contract_page from "./components/Contracts/Managed_contract_page";
+import Update_contract from "./components/Contracts/Update_contract";
 
 function App() {
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -41,6 +43,11 @@ function App() {
           <Route path="/company_profile" element={<Company_Profile_Page />} />
           <Route path="/farmer_profile" element={<Farmer_Profile_Page />} />
           <Route path="/contract_page/:id" element={<Contract_Page />} />
+          <Route path="/update_contract/:id" element={<Update_contract />} />
+          <Route
+            path="/managed_contract_page/:id"
+            element={<Manged_contract_page />}
+          />
           <Route
             path="/chat"
             element={

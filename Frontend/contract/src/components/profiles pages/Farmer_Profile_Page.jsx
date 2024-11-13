@@ -10,6 +10,7 @@ import farm2 from "../../../../../Media/s2.jpg";
 import farm3 from "../../../../../Media/s3.jpg";
 import profile from "../../../../../Media/1.jpg";
 import Footer from "../Footer";
+import Managed_Contract_cards from "../Contracts/Managed_Conract_cards";
 
 export default function Company_Profile_Page() {
   const [profileData, setProfileData] = useState(null);
@@ -69,7 +70,7 @@ export default function Company_Profile_Page() {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/contracts/user/${currentUserID}/`,
+          `http://127.0.0.1:8000/api/contracts/user/${15}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -97,7 +98,7 @@ export default function Company_Profile_Page() {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/contracts/completed/${currentUserID}/`,
+          `http://127.0.0.1:8000/api/contracts/completed/${8}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -126,7 +127,7 @@ export default function Company_Profile_Page() {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/contracts/initiated/${currentUserID}/`,
+          `http://127.0.0.1:8000/api/contracts/initiated/${15}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -419,13 +420,13 @@ export default function Company_Profile_Page() {
               </div>
             )}
 
-             {contractType === "Completed Contract" && (
+          {contractType === "Completed Contract" && (
             <>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {completedContracts
                   .slice(0, contractsToShow)
                   .map((contract) => (
-                    <Contract_Cards key={contract.id} card={contract} />
+                    <Managed_Contract_cards key={contract.id} card={contract} />
                   ))}
               </div>
               {completedContracts.length > contractsToShow && (
@@ -445,7 +446,7 @@ export default function Company_Profile_Page() {
             <>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {currentcontract.slice(0, contractsToShow).map((contract) => (
-                  <Contract_Cards key={contract.id} card={contract} />
+                  <Managed_Contract_cards key={contract.id} card={contract} />
                 ))}
               </div>
               {currentcontract.length > contractsToShow && (

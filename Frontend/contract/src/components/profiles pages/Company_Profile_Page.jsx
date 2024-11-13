@@ -8,6 +8,7 @@ import farm2 from "../../../../../Media/s2.jpg";
 import farm3 from "../../../../../Media/s3.jpg";
 import profile from "../../../../../Media/company-logo.jpg";
 import Footer from "../Footer";
+import Managed_Contract_cards from "../Contracts/Managed_Conract_cards";
 
 export default function Company_Profile_Page() {
   const [profileData, setProfileData] = useState(null);
@@ -469,7 +470,11 @@ export default function Company_Profile_Page() {
                 {completedContracts
                   .slice(0, contractsToShow)
                   .map((contract) => (
-                    <Contract_Cards key={contract.id} card={contract} />
+                    <Managed_Contract_cards
+                      key={contract.id}
+                      card={contract}
+                      status={true}
+                    />
                   ))}
               </div>
               {completedContracts.length > contractsToShow && (
@@ -489,7 +494,7 @@ export default function Company_Profile_Page() {
             <>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {currentcontract.slice(0, contractsToShow).map((contract) => (
-                  <Contract_Cards key={contract.id} card={contract} />
+                  <Managed_Contract_cards key={contract.id} card={contract} />
                 ))}
               </div>
               {currentcontract.length > contractsToShow && (

@@ -291,3 +291,22 @@ def get_completed_contracts(request, user_id):
         return Response(serializer.data, status=200)
     except ContractManagement.DoesNotExist:
         return Response({'error': 'No completed contracts found for this user.'}, status=404)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_contract_status(request, contract_id):
+    try:
+        contract_management = ContractManagement.objects.get(
+            contract_id=contract_id)
+        data = {
+            'status': contract_management.status,
+            'sub_status': contract_management.sub_status,
+            'contract_id': contract_management.contract_id,
+            'contract_post_person_id': contract_management.contract_post_person_id,
+            'deal_person_id': contract_management.deal_person_id,
+            'id': contract_management.id,
+        }
+        return Response(data, status=200)
+    except ContractManagement.DoesNotExist:
+        return Response({'error': 'Contract not found.'}, status=404)
