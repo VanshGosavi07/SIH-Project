@@ -40,7 +40,7 @@ function Default() {
   return (
     <>
       {/* Navbar */}
-      <header className="bg-gray-50 shadow-md p-4 md:flex md:items-center md:justify-between fixed top-0 left-0 w-full z-50 ">
+      <header className="bg-gray-200 shadow-md p-4 md:flex md:items-center md:justify-between fixed top-0 left-0 w-full z-50 ">
         {/* Logo and Toggle Button */}
         <div className="flex items-center justify-between">
           <div className="logo">

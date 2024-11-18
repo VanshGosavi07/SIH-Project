@@ -37,7 +37,7 @@ function Home() {
   return (
     <div
       style={{
-        backgroundColor: "#E9EDC9",
+        backgroundColor: "white",
         position: "relative",
         overflow: "hidden",
       }}
