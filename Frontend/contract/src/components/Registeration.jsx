@@ -8,7 +8,6 @@ function Registeration() {
   const [formData, setFormData] = useState({
     name: "",
     emailId: "",
-    userId: "",
     password: "",
     userType: "",
   });
@@ -73,22 +72,6 @@ function Registeration() {
             />
             {errors.name && (
               <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-gray-700 mb-1">User ID</label>
-            <input
-              type="text"
-              name="userId"
-              value={formData.userId}
-              onChange={handleChange}
-              className={`w-full border-b ${
-                errors.userId ? "border-red-500" : "border-gray-300"
-              } focus:outline-none`}
-              placeholder="Enter your user ID"
-            />
-            {errors.userId && (
-              <p className="text-red-500 text-sm mt-1">{errors.userId}</p>
             )}
           </div>
           <div>
