@@ -4,9 +4,12 @@ import ImageSlider from "./Slider";
 import Contract_Cards from "./Contracts/Contract_Cards";
 import Footer from "./Footer";
 import axios from "axios";
+import botImage from "../assets/bot.png";
+import Modal from "./Modal";
 
 function Home() {
   const [contractData, setContractData] = useState([]); // Initialize empty array for fetched data
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // Fetch contracts from the API
@@ -44,6 +47,23 @@ function Home() {
     >
       <Navbar />
       <ImageSlider />
+
+      {/* Fixed Image on the Left Side */}
+      <img
+        src={botImage}
+        alt="Fixed Left"
+        style={{
+          position: "fixed",
+          left: 0,
+          top: "50%",
+          transform: "translateY(-50%)",
+          width: "200px", // Adjust the width as needed
+          height: "auto",
+          zIndex: 10, // Ensure the image is above other elements
+          cursor: "pointer", // Add cursor pointer to indicate it's clickable
+        }}
+        onClick={() => setIsModalOpen(true)} // Open modal on click
+      />
 
       {/* SVG Background */}
       <svg
@@ -91,6 +111,13 @@ function Home() {
       </div>
 
       <Footer />
+
+      {/* Modal for Chatbot */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Chat with AgriBot"
+      />
     </div>
   );
 }
