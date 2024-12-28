@@ -8,7 +8,7 @@ import Registeration from "./components/Registeration";
 import Login from "./components/Login";
 import CreateContract from "./components/Create_Contract";
 import Home from "./components/Home";
-import Company_Profile_Page from "./components/profiles pages/Company_Profile_page";
+import Company_Profile_Page from "./components/profiles pages/Company_Profile_Page";
 import Farmer_Profile_Page from "./components/profiles pages/Farmer_Profile_Page";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

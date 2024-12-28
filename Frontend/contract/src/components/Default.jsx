@@ -38,9 +38,9 @@ function Default() {
   ];
 
   return (
-    <>
+    <div className="bg-green-100">
       {/* Navbar */}
-      <header className="bg-gray-200 shadow-md p-4 md:flex md:items-center md:justify-between fixed top-0 left-0 w-full z-50 ">
+      <header className="bg-green-800 shadow-md p-4 md:flex md:items-center md:justify-between fixed top-0 left-0 w-full z-50 ">
         {/* Logo and Toggle Button */}
         <div className="flex items-center justify-between">
           <div className="logo">
@@ -52,7 +52,7 @@ function Default() {
           </div>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="text-gray-500 md:hidden focus:outline-none"
+            className="text-white md:hidden focus:outline-none"
           >
             <svg
               className="w-6 h-6"
@@ -92,7 +92,7 @@ function Default() {
                 to="home"
                 smooth={true}
                 duration={500}
-                className="block py-2 px-4 hover:text-blue-600 cursor-pointer"
+                className="block text-white text-lg py-2 px-4 hover:text-blue-600 cursor-pointer"
               >
                 Home
               </Link>
@@ -103,7 +103,7 @@ function Default() {
                 smooth={true}
                 duration={500}
                 offset={-80}
-                className="block py-2 px-4 hover:text-blue-600 cursor-pointer"
+                className="block py-2 text-white text-lg px-4 hover:text-blue-600 cursor-pointer"
               >
                 About Us
               </Link>
@@ -114,7 +114,7 @@ function Default() {
                 smooth={true}
                 duration={500}
                 offset={-80}
-                className="block py-2 px-4 hover:text-blue-600 cursor-pointer"
+                className="block py-2 px-4 text-white text-lg hover:text-blue-600 cursor-pointer"
               >
                 Our Services
               </Link>
@@ -125,7 +125,7 @@ function Default() {
                 smooth={true}
                 duration={500}
                 offset={-80}
-                className="block py-2 px-4 hover:text-blue-600 cursor-pointer"
+                className="block py-2 px-4 text-white text-lg hover:text-blue-600 cursor-pointer"
               >
                 Photo Gallery
               </Link>
@@ -136,18 +136,24 @@ function Default() {
                 smooth={true}
                 duration={500}
                 offset={-80}
-                className="block py-2 px-4 hover:text-blue-600 cursor-pointer"
+                className="block py-2 px-4 text-white text-lg hover:text-blue-600 cursor-pointer"
               >
                 Contact Us
               </Link>
             </li>
             <li>
-              <a href="/login" className="block py-2 px-4 hover:text-blue-600">
+              <a
+                href="/login"
+                className="block text-white text-lg py-2 px-4 hover:text-blue-600"
+              >
                 Login
               </a>
             </li>
             <li>
-              <a href="/register" className="block py-2 px-4 hover:text-blue-600">
+              <a
+                href="/register"
+                className="block text-white text-lg py-2 px-4 hover:text-blue-600"
+              >
                 Register
               </a>
             </li>
@@ -188,7 +194,7 @@ function Default() {
       </header>
 
       {/* Slider */}
-      <div id='home' className="pt-20 mb-10">
+      <div id="home" className="pt-20 mb-10">
         <Slider className="border-9 border-black bg-white p-4 rounded-lg shadow-md" />
       </div>
 
@@ -378,7 +384,10 @@ function Default() {
       </section>
 
       {/* Photo Gallery */}
-      <section id="photo-gallery" className="py-16 bg-gray-50 mx-4 mb-20 md:mx-14">
+      <section
+        id="photo-gallery"
+        className="py-16 bg-gray-50 mx-4 mb-20 md:mx-14"
+      >
         <h1 className="text-4xl font-bold text-green-600 text-center mb-8">
           Photo Gallery
         </h1>
@@ -493,7 +502,7 @@ function Default() {
       <section id="footer" className="bottom-0">
         <Footer />
       </section>
-    </>
+    </div>
   );
 }
 

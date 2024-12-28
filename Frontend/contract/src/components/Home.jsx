@@ -40,14 +40,14 @@ function Home() {
   return (
     <div
       style={{
-        backgroundColor: "white",
+        backgroundColor: "lightgreen",
         position: "relative",
         overflow: "hidden",
       }}
     >
       <Navbar />
       <ImageSlider />
-
+      
       {/* Fixed Image on the Left Side */}
       <img
         src={botImage}
@@ -82,7 +82,7 @@ function Home() {
       <div className="container mx-auto px-4 mx-135 ">
         <div className="flex justify-center my-8">
           <h1
-            className="text-4xl font-semibold text-center pt-12"
+            className="text-5xl font-extrabold text-center pt-12 text-blue-700 "
             style={{ fontFamily: "Arial, sans-serif" }}
           >
             Live Contracts

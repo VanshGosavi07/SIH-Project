@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import AgriConnectLogo from "../../../../Media/Logo.jpg";
 import { validateRegistrationForm } from "./validation/V_Register";
 import { useNavigate } from "react-router-dom";
+import backimg from "../assets/bg.jpg"
+
 
 function Registeration() {
   const navigate = useNavigate(); // Initialize navigate hook
@@ -42,8 +44,13 @@ function Registeration() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex justify-center items-center">
-      <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-8 relative">
+    <div 
+      className="min-h-screen flex justify-center items-center" 
+      style={{ backgroundImage: `url(${backimg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
+      <div className="bg-white bg-opacity-5 backdrop-blur-2xl border border-black rounded-2xl w-full max-w-3xl p-10 relative"
+      style={{ backdropFilter: 'blur(10px)', borderRadius: '2rem' }} 
+      >
         {/* Top Section: Logo */}
         <div className="flex justify-center items-center mb-6">
           <img
@@ -56,7 +63,7 @@ function Registeration() {
         {/* Form Inputs */}
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-2 gap-x-8 gap-y-4"
+          className="flex flex-col gap-y-4"
         >
           <div>
             <label className="block text-gray-700 mb-1">Name</label>
@@ -65,7 +72,7 @@ function Registeration() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className={`w-full border-b ${
+              className={`w-full h-12 border-b ${
                 errors.name ? "border-red-500" : "border-gray-300"
               } focus:outline-none`}
               placeholder="Enter your name"
@@ -81,7 +88,7 @@ function Registeration() {
               name="emailId"
               value={formData.emailId}
               onChange={handleChange}
-              className={`w-full border-b ${
+              className={`w-full h-12 border-b ${
                 errors.emailId ? "border-red-500" : "border-gray-300"
               } focus:outline-none`}
               placeholder="Enter your email"
@@ -96,7 +103,7 @@ function Registeration() {
               name="userType"
               value={formData.userType}
               onChange={handleChange}
-              className={`w-full border-b ${
+              className={`w-full h-12 border-b ${
                 errors.userType ? "border-red-500" : "border-gray-300"
               } focus:outline-none bg-white`}
             >
@@ -117,7 +124,7 @@ function Registeration() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={`w-full border-b ${
+              className={`w-full h-12 border-b ${
                 errors.password ? "border-red-500" : "border-gray-300"
               } focus:outline-none`}
               placeholder="Enter your password"
