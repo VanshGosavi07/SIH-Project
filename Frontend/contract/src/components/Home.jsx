@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./Navbar";
 import ImageSlider from "./Slider";
 import Contract_Cards from "./Contracts/Contract_Cards";
@@ -14,7 +14,8 @@ const cardData = [
     cropName: "Tomato",
     phoneNumber: "123-456-7890",
     email: "vansh@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
   },
   {
     id: 2,
@@ -25,7 +26,8 @@ const cardData = [
     cropName: "Basil",
     phoneNumber: "987-654-3210",
     email: "john@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
   },
   {
     id: 3,
@@ -36,7 +38,8 @@ const cardData = [
     cropName: "Pasta Wheat",
     phoneNumber: "456-789-0123",
     email: "jane@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
   },
   {
     id: 4,
@@ -47,7 +50,8 @@ const cardData = [
     cropName: "Corn",
     phoneNumber: "321-654-9870",
     email: "michael@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
   },
   {
     id: 5,
@@ -58,7 +62,8 @@ const cardData = [
     cropName: "Chicken",
     phoneNumber: "213-546-7890",
     email: "emily@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
   },
   {
     id: 6,
@@ -69,7 +74,8 @@ const cardData = [
     cropName: "Broccoli",
     phoneNumber: "654-321-0987",
     email: "daniel@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
   },
   {
     id: 7,
@@ -80,7 +86,8 @@ const cardData = [
     cropName: "Shrimp",
     phoneNumber: "789-012-3456",
     email: "sophia@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
   },
   {
     id: 8,
@@ -91,7 +98,8 @@ const cardData = [
     cropName: "Lamb",
     phoneNumber: "567-890-1234",
     email: "james@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
   },
   {
     id: 9,
@@ -102,7 +110,8 @@ const cardData = [
     cropName: "Vegetables",
     phoneNumber: "234-567-8901",
     email: "olivia@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
   },
   {
     id: 10,
@@ -113,7 +122,8 @@ const cardData = [
     cropName: "Cocoa",
     phoneNumber: "345-678-9012",
     email: "william@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
   },
   {
     id: 11,
@@ -124,7 +134,8 @@ const cardData = [
     cropName: "Fruits",
     phoneNumber: "456-789-0123",
     email: "ava@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
   },
   {
     id: 12,
@@ -135,26 +146,92 @@ const cardData = [
     cropName: "Olives",
     phoneNumber: "567-890-1234",
     email: "liam@example.com",
-    contentImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg"
-  }
+    contentImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/1024px-Tomato_je.jpg",
+  },
 ];
 
-
 function Home() {
+  const [visibleCards, setVisibleCards] = useState(6); // Initially show 6 cards (2 rows)
+
+  const loadMoreCards = () => {
+    setVisibleCards((prevVisibleCards) => prevVisibleCards + 3); // Load 3 more rows (6 cards)
+  };
+
   return (
-    <div style={{ backgroundColor: '#E9EDC9' }}>
+    <div
+      style={{
+        backgroundColor: "#E9EDC9",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
       <Navbar />
       <ImageSlider />
-      <div className="container mx-auto px-4">
+
+      {/* SVG Background */}
+      <svg
+        className="absolute top-0 left-0 w-full h-full"
+        style={{ zIndex: -1 }}
+      >
+        <rect
+          width="100%"
+          height="100%"
+          fill="none"
+          stroke="black"
+          strokeWidth="2"
+        />
+      </svg>
+
+      <div
+        className="container mx-auto px-4 mx-135"
+        style={{ backgroundColor: "yellow" }}
+      >
+        <div className="flex justify-center my-8">
+          <h1
+            className="text-4xl font-semibold text-center pt-12"
+            style={{ fontFamily: "Arial, sans-serif" }}
+          >
+            Live Contracts
+          </h1>
+        </div>
         {/* Flexbox and grid to center the cards */}
         <div className="flex justify-center">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-20">
-            {cardData.map((card) => (
+            {cardData.slice(0, visibleCards).map((card) => (
               <Contract_Cards key={card.id} card={card} />
             ))}
           </div>
         </div>
+        {visibleCards < cardData.length && (
+          <div className="flex justify-center mt-4 pt-8 pb-8">
+            <button
+              onClick={loadMoreCards}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Load More
+            </button>
+          </div>
+        )}
       </div>
+      <footer
+        style={{ backgroundColor: "#333", color: "#fff", padding: "20px 0" }}
+      >
+        <div className="container mx-auto text-center">
+          <p>© 2024 Your Company. All rights reserved.</p>
+          <div className="flex justify-center space-x-4">
+            <a href="#" className="text-white hover:text-gray-400">
+              Privacy Policy
+            </a>
+            <a href="#" className="text-white hover:text-gray-400">
+              Terms of Service
+            </a>
+            <a href="#" className="text-white hover:text-gray-400">
+              Contact Us
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
