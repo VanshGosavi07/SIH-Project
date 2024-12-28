@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'api',
-    'chat'
+    'chat',
+    'chatbot',
 ]
 ASGI_APPLICATION = 'Contract_Based_Farming.asgi.application'
 CHANNEL_LAYERS = {

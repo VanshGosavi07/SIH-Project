@@ -38,9 +38,9 @@ function Default() {
   ];
 
   return (
-    <>
+    <div className="bg-green-100">
       {/* Navbar */}
-      <header className="bg-gray-200 shadow-md p-4 md:flex md:items-center md:justify-between fixed top-0 left-0 w-full z-50 ">
+      <header className="bg-green-800 shadow-md p-4 md:flex md:items-center md:justify-between fixed top-0 left-0 w-full z-50">
         {/* Logo and Toggle Button */}
         <div className="flex items-center justify-between">
           <div className="logo">
@@ -52,7 +52,7 @@ function Default() {
           </div>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="text-gray-500 md:hidden focus:outline-none"
+            className="text-white md:hidden focus:outline-none"
           >
             <svg
               className="w-6 h-6"
@@ -92,9 +92,13 @@ function Default() {
                 to="home"
                 smooth={true}
                 duration={500}
-                className="block py-2 px-4 hover:text-blue-600 cursor-pointer"
+                className="block text-white text-lg py-2 px-4 hover:text-blue-600 cursor-pointer"
               >
-                Home
+                {language === "English"
+                  ? "Home"
+                  : language === "Hindi"
+                  ? "होम"
+                  : "मुख्यपृष्ठ"}
               </Link>
             </li>
             <li>
@@ -103,9 +107,13 @@ function Default() {
                 smooth={true}
                 duration={500}
                 offset={-80}
-                className="block py-2 px-4 hover:text-blue-600 cursor-pointer"
+                className="block py-2 text-white text-lg px-4 hover:text-blue-600 cursor-pointer"
               >
-                About Us
+                {language === "English"
+                  ? "About Us"
+                  : language === "Hindi"
+                  ? "हमारे बारे में"
+                  : "आमच्याबद्दल"}
               </Link>
             </li>
             <li>
@@ -114,9 +122,13 @@ function Default() {
                 smooth={true}
                 duration={500}
                 offset={-80}
-                className="block py-2 px-4 hover:text-blue-600 cursor-pointer"
+                className="block py-2 px-4 text-white text-lg hover:text-blue-600 cursor-pointer"
               >
-                Our Services
+                {language === "English"
+                  ? "Our Services"
+                  : language === "Hindi"
+                  ? "हमारी सेवाएं"
+                  : "आमच्या सेवा"}
               </Link>
             </li>
             <li>
@@ -125,9 +137,13 @@ function Default() {
                 smooth={true}
                 duration={500}
                 offset={-80}
-                className="block py-2 px-4 hover:text-blue-600 cursor-pointer"
+                className="block py-2 px-4 text-white text-lg hover:text-blue-600 cursor-pointer"
               >
-                Photo Gallery
+                {language === "English"
+                  ? "Photo Gallery"
+                  : language === "Hindi"
+                  ? "फोटो गैलरी"
+                  : "फोटो गॅलरी"}
               </Link>
             </li>
             <li>
@@ -136,19 +152,37 @@ function Default() {
                 smooth={true}
                 duration={500}
                 offset={-80}
-                className="block py-2 px-4 hover:text-blue-600 cursor-pointer"
+                className="block py-2 px-4 text-white text-lg hover:text-blue-600 cursor-pointer"
               >
-                Contact Us
+                {language === "English"
+                  ? "Contact Us"
+                  : language === "Hindi"
+                  ? "संपर्क करें"
+                  : "आमच्याशी संपर्क साधा"}
               </Link>
             </li>
             <li>
-              <a href="/login" className="block py-2 px-4 hover:text-blue-600">
-                Login
+              <a
+                href="/login"
+                className="block text-white text-lg py-2 px-4 hover:text-blue-600"
+              >
+                {language === "English"
+                  ? "Login"
+                  : language === "Hindi"
+                  ? "लॉग इन करें"
+                  : "लॉगिन"}
               </a>
             </li>
             <li>
-              <a href="/register" className="block py-2 px-4 hover:text-blue-600">
-                Register
+              <a
+                href="/register"
+                className="block text-white text-lg py-2 px-4 hover:text-blue-600"
+              >
+                {language === "English"
+                  ? "Register"
+                  : language === "Hindi"
+                  ? "रजिस्टर करें"
+                  : "नोंदणी करा"}
               </a>
             </li>
           </ul>
@@ -188,18 +222,17 @@ function Default() {
       </header>
 
       {/* Slider */}
-      <div id='home' className="pt-20 mb-10">
+      <div id="home" className="pt-20 mb-10">
         <Slider className="border-9 border-black bg-white p-4 rounded-lg shadow-md" />
       </div>
 
-      {/* About us */}
+      {/* About Us */}
       <section
         id="about"
-        className="py-16 shadow-md mb-20  bg-gray-50 mx-4 md:mx-14"
+        className="py-16 shadow-md mb-20 bg-gray-50 mx-4 md:mx-14"
       >
         <div className="about-container max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center">
           <div className="about-image md:w-1/2 w-full p-2">
-            {" "}
             {/* Added padding here */}
             <img
               src={image}
@@ -208,31 +241,53 @@ function Default() {
             />
           </div>
           <div className="about-content md:w-1/2 w-full md:ml-8 mt-8 md:mt-0 text-gray-800">
-            <h2 className="text-3xl text-green-600 font-bold mb-4">About Us</h2>
+            <h2 className="text-3xl text-green-600 font-bold mb-4">
+              {language === "English"
+                ? "About Us"
+                : language === "Hindi"
+                ? "हमारे बारे में"
+                : "आमच्याबद्दल"}
+            </h2>
             <h3 className="text-xl font-semibold mb-4">
-              Passion Meets Innovation in Food and Agriculture
+              {language === "English"
+                ? "Passion Meets Innovation in Food and Agriculture"
+                : language === "Hindi"
+                ? "खाद्य और कृषि में नवाचार के साथ जुनून"
+                : "अन्न व शेतीत नवनिर्मितीच्या उत्साहाचा संगम"}
             </h3>
             <p className="mb-4">
-              We are AgriConnect, a platform for contract-based farming that
-              directly connects farmers with contractors, eliminating
-              intermediaries. Our platform not only facilitates connections but
-              also manages contracts from start to finish, offering legal
-              support for any contract breaches to ensure transparency and
-              trust.
+              {language === "English"
+                ? "We are AgriConnect, a platform for contract-based farming that directly connects farmers with contractors, eliminating intermediaries. Our platform not only facilitates connections but also manages contracts from start to finish, offering legal support for any contract breaches to ensure transparency and trust."
+                : language === "Hindi"
+                ? "हम एग्रीकनेक्ट हैं, एक ऐसा प्लेटफॉर्म जो अनुबंध-आधारित खेती के लिए किसानों को ठेकेदारों से सीधे जोड़ता है, बिचौलियों को समाप्त करता है। हमारा प्लेटफॉर्म न केवल कनेक्शन की सुविधा प्रदान करता है बल्कि अनुबंधों को शुरू से अंत तक प्रबंधित करता है, किसी भी अनुबंध उल्लंघन के लिए कानूनी समर्थन प्रदान करता है ताकि पारदर्शिता और विश्वास सुनिश्चित हो सके।"
+                : "आम्ही अॅग्रीकनेक्ट आहोत, एक व्यासपीठ जी करार-आधारित शेतीसाठी शेतकऱ्यांना ठेकेदारांशी थेट जोडते, मध्यस्थांना समाप्त करते. आमचे व्यासपीठ केवळ कनेक्शनची सुविधा देत नाही तर करारांचे सुरुवातीपासून शेवटपर्यंत व्यवस्थापन करते, कोणत्याही कराराच्या उल्लंघनासाठी कायदेशीर समर्थन देते जेणेकरून पारदर्शकता आणि विश्वास सुनिश्चित होईल."}
             </p>
             <p className="mb-4">
-              We foster transparency to ensure mutual benefits: farmers gain
-              stable market access, and companies enjoy a reliable supply chain.
-              Together, we drive economic growth, sustainability, and future
-              food security.
+              {language === "English"
+                ? "We foster transparency to ensure mutual benefits: farmers gain stable market access, and companies enjoy a reliable supply chain. Together, we drive economic growth, sustainability, and future food security."
+                : language === "Hindi"
+                ? "हम पारदर्शिता को बढ़ावा देते हैं ताकि पारस्परिक लाभ सुनिश्चित हो सके: किसानों को स्थिर बाजार पहुंच प्राप्त हो, और कंपनियों को एक विश्वसनीय आपूर्ति श्रृंखला का आनंद मिले। साथ में, हम आर्थिक विकास, स्थिरता और भविष्य की खाद्य सुरक्षा को बढ़ावा देते हैं।"
+                : "आम्ही पारदर्शकतेला प्रोत्साहन देतो जेणेकरून परस्पर लाभ सुनिश्चित होईल: शेतकऱ्यांना स्थिर बाजारपेठ मिळेल आणि कंपन्यांना विश्वासार्ह पुरवठा साखळीचा आनंद मिळेल. एकत्रितपणे, आम्ही आर्थिक वाढ, शाश्वतता आणि भविष्यातील अन्न सुरक्षा वाढवतो."}
             </p>
             <div className="stats flex space-x-8 mt-6">
               <div className="stat-item text-center">
-                <span className="block text-lg font-semibold">Farmers</span>
+                <span className="block text-lg font-semibold">
+                  {language === "English"
+                    ? "Farmers"
+                    : language === "Hindi"
+                    ? "किसान"
+                    : "शेतकरी"}
+                </span>
                 <strong className="text-2xl">8000+</strong>
               </div>
               <div className="stat-item text-center">
-                <span className="block text-lg font-semibold">States</span>
+                <span className="block text-lg font-semibold">
+                  {language === "English"
+                    ? "States"
+                    : language === "Hindi"
+                    ? "राज्य"
+                    : "राज्ये"}
+                </span>
                 <strong className="text-2xl">16</strong>
               </div>
             </div>
@@ -241,14 +296,21 @@ function Default() {
       </section>
 
       {/* Our Services */}
-      <section id="services" className="py-16  bg-gray-50 mb-20 mx-4 md:mx-14">
+      <section id="services" className="py-16 bg-gray-50 mb-20 mx-4 md:mx-14">
         <div className="container max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl text-green-600 font-bold  mb-8">
-            Our Services
+          <h1 className="text-4xl text-green-600 font-bold mb-8">
+            {language === "English"
+              ? "Our Services"
+              : language === "Hindi"
+              ? "हमारी सेवाएं"
+              : "आमच्या सेवा"}
           </h1>
           <p className="text-lg text-gray-600 mb-12">
-            We provide a range of services to support farmers and contractors,
-            ensuring transparent, efficient, and sustainable farming practices.
+            {language === "English"
+              ? "We provide a range of services to support farmers and contractors, ensuring transparent, efficient, and sustainable farming practices."
+              : language === "Hindi"
+              ? "हम किसानों और ठेकेदारों का समर्थन करने के लिए सेवाओं की एक श्रृंखला प्रदान करते हैं, जो पारदर्शी, कुशल और स्थायी खेती प्रथाओं को सुनिश्चित करती हैं।"
+              : "शेतकरी आणि कंत्राटदारांना समर्थन देण्यासाठी आम्ही सेवांची श्रेणी प्रदान करतो, पारदर्शक, कार्यक्षम आणि टिकाऊ शेती पद्धती सुनिश्चित करतो."}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Service Cards */}
@@ -259,13 +321,18 @@ function Default() {
                 className="w-full h-40 object-cover rounded-t-lg mb-4"
               />
               <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                Contract Management
+                {language === "English"
+                  ? "Contract Management"
+                  : language === "Hindi"
+                  ? "अनुबंध प्रबंधन"
+                  : "करार व्यवस्थापन"}
               </h3>
               <p className="text-gray-600">
-                We offer a streamlined process for creating and managing
-                contracts between farmers and contractors, featuring
-                customizable templates, secure digital signatures, and automated
-                tracking to ensure all contract terms are met efficiently.
+                {language === "English"
+                  ? "We offer a streamlined process for creating and managing contracts between farmers and contractors, featuring customizable templates, secure digital signatures, and automated tracking to ensure all contract terms are met efficiently."
+                  : language === "Hindi"
+                  ? "हम किसानों और ठेकेदारों के बीच अनुबंध बनाने और प्रबंधित करने के लिए एक सुव्यवस्थित प्रक्रिया प्रदान करते हैं, जिसमें अनुकूलन योग्य टेम्पलेट, सुरक्षित डिजिटल हस्ताक्षर और स्वचालित ट्रैकिंग शामिल हैं।"
+                  : "शेतकरी आणि कंत्राटदारांमधील करार तयार करण्यासाठी आणि व्यवस्थापित करण्यासाठी आम्ही एक सुव्यवस्थित प्रक्रिया प्रदान करतो, ज्यामध्ये सानुकूलन साच्यांचे वैशिष्ट्य आहे, सुरक्षित डिजिटल स्वाक्षरी आणि स्वयंचलित ट्रॅकिंग."}
               </p>
             </div>
             <div className="service-card bg-white shadow-lg p-6 rounded-lg">
@@ -275,13 +342,18 @@ function Default() {
                 className="w-full h-40 object-cover rounded-t-lg mb-4"
               />
               <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                Financial Support and Insurance
+                {language === "English"
+                  ? "Financial Support and Insurance"
+                  : language === "Hindi"
+                  ? "वित्तीय समर्थन और बीमा"
+                  : "आर्थिक समर्थन आणि विमा"}
               </h3>
               <p className="text-gray-600">
-                We provide comprehensive financial solutions, including loan
-                assistance, crop insurance options, and financial planning
-                services to support farmers in managing their operations
-                effectively and reducing risk.
+                {language === "English"
+                  ? "We provide comprehensive financial solutions, including loan assistance, crop insurance options, and financial planning services to support farmers in managing their operations effectively and reducing risk."
+                  : language === "Hindi"
+                  ? "हम व्यापक वित्तीय समाधान प्रदान करते हैं, जिसमें ऋण सहायता, फसल बीमा विकल्प, और वित्तीय योजना सेवाएं शामिल हैं।"
+                  : "आम्ही व्यापक आर्थिक उपाय प्रदान करतो, ज्यामध्ये कर्ज सहाय्य, पीक विमा पर्याय आणि आर्थिक नियोजन सेवा समाविष्ट आहेत."}
               </p>
             </div>
             <div className="service-card bg-white shadow-lg p-6 rounded-lg">
@@ -291,12 +363,18 @@ function Default() {
                 className="w-full h-40 object-cover rounded-t-lg mb-4"
               />
               <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                Market Access
+                {language === "English"
+                  ? "Market Access"
+                  : language === "Hindi"
+                  ? "बाजार पहुंच"
+                  : "बाजार प्रवेश"}
               </h3>
               <p className="text-gray-600">
-                We connect farmers directly with potential buyers and provide
-                real-time market trends, pricing, and demand forecasts to help
-                them make informed decisions and maximize profits.
+                {language === "English"
+                  ? "We connect farmers directly with potential buyers and provide real-time market trends, pricing, and demand forecasts to help them make informed decisions and maximize profits."
+                  : language === "Hindi"
+                  ? "हम किसानों को संभावित खरीदारों से सीधे जोड़ते हैं और उन्हें बाजार प्रवृत्तियों, मूल्य निर्धारण और मांग पूर्वानुमानों के बारे में जानकारी प्रदान करते हैं।"
+                  : "आम्ही शेतकऱ्यांना संभाव्य खरेदीदारांशी थेट जोडतो आणि त्यांना बाजारातील प्रवृत्ती, किंमत निर्धारण आणि मागणी अंदाज याबद्दल माहिती देतो."}
               </p>
             </div>
             <div className="service-card bg-white shadow-lg p-6 rounded-lg">
@@ -306,12 +384,18 @@ function Default() {
                 className="w-full h-40 object-cover rounded-t-lg mb-4"
               />
               <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                Legal Support
+                {language === "English"
+                  ? "Legal Support"
+                  : language === "Hindi"
+                  ? "कानूनी समर्थन"
+                  : "कायदेशीर समर्थन"}
               </h3>
               <p className="text-gray-600">
-                We provide expert legal assistance to ensure that farmers and
-                contractors navigate the complexities of agricultural laws,
-                dispute resolution, and regulatory compliance with ease.
+                {language === "English"
+                  ? "We provide expert legal assistance to ensure that farmers and contractors navigate the complexities of agricultural laws, dispute resolution, and regulatory compliance with ease."
+                  : language === "Hindi"
+                  ? "हम विशेषज्ञ कानूनी सहायता प्रदान करते हैं ताकि किसान और ठेकेदार कृषि कानूनों, विवाद समाधान और विनियामक अनुपालन की जटिलताओं को आसानी से नेविगेट कर सकें।"
+                  : "आम्ही तज्ज्ञ कायदेशीर सहाय्य प्रदान करतो जेणेकरून शेतकरी आणि कंत्राटदार कृषी कायदे, वाद निवारण आणि नियामक अनुपालनाची गुंतागुंत सहजपणे हाताळू शकतील."}
               </p>
             </div>
           </div>
@@ -323,24 +407,38 @@ function Default() {
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
           <div className="quality-content md:w-1/2 w-full p-4">
             <h3 className="text-4xl font-semibold text-green-600 mb-2">
-              Quality Product
+              {language === "English"
+                ? "Quality Product"
+                : language === "Hindi"
+                ? "गुणवत्ता उत्पाद"
+                : "गुणवत्तापूर्ण उत्पादन"}
             </h3>
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              We appreciate Your Trust Greatly
+              {language === "English"
+                ? "We appreciate Your Trust Greatly"
+                : language === "Hindi"
+                ? "हम आपके विश्वास की अत्यधिक सराहना करते हैं"
+                : "आम्ही तुमच्या विश्वासाचे खूप कौतुक करतो"}
             </h2>
             <p className="text-gray-700 mb-6">
-              We prioritize quality in every partnership. Our commitment to
-              connecting companies with dedicated farmers ensures that only the
-              best produce reaches you. We deeply value your trust in our
-              platform and strive to maintain it by upholding the highest
-              standards of quality and transparency in all our operations.
+              {language === "English"
+                ? "We prioritize quality in every partnership. Our commitment to connecting companies with dedicated farmers ensures that only the best produce reaches you. We deeply value your trust in our platform and strive to maintain it by upholding the highest standards of quality and transparency in all our operations."
+                : language === "Hindi"
+                ? "हम हर साझेदारी में गुणवत्ता को प्राथमिकता देते हैं। समर्पित किसानों से कंपनियों को जोड़ने की हमारी प्रतिबद्धता यह सुनिश्चित करती है कि केवल सर्वोत्तम उत्पाद आप तक पहुंचे। हम आपके हमारे प्लेटफॉर्म में विश्वास को गहराई से महत्व देते हैं और इसे बनाए रखने के लिए हमारी सभी गतिविधियों में उच्चतम गुणवत्ता और पारदर्शिता मानकों को बनाए रखने का प्रयास करते हैं।"
+                : "आम्ही प्रत्येक भागीदारीत गुणवत्ता प्राधान्य देतो. समर्पित शेतकऱ्यांना कंपन्यांशी जोडण्याची आमची वचनबद्धता सुनिश्चित करते की फक्त सर्वोत्तम उत्पादन तुमच्यापर्यंत पोहोचेल. आमच्या प्लॅटफॉर्मवरील तुमचा विश्वास आम्ही अत्यंत महत्त्व देतो आणि आमच्या सर्व कामकाजामध्ये उच्च दर्जाचे आणि पारदर्शकतेचे मानक राखून ते कायम ठेवण्याचा प्रयत्न करतो."}
             </p>
 
             {/* Progress Bars */}
             <div className="progress-bar-container space-y-4">
               <div className="progress-bar">
                 <div className="progress-label flex justify-between text-gray-800 mb-1">
-                  <span>Eco Farms</span>
+                  <span>
+                    {language === "English"
+                      ? "Eco Farms"
+                      : language === "Hindi"
+                      ? "इको फार्म्स"
+                      : "इको फार्म्स"}
+                  </span>
                   <span>80%</span>
                 </div>
                 <div className="progress bg-gray-200 rounded-full h-4">
@@ -353,7 +451,13 @@ function Default() {
 
               <div className="progress-bar">
                 <div className="progress-label flex justify-between text-gray-800 mb-1">
-                  <span>Special Equipment</span>
+                  <span>
+                    {language === "English"
+                      ? "Special Equipment"
+                      : language === "Hindi"
+                      ? "विशेष उपकरण"
+                      : "विशेष उपकरणे"}
+                  </span>
                   <span>90%</span>
                 </div>
                 <div className="progress bg-gray-200 rounded-full h-4">
@@ -370,7 +474,13 @@ function Default() {
           <div className="quality-images md:w-1/2 w-full p-4 relative">
             <img
               src={eco_farm}
-              alt="Eco Farm"
+              alt={
+                language === "English"
+                  ? "Eco Farm"
+                  : language === "Hindi"
+                  ? "इको फार्म"
+                  : "इको फार्म"
+              }
               className="image-top w-full h-auto rounded-lg shadow-lg mb-4 md:mb-0"
             />
           </div>
@@ -378,20 +488,33 @@ function Default() {
       </section>
 
       {/* Photo Gallery */}
-      <section id="photo-gallery" className="py-16 bg-gray-50 mx-4 mb-20 md:mx-14">
+      <section
+        id="photo-gallery"
+        className="py-16 bg-gray-50 mx-4 mb-20 md:mx-14"
+      >
         <h1 className="text-4xl font-bold text-green-600 text-center mb-8">
-          Photo Gallery
+          {language === "English"
+            ? "Photo Gallery"
+            : language === "Hindi"
+            ? "फोटो गैलरी"
+            : "फोटो गॅलरी"}
         </h1>
         <div className="photo-gallery overflow-x-auto flex space-x-8 pb-4 scrollbar-hide snap-x snap-mandatory">
           {images.map((image, index) => (
             <div
               key={index}
-              className="gallery-item flex-shrink-0 w-72 sm:w-80 lg:w-96 xl:w-96 snap-center" // Square size with different width for responsiveness
+              className="gallery-item flex-shrink-0 w-72 sm:w-80 lg:w-96 xl:w-96 snap-center"
             >
               <img
                 src={image.src}
-                alt={image.alt}
-                className="w-full h-full object-cover rounded-lg shadow-lg" // Make image square
+                alt={
+                  language === "English"
+                    ? image.alt
+                    : language === "Hindi"
+                    ? `फोटो ${index + 1}`
+                    : `फोटो ${index + 1}`
+                }
+                className="w-full h-full object-cover rounded-lg shadow-lg"
               />
             </div>
           ))}
@@ -401,7 +524,11 @@ function Default() {
       {/* Contact Us */}
       <section id="contact" className="py-16 bg-gray-50 mx-4 mb-20 md:mx-14">
         <h1 className="text-4xl font-bold text-green-600 text-center mb-8">
-          Contact Us
+          {language === "English"
+            ? "Contact Us"
+            : language === "Hindi"
+            ? "संपर्क करें"
+            : "आमच्याशी संपर्क साधा"}
         </h1>
 
         <div className="flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto">
@@ -409,17 +536,27 @@ function Default() {
           <div className="md:w-1/2 mb-6 md:mb-0 flex justify-center items-center">
             <img
               src={AgriConnectLogo}
-              alt="Contact Us"
-              className="w-full h-auto border-1 border-black  shadow-md object-cover"
+              alt={
+                language === "English"
+                  ? "Contact Us"
+                  : language === "Hindi"
+                  ? "संपर्क करें"
+                  : "आमच्याशी संपर्क साधा"
+              }
+              className="w-full h-auto border-1 border-black shadow-md object-cover"
               style={{ height: 464 }}
             />
           </div>
 
           {/* Form Section */}
-          <div className="md:w-1/2 bg-white shadow-lg border-b border-black border-t  border-black border-r border-black p-8 flex justify-center items-center">
+          <div className="md:w-1/2 bg-white shadow-lg border-b border-black border-t border-black border-r border-black p-8 flex justify-center items-center">
             <div className="w-full">
               <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-                Have Questions? Get in Touch
+                {language === "English"
+                  ? "Have Questions? Get in Touch"
+                  : language === "Hindi"
+                  ? "कोई प्रश्न है? संपर्क करें"
+                  : "प्रश्न आहेत? आमच्याशी संपर्क साधा"}
               </h3>
 
               <form action="#" method="post" className="space-y-6">
@@ -428,7 +565,13 @@ function Default() {
                     <input
                       type="text"
                       name="first-name"
-                      placeholder="First Name*"
+                      placeholder={
+                        language === "English"
+                          ? "First Name*"
+                          : language === "Hindi"
+                          ? "पहला नाम*"
+                          : "पहिले नाव*"
+                      }
                       required
                       className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
@@ -437,7 +580,13 @@ function Default() {
                     <input
                       type="text"
                       name="last-name"
-                      placeholder="Last Name*"
+                      placeholder={
+                        language === "English"
+                          ? "Last Name*"
+                          : language === "Hindi"
+                          ? "अंतिम नाम*"
+                          : "आडनाव*"
+                      }
                       required
                       className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
@@ -449,7 +598,13 @@ function Default() {
                     <input
                       type="email"
                       name="email"
-                      placeholder="Email*"
+                      placeholder={
+                        language === "English"
+                          ? "Email*"
+                          : language === "Hindi"
+                          ? "ईमेल*"
+                          : "ईमेल*"
+                      }
                       required
                       className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
@@ -458,7 +613,13 @@ function Default() {
                     <input
                       type="tel"
                       name="phone"
-                      placeholder="Phone Number*"
+                      placeholder={
+                        language === "English"
+                          ? "Phone Number*"
+                          : language === "Hindi"
+                          ? "फ़ोन नंबर*"
+                          : "फोन नंबर*"
+                      }
                       required
                       className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
@@ -468,7 +629,13 @@ function Default() {
                 <div>
                   <textarea
                     name="message"
-                    placeholder="Message*"
+                    placeholder={
+                      language === "English"
+                        ? "Message*"
+                        : language === "Hindi"
+                        ? "संदेश*"
+                        : "संदेश*"
+                    }
                     required
                     rows="4"
                     className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -480,7 +647,11 @@ function Default() {
                     type="submit"
                     className="bg-green-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition-all"
                   >
-                    Get In Touch
+                    {language === "English"
+                      ? "Get In Touch"
+                      : language === "Hindi"
+                      ? "संपर्क करें"
+                      : "संपर्क साधा"}
                   </button>
                 </div>
               </form>
@@ -493,7 +664,7 @@ function Default() {
       <section id="footer" className="bottom-0">
         <Footer />
       </section>
-    </>
+    </div>
   );
 }
 

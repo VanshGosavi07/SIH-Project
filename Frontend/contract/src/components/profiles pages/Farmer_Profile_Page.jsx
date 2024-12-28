@@ -220,7 +220,7 @@ export default function Company_Profile_Page() {
     ? JSON.parse(profileData.previous_contracts)
     : [];
   return (
-    <>
+    <div className="bg-green-50">
       <Navbar />
       <div>
         {/* Profile Section */}
@@ -541,6 +541,6 @@ export default function Company_Profile_Page() {
         {/* Images end */}
       </div>
       <Footer />
-    </>
+    </div>
   );
 }

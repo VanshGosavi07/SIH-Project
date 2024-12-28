@@ -2,23 +2,23 @@ import React from 'react';
 import Slider from 'react-slick'; 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import image1 from '../assets/1image.jpeg';
+import image1 from '../assets/1image.jpg';
 import image2 from '../assets/2image.jpg';
-import image3 from '../assets/3image.jpeg';
+import image3 from '../assets/3image.jpg';
 import image4 from '../assets/4image.jpeg';
 
 const ImageSlider = () => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 600,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 500,
     arrows: true,
-    fade: true, // Add fade effect between slides
-    cssEase: 'linear', // Smooth transition effect
+    fade: true,
+    cssEase: 'linear',
   };
 
   const images = [
@@ -30,15 +30,15 @@ const ImageSlider = () => {
 
   return (
     <div className="w-full mx-auto py-8 px-4 sm:px-14">
-      <div className="rounded-lg overflow-hidden shadow-lg bg-white">
+      <div className="rounded-lg overflow-hidden shadow-lg bg-white border-4 border-gray-800" style={{ height: '650px' }}> {/* Set fixed height for the slider container */}
         <Slider {...settings}>
           {images.map((image, index) => (
-            <div key={index}>
+            <div key={index} className="flex justify-center items-center" style={{ height: '300px' }}> {/* Set fixed height for each slide */}
               <img
                 src={image.src}
                 alt={image.alt}
-                className="w-full h-96 object-cover transition-transform duration-500 hover:scale-105" // Scale effect on hover
-                loading="lazy"
+                className="object-cover" // Ensures the image covers the container
+                style={{ width: '100%', height: '100%' }} // Set fixed size for images
               />
             </div>
           ))}

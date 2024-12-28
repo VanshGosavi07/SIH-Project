@@ -3,6 +3,7 @@ import AgriConnectLogo from "../../../../Media/Logo.jpg";
 import { validateLoginForm } from "./validation/V_Login";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import backimg from "../assets/bg.jpg"
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -70,8 +71,13 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex justify-center items-center">
-      <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-8 relative">
+    <div 
+      className="min-h-screen flex justify-center items-center" 
+      style={{ backgroundImage: `url(${backimg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
+      <div className="bg-white bg-opacity-5 backdrop-blur-2xl border border-black rounded-2xl w-full max-w-2xl p-8 relative"
+      style={{ backdropFilter: 'blur(10px)', borderRadius: '2rem' }} 
+      >
         <div className="flex justify-center items-center mb-6">
           <img
             src={AgriConnectLogo}
@@ -79,10 +85,10 @@ function Login() {
             className="h-20 w-20 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-110"
           />
         </div>
-
+        
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 gap-x-8 gap-y-4"
+          className="grid grid-cols-1 gap-x-8 gap-y-4 rounded-2xl"
         >
           <div>
             <label className="block text-gray-700 mb-1">Email</label>
@@ -93,7 +99,7 @@ function Login() {
               onChange={handleChange}
               className={`w-full border-b ${
                 errors.email ? "border-red-500" : "border-gray-300"
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              } focus:outline-none focus:ring-2 focus:ring-blue-500 py-3 px-4`}
               placeholder="Enter your email"
             />
             {errors.email && (
@@ -109,7 +115,7 @@ function Login() {
               onChange={handleChange}
               className={`w-full border-b ${
                 errors.password ? "border-red-500" : "border-gray-300"
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              } focus:outline-none focus:ring-2 focus:ring-blue-500 py-3 px-4`}
               placeholder="Enter your password"
             />
             {errors.password && (
@@ -119,10 +125,10 @@ function Login() {
           <div>
             <label className="block text-gray-700 mb-1">User Type</label>
             <select
-              name="user_type" // Ensure the form field name matches the state property name
+              name="user_type"
               value={formData.user_type}
               onChange={handleChange}
-              className="w-full border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 py-3 px-4"
             >
               <option value="">Select user type</option>
               <option value="farmer">Farmer</option>
