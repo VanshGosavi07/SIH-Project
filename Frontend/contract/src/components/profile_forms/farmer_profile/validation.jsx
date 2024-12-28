@@ -21,7 +21,6 @@ export const validateFarmerProfile = (formData) => {
     if (!formData.soilType) errors.soilType = "Soil type is required";
     if (formData.soilType === "Others" && !formData.customSoilType.trim()) errors.customSoilType = "Custom soil type is required";
     if (!formData.farmType) errors.farmType = "Farm type is required";
-    if (!formData.landPictures || formData.landPictures.length === 0) errors.landPictures = "At least one land picture is required";
     if (!formData.well) errors.well = "Well information is required";
   
     // Preferred Crops validation

@@ -1,39 +1,77 @@
 import React, { useState } from "react";
 import AgriConnectLogo from "../../../../Media/Logo.jpg";
 import { validateLoginForm } from "./validation/V_Login";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    user_type: "", // Ensure the state property name matches the form field name
   });
   const [errors, setErrors] = useState({});
+  const [loginStatus, setLoginStatus] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    // Clear the error for this field when the user starts typing
     setErrors({ ...errors, [name]: "" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData);
     const validationErrors = validateLoginForm(formData);
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      // Form is valid, proceed with login
-      console.log("Form is valid:", formData);
-      // Add your login logic here
-    } else {
-      console.log("Form has errors:", validationErrors);
+      try {
+        const response = await axios.post(
+          `http://127.0.0.1:8000/api/login/${formData.user_type}/`,
+          formData
+        );
+
+        const { access, refresh, profile_image_url, user_type, user_id } =
+          response.data; // Destructure access and refresh tokens
+        console.log("Access Token from response:", access); // Print the access token in the console
+        console.log("Refresh Token from response:", refresh); // Print the refresh token in the console
+
+        // Save the tokens to local storage
+        localStorage.setItem("authToken", access);
+        localStorage.setItem("refreshToken", refresh);
+        localStorage.setItem("profileImageUrl", profile_image_url);
+        localStorage.setItem("user_type", user_type);
+        localStorage.setItem("Current_User_id", user_id);
+
+        // Retrieve the tokens from local storage to confirm they were set
+        const storedAccessToken = localStorage.getItem("authToken");
+        const storedRefreshToken = localStorage.getItem("refreshToken");
+        const storedProfileImageUrl = localStorage.getItem("profileImageUrl");
+
+        console.log("Access Token from local storage:", storedAccessToken); // Print the access token from local storage
+        console.log("Refresh Token from local storage:", storedRefreshToken); // Print the refresh token from local storage
+        console.log(
+          "Profile Image URL from local storage:",
+          storedProfileImageUrl
+        );
+        console.log("User id from local storage:", user_id);
+        setLoginStatus(response.data.message);
+        alert("Login Successfully");
+        navigate("/home");
+      } catch (error) {
+        if (error.response) {
+          alert("Wrong Credentials");
+          setLoginStatus(error.response.data.error);
+        }
+      }
     }
   };
 
   return (
     <div className="min-h-screen bg-white flex justify-center items-center">
       <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-8 relative">
-        {/* Top Section: Logo */}
         <div className="flex justify-center items-center mb-6">
           <img
             src={AgriConnectLogo}
@@ -42,7 +80,6 @@ function Login() {
           />
         </div>
 
-        {/* Form Inputs */}
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 gap-x-8 gap-y-4"
@@ -79,8 +116,20 @@ function Login() {
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>
             )}
           </div>
+          <div>
+            <label className="block text-gray-700 mb-1">User Type</label>
+            <select
+              name="user_type" // Ensure the form field name matches the state property name
+              value={formData.user_type}
+              onChange={handleChange}
+              className="w-full border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Select user type</option>
+              <option value="farmer">Farmer</option>
+              <option value="company">Company</option>
+            </select>
+          </div>
 
-          {/* Login Button */}
           <div className="mt-6 flex justify-center">
             <button
               type="submit"
@@ -89,18 +138,20 @@ function Login() {
               Login
             </button>
           </div>
+
+          {loginStatus && <p className="text-center mt-4">{loginStatus}</p>}
         </form>
 
-        {/* Bottom Link */}
-        <div className="mt-4 text-center relative z-20">
-          <span className="text-gray-600">Don't have an account?</span>
+                {/* Bottom Link */}
+                <div className="mt-4 text-center relative z-20">
+          <span className="text-gray-600">Create a account?</span>
           <a href="/register" className="text-green-500 ml-1">
             Register
           </a>
         </div>
 
         {/* Decorative Waves */}
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 z-0 pointer-events-none">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path
               fill="#4CAF50"
@@ -109,6 +160,7 @@ function Login() {
             ></path>
           </svg>
         </div>
+
       </div>
     </div>
   );

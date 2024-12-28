@@ -1,65 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function company_profile_form() {
-  const [profilePic, setProfilePic] = useState(
-    "https://via.placeholder.com/150"
-  );
-  const [achievements, setAchievements] = useState([
-    { title: "", date: "", certificate: null },
-  ]);
+  const location = useLocation();
+  const { name, emailId, userId, userType, password } = location.state || {};
+
+  const [achievements, setAchievements] = useState([{ title: "", date: "" }]);
   const [additionalInfo, setAdditionalInfo] = useState([
     { title: "", info: "" },
   ]);
-  const [contracts, setContracts] = useState([
-    { title: "", date: "", certificate: null },
-  ]);
-
+  const [contracts, setContracts] = useState([{ title: "", date: "" }]);
   const [companyType, setCompanyType] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [companyEmail, setCompanyEmail] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
+  const navigate = useNavigate();
 
-  const handleProfilePicChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setProfilePic(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
+  useEffect(() => {
+    setCompanyName(name || "");
+    setCompanyEmail(emailId || "");
+  }, [name, emailId]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const formData = {
-      companyInfo: {
-        generativeId: event.target.generative_id.value,
-        website: event.target.website.value,
-        taxIdentificationNumber: event.target.tax_no.value,
-        licenseNumber: event.target.license_no.value,
-        numberOfContracts: event.target.contracts.value,
-        companyType: event.target.company_type.value,
-        companyProduct: event.target.product.value,
-        establishDate: event.target.establish_date.value,
-        profilePic: profilePic,
-      },
-      achievements: achievements,
-      additionalInfo: additionalInfo,
-      Previouscontracts: contracts,
-      primaryContact: {
-        name: event.target.contact_name.value,
-        designation: event.target.contact_designation.value,
-        email: event.target.contact_email.value,
-        phone: event.target.contact_phone.value,
-      },
-    };
+    const formData = new FormData();
+    formData.append("name", companyName);
+    formData.append("email", companyEmail);
+    formData.append("user_type", userType);
+    formData.append("password", password);
+    formData.append("generative_id", event.target.generative_id.value);
+    formData.append("website", event.target.website.value);
+    formData.append("tax_identification_number", event.target.tax_no.value);
+    formData.append("license_number", event.target.license_no.value);
+    formData.append("number_of_contracts", event.target.contracts.value);
+    formData.append("company_type", companyType);
+    formData.append("company_product", event.target.product.value);
+    formData.append("establish_date", event.target.establish_date.value);
 
-    console.log("Form Data:", formData);
-    alert("Form Submitted. Check console for data.");
+    if (profilePic) {
+      formData.append("profile_pic", event.target.profilePic.files[0]);
+    }
+    formData.append("achievements", JSON.stringify(achievements));
+    formData.append("additional_info", JSON.stringify(additionalInfo));
+    formData.append("previous_contracts", JSON.stringify(contracts));
+    formData.append("contact_name", event.target.contact_name.value);
+    formData.append(
+      "contact_designation",
+      event.target.contact_designation.value
+    );
+    formData.append("contact_email", event.target.contact_email.value);
+    formData.append("contact_phone", event.target.contact_phone.value);
+
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/register/company/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response.data);
+      alert("Profile updated successfully!");
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleAddAchievement = () => {
-    setAchievements([
-      ...achievements,
-      { title: "", date: "", certificate: null },
-    ]);
+    setAchievements([...achievements, { title: "", date: "" }]);
+  };
+
+  const handleProfilePicChange = (event) => {
+    const file = event.target.files[0];
+    setProfilePic(file); // Update profile picture state
   };
 
   const handleRemoveAchievement = (index) => {
@@ -91,7 +105,7 @@ function company_profile_form() {
   };
 
   const handleAddContract = () => {
-    setContracts([...contracts, { title: "", date: "", certificate: null }]);
+    setContracts([...contracts, { title: "", date: "" }]);
   };
 
   const handleRemoveContract = (index) => {
@@ -136,6 +150,45 @@ function company_profile_form() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="m-2">
                       <label
+                        htmlFor="name"
+                        className="block text-black-700 text-left"
+                      >
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        placeholder="Enter Name"
+                        className="mt-1 block w-full bg-gray-100 h-10 pl-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        readOnly
+                      />
+                    </div>
+                    <div className="m-2">
+                      <label
+                        htmlFor="email"
+                        className="block text-black-700 text-left"
+                      >
+                        Email Id
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter Email Id"
+                        className="mt-1 block w-full bg-gray-100 h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2 pl-3"
+                        value={companyEmail}
+                        onChange={(e) => setCompanyEmail(e.target.value)}
+                        readOnly
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="m-2">
+                      <label
                         htmlFor="generative_id"
                         className="block text-black-700 text-left"
                       >
@@ -145,8 +198,8 @@ function company_profile_form() {
                         type="text"
                         id="generative_id"
                         required
-                        placeholder="   Enter Generative ID"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        placeholder="Enter Generative ID"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                     <div className="m-2">
@@ -159,8 +212,8 @@ function company_profile_form() {
                       <input
                         type="url"
                         id="website"
-                        placeholder="   Enter Website URL"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        placeholder="Enter Website URL"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                   </div>
@@ -177,8 +230,8 @@ function company_profile_form() {
                         type="text"
                         id="tax_no"
                         required
-                        placeholder="   Enter Tax Identification Number"
-                        className="mt-1 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        placeholder="Enter Tax Identification Number"
+                        className="mt-1 pl-3 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                     <div className="m-2">
@@ -192,8 +245,8 @@ function company_profile_form() {
                         type="text"
                         id="license_no"
                         required
-                        placeholder="   Enter License Number"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        placeholder="Enter License Number"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                   </div>
@@ -224,7 +277,7 @@ function company_profile_form() {
                       <select
                         id="company_type"
                         required
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                         value={companyType}
                         onChange={(e) => setCompanyType(e.target.value)}
                       >
@@ -268,8 +321,8 @@ function company_profile_form() {
                       <input
                         type="text"
                         id="product"
-                        placeholder="   Enter Company Product"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        placeholder="Enter Company Product"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                     <div className="m-2">
@@ -283,7 +336,7 @@ function company_profile_form() {
                         type="date"
                         id="establish_date"
                         required
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 m-2"
                       />
                     </div>
                   </div>
@@ -291,25 +344,24 @@ function company_profile_form() {
 
                 {/* Profile Picture */}
                 <div className="flex flex-col items-center justify-center w-full md:w-1/3">
-                  <div className="relative">
-                    <img
-                      className="rounded-full w-48 h-48 object-cover"
-                      src={profilePic}
-                      alt="Profile Picture"
-                      id="profile-pic"
-                    />
+                  <div className="m-4 text-center">
                     <label
-                      htmlFor="upload-pic"
-                      className="absolute text-left right-0 bottom-0 rounded-full bg-gray-800 p-2 cursor-pointer"
+                      htmlFor="profilePic"
+                      className="block text-gray-700 text-lg font-semibold mb-2"
                     >
-                      <i className="text-white text-xl">📷</i>
-                      <input
-                        type="file"
-                        id="upload-pic"
-                        className="hidden"
-                        onChange={handleProfilePicChange}
-                      />
+                      Profile Picture
                     </label>
+                    <input
+                      type="file"
+                      id="profilePic"
+                      name="profilePic"
+                      onChange={handleProfilePicChange}
+                      className="mt-1 block w-full h-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200 ease-in-out hover:border-green-400"
+                      accept="image/*"
+                    />
+                    <p className="mt-2 text-sm text-gray-600">
+                      Upload a clear picture (JPG, PNG, GIF).
+                    </p>
                   </div>
                   <p className="mt-2 text-sm text-black-600">
                     Upload Profile Picture
@@ -350,8 +402,8 @@ function company_profile_form() {
                         <input
                           type="text"
                           id={`achievement-title-${index}`}
-                          placeholder="   Enter Title"
-                          className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                          placeholder="Enter Title"
+                          className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                           value={achievement.title}
                           onChange={(e) =>
                             handleAchievementChange(
@@ -372,33 +424,13 @@ function company_profile_form() {
                         <input
                           type="date"
                           id={`achievement-date-${index}`}
-                          className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                          className="mt-1 pl-3 pr-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                           value={achievement.date}
                           onChange={(e) =>
                             handleAchievementChange(
                               index,
                               "date",
                               e.target.value
-                            )
-                          }
-                        />
-                      </div>
-                      <div className="m-2">
-                        <label
-                          htmlFor={`achievement-certificate-${index}`}
-                          className="block text-black-700 text-left"
-                        >
-                          Certificate
-                        </label>
-                        <input
-                          type="file"
-                          id={`achievement-certificate-${index}`}
-                          className="mt-1 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
-                          onChange={(e) =>
-                            handleAchievementChange(
-                              index,
-                              "certificate",
-                              e.target.files[0]
                             )
                           }
                         />
@@ -453,8 +485,8 @@ function company_profile_form() {
                       <input
                         type="text"
                         id={`additional-title-${index}`}
-                        placeholder="   Enter Title"
-                        className="mt-1 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        placeholder="Enter Title"
+                        className="mt-1 pl-3 block w-full h-10 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={info.title}
                         onChange={(e) =>
                           handleAdditionalInfoChange(
@@ -474,8 +506,8 @@ function company_profile_form() {
                       </label>
                       <textarea
                         id={`info-${index}`}
-                        placeholder="   Enter additional info"
-                        className="mt-1 block w-full h-24 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        placeholder="Enter additional info"
+                        className="mt-1 pl-3 block w-full h-24 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={info.info}
                         onChange={(e) =>
                           handleAdditionalInfoChange(
@@ -535,8 +567,8 @@ function company_profile_form() {
                       <input
                         type="text"
                         id={`contract-title-${index}`}
-                        placeholder="   Enter Title"
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        placeholder="Enter Title"
+                        className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={contract.title}
                         onChange={(e) =>
                           handleContractChange(index, "title", e.target.value)
@@ -553,30 +585,10 @@ function company_profile_form() {
                       <input
                         type="date"
                         id={`contract-date-${index}`}
-                        className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="mt-1 pl-3 pr-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                         value={contract.date}
                         onChange={(e) =>
                           handleContractChange(index, "date", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="m-2">
-                      <label
-                        htmlFor={`contract-certificate-${index}`}
-                        className="block text-black-700 text-left"
-                      >
-                        Certificate
-                      </label>
-                      <input
-                        type="file"
-                        id={`contract-certificate-${index}`}
-                        className="mt-1 block w-full h-10 border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
-                        onChange={(e) =>
-                          handleContractChange(
-                            index,
-                            "certificate",
-                            e.target.files[0]
-                          )
                         }
                       />
                     </div>
@@ -621,8 +633,8 @@ function company_profile_form() {
                     type="text"
                     id="contact_name"
                     required
-                    placeholder="   Enter Name"
-                    className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                    placeholder="Enter Name"
+                    className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
                 <div>
@@ -636,8 +648,8 @@ function company_profile_form() {
                     type="text"
                     id="contact_designation"
                     required
-                    placeholder="   Enter Designation"
-                    className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                    placeholder="Enter Designation"
+                    className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
               </div>
@@ -654,8 +666,8 @@ function company_profile_form() {
                     type="email"
                     id="contact_email"
                     required
-                    placeholder="   Enter Email"
-                    className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                    placeholder="Enter Email"
+                    className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
                 <div>
@@ -669,8 +681,8 @@ function company_profile_form() {
                     type="tel"
                     id="contact_phone"
                     required
-                    placeholder="   Enter Phone Number"
-                    className="mt-1 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                    placeholder="Enter Phone Number"
+                    className="mt-1 pl-3 block w-full h-10 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
               </div>

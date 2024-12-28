@@ -1,22 +1,47 @@
+from .models import ContractManagement
+from .models import Farmer_User, Company_User
+from .models import Contract
 from rest_framework import serializers
-from .models import Contract, FarmerProfile, CompanyProfile
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from .models import CustomUser
 
 
-# Create Contract
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'email', 'name']
+
+
 class ContractSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
     class Meta:
         model = Contract
         fields = '__all__'
 
-# Farmer Profile
-class FarmerProfileSerializer(serializers.ModelSerializer):
+
+class FarmerUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FarmerProfile
+        model = Farmer_User
         fields = '__all__'
 
 
-# Company Profile
-class CompanyProfileSerializer(serializers.ModelSerializer):
+class CompanyUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CompanyProfile
+        model = Company_User
+        fields = '__all__'
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        # Add custom claims
+        token['id'] = user.id
+        return token
+
+
+class ContractManagementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContractManagement
         fields = '__all__'

@@ -17,6 +17,8 @@ const ImageSlider = () => {
     autoplay: true,
     autoplaySpeed: 3000,
     arrows: true,
+    fade: true, // Add fade effect between slides
+    cssEase: 'linear', // Smooth transition effect
   };
 
   const images = [
@@ -27,15 +29,15 @@ const ImageSlider = () => {
   ];
 
   return (
-    <div className="w-11/12 mx-auto py-8 px-14"> {/* Set to 80% width */}
-      <div className=" rounded-lg overflow-hidden ">
+    <div className="w-full mx-auto py-8 px-4 sm:px-14">
+      <div className="rounded-lg overflow-hidden shadow-lg bg-white">
         <Slider {...settings}>
           {images.map((image, index) => (
             <div key={index}>
               <img
                 src={image.src}
                 alt={image.alt}
-                className="w-full h-96 object-cover"
+                className="w-full h-96 object-cover transition-transform duration-500 hover:scale-105" // Scale effect on hover
                 loading="lazy"
               />
             </div>
