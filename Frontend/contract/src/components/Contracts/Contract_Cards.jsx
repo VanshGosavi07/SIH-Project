@@ -11,13 +11,13 @@ export default function Contract_Cards({ card }) {
 
   return (
     <div
-      className="max-w-xs rounded overflow-hidden shadow-lg"
-      style={{ backgroundColor: "#88C273" }}
+      className="max-w-xs rounded-lg overflow-hidden shadow-lg bg-pink-200 border-4 border-gray-800"
+      style={{ width: '450px', height: '550px' }}
     >
       {/* User Info (Image, Name, Date) */}
-      <div className="flex items-center mb-4 px-4">
+      <div className="flex items-center mb-4 px-4 mr-6" >
         <img
-          className="w-10 h-10 rounded-full mr-3"
+          className="w-10 h-10 rounded-full mr-6"
           src={card.crop_image}
           alt="Crop Image"
         />
@@ -29,12 +29,14 @@ export default function Contract_Cards({ card }) {
         </div>
       </div>
 
-      {/* Main Content Image */}
-      <img
-        className="w-full px-2"
-        src={card.crop_image}
-        alt={card.crops[0].name}
-      />
+      {/* Fixed Size Image Container with Padding */}
+      <div className="w-full h-48 overflow-hidden px-4 ">
+        <img
+          className="object-cover w-full h-full rounded-lg "
+          src={card.crop_image}
+          alt={card.crops[0].name}
+        />
+      </div>
 
       {/* Contract Title */}
       <div className="px-6 py-4">
@@ -53,7 +55,7 @@ export default function Contract_Cards({ card }) {
       {/* More Info Button */}
       <div className="flex justify-center px-6 py-4">
         <button
-          className="bg-gradient-to-r from-green-800 to-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg hover:from-blue-600 hover:to-blue-700 transition duration-300"
+          className="bg-gradient-to-r from-green-600 to-blue-600 text-white font-bold py-4 px-8 text-xl border-2 border-black rounded shadow-lg hover:from-blue-500 hover:to-blue-400 transition duration-300"
           onClick={handleMoreInfo}
         >
           More Info

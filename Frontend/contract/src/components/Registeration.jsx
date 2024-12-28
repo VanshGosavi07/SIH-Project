@@ -2,21 +2,22 @@ import React, { useState } from "react";
 import AgriConnectLogo from "../../../../Media/Logo.jpg";
 import { validateRegistrationForm } from "./validation/V_Register";
 import { useNavigate } from "react-router-dom";
+import backimg from "../assets/bg.jpg";
 
 function Registeration() {
-  const navigate = useNavigate(); // Initialize navigate hook
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     emailId: "",
     password: "",
     userType: "",
+    apmcId: "",
   });
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    // Clear the error for this field when the user starts typing
     setErrors({ ...errors, [name]: "" });
   };
 
@@ -26,127 +27,147 @@ function Registeration() {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      // Form is valid, proceed with registration
       console.log("Form is valid:", formData);
       alert("Proceed to Complete Profile");
-
-      // Navigate to the appropriate profile form based on user type
       if (formData.userType === "farmer") {
         navigate("/farmer_profile_form", { state: formData });
       } else if (formData.userType === "company") {
         navigate("/company_profile_form", { state: formData });
       }
-    } else {
-      console.log("Form has errors:", validationErrors);
     }
   };
 
   return (
-    <div className="min-h-screen bg-white flex justify-center items-center">
-      <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-8 relative">
-        {/* Top Section: Logo */}
-        <div className="flex justify-center items-center mb-6">
+    <div
+      className="min-h-screen flex justify-center items-center"
+      style={{
+        backgroundImage: `url(${backimg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div
+        className="bg-white bg-opacity-5 backdrop-blur-2xl border border-black rounded-xl w-full max-w-md p-6 relative"
+        style={{ backdropFilter: "blur(10px)" }}
+      >
+        {/* Logo */}
+        <div className="flex justify-center items-center mb-4">
           <img
             src={AgriConnectLogo}
             alt="AgriConnect"
-            className="h-20 w-20 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-110"
+            className="h-14 w-14 rounded-full shadow-lg transform hover:scale-110 transition-transform duration-300"
           />
         </div>
 
-        {/* Form Inputs */}
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-2 gap-x-8 gap-y-4"
-        >
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-y-3">
           <div>
-            <label className="block text-gray-700 mb-1">Name</label>
+            <label className="block text-gray-700 text-sm mb-1">Name</label>
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className={`w-full border-b ${
+              className={`w-full h-9 border-b ${
                 errors.name ? "border-red-500" : "border-gray-300"
-              } focus:outline-none`}
+              } focus:outline-none text-sm`}
               placeholder="Enter your name"
             />
             {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+              <p className="text-red-500 text-xs mt-1">{errors.name}</p>
             )}
           </div>
+
           <div>
-            <label className="block text-gray-700 mb-1">Email ID</label>
+            <label className="block text-gray-700 text-sm mb-1">APMC ID</label>
+            <input
+              type="text"
+              name="apmcId"
+              value={formData.apmcId}
+              onChange={handleChange}
+              className={`w-full h-9 border-b ${
+                errors.apmcId ? "border-red-500" : "border-gray-300"
+              } focus:outline-none text-sm`}
+              placeholder="Enter APMC Registration Number"
+            />
+            {errors.apmcId && (
+              <p className="text-red-500 text-xs mt-1">{errors.apmcId}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-gray-700 text-sm mb-1">Email ID</label>
             <input
               type="email"
               name="emailId"
               value={formData.emailId}
               onChange={handleChange}
-              className={`w-full border-b ${
+              className={`w-full h-9 border-b ${
                 errors.emailId ? "border-red-500" : "border-gray-300"
-              } focus:outline-none`}
+              } focus:outline-none text-sm`}
               placeholder="Enter your email"
             />
             {errors.emailId && (
-              <p className="text-red-500 text-sm mt-1">{errors.emailId}</p>
+              <p className="text-red-500 text-xs mt-1">{errors.emailId}</p>
             )}
           </div>
+
           <div>
-            <label className="block text-gray-700 mb-1">User Type</label>
+            <label className="block text-gray-700 text-sm mb-1">User Type</label>
             <select
               name="userType"
               value={formData.userType}
               onChange={handleChange}
-              className={`w-full border-b ${
+              className={`w-full h-9 border-b ${
                 errors.userType ? "border-red-500" : "border-gray-300"
-              } focus:outline-none bg-white`}
+              } focus:outline-none bg-white text-sm`}
             >
-              <option value="" disabled>
-                Select user type
-              </option>
+              <option value="" disabled>Select user type</option>
               <option value="farmer">Farmer</option>
               <option value="company">Company</option>
             </select>
             {errors.userType && (
-              <p className="text-red-500 text-sm mt-1">{errors.userType}</p>
+              <p className="text-red-500 text-xs mt-1">{errors.userType}</p>
             )}
           </div>
+
           <div>
-            <label className="block text-gray-700 mb-1">Password</label>
+            <label className="block text-gray-700 text-sm mb-1">Password</label>
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={`w-full border-b ${
+              className={`w-full h-9 border-b ${
                 errors.password ? "border-red-500" : "border-gray-300"
-              } focus:outline-none`}
+              } focus:outline-none text-sm`}
               placeholder="Enter your password"
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              <p className="text-red-500 text-xs mt-1">{errors.password}</p>
             )}
           </div>
 
           {/* Register Button */}
-          <div className="col-span-2 mt-6 flex justify-center">
+          <div className="mt-4 flex justify-center">
             <button
               type="submit"
-              className="px-8 py-2 bg-yellow-500 text-white rounded-full focus:outline-none hover:bg-yellow-600 z-20"
+              className="px-6 py-1.5 bg-yellow-500 text-white text-sm rounded-full focus:outline-none hover:bg-yellow-600 z-20"
             >
               Register
             </button>
           </div>
         </form>
 
-        {/* Bottom Link */}
-        <div className="mt-4 text-center relative z-20">
-          <span className="text-gray-600">Already have an account?</span>
-          <a href="/login" className="text-green-500 ml-1">
+        {/* Login Link */}
+        <div className="mt-3 text-center relative z-20 text-sm">
+          <span className="text-gray-600 text-sm">Already have an account?</span>
+          <a href="/login" className="text-green-500 ml-1 text-sm">
             Login
           </a>
         </div>
 
-        {/* Decorative Waves */}
+        {/* Decorative Wave */}
         <div className="absolute bottom-0 left-0 right-0 z-0 pointer-events-none">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path

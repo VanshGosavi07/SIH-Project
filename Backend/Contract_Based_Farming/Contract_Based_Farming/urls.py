@@ -18,4 +18,5 @@ urlpatterns = [
     path('chat/users/', get_chat_users, name='get_chat_users'),
     path('user/<int:user_id>/', get_user_detail, name='get_user_detail'),
     path('api/messages/', create_message, name='create_message'),
+    path('api/chatbot/', include('chatbot.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
