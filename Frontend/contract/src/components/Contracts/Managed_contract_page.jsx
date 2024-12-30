@@ -2,6 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
+import {
+  PDFDownloadLink,
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+} from "@react-pdf/renderer";
 import ProgressBar from "./ProgressBar";
 
 const stages = [
@@ -17,6 +25,131 @@ const getNextStages = (currentStatus) => {
   const currentIndex = stages.indexOf(currentStatus);
   return stages.slice(currentIndex + 1);
 };
+
+const styles = StyleSheet.create({
+  page: {
+    padding: 30,
+    fontSize: 12,
+  },
+  section: {
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 18,
+    marginBottom: 10,
+    fontWeight: "bold",
+  },
+  field: {
+    marginBottom: 5,
+    fontSize: 12,
+  },
+  link: {
+    color: "blue",
+    textDecoration: "underline",
+  },
+});
+
+const ExportPDF = ({ contract, currentStatus, currentSubStatus }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <View>
+        <Text style={styles.title}>Managed Contract</Text>
+        <Text style={styles.field}>Current Status: {currentStatus}</Text>
+        <Text style={styles.field}>Sub-Status: {currentSubStatus}</Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>Company Information</Text>
+        {contract.company_name && (
+          <Text style={styles.field}>
+            Company Name: {contract.company_name}
+          </Text>
+        )}
+        {contract.user?.email && (
+          <Text style={styles.field}>
+            User Email/Username: {contract.user.email}
+          </Text>
+        )}
+        {contract.website_link && (
+          <Text style={styles.field}>
+            Link: <Text style={styles.link}>{contract.website_link}</Text>
+          </Text>
+        )}
+        {contract.address && (
+          <Text style={styles.field}>Address: {contract.address}</Text>
+        )}
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>Contract Information</Text>
+        {contract.contract_title && (
+          <Text style={styles.field}>Title: {contract.contract_title}</Text>
+        )}
+        {contract.contract_type && (
+          <Text style={styles.field}>Type: {contract.contract_type}</Text>
+        )}
+        {contract.land_required && (
+          <Text style={styles.field}>
+            Land Required (in Hectares): {contract.land_required}
+          </Text>
+        )}
+        {contract.conditions && (
+          <Text style={styles.field}>Conditions: {contract.conditions}</Text>
+        )}
+        {contract.duration_months && (
+          <Text style={styles.field}>
+            Duration (Months): {contract.duration_months}
+          </Text>
+        )}
+        {contract.start_date && (
+          <Text style={styles.field}>
+            Expected Start Date: {contract.start_date}
+          </Text>
+        )}
+        {contract.contract_description && (
+          <Text style={styles.field}>
+            Description: {contract.contract_description}
+          </Text>
+        )}
+        {contract.payment_type && (
+          <Text style={styles.field}>
+            Preferred Payment Type: {contract.payment_type}
+          </Text>
+        )}
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>Crop Information</Text>
+        {contract.crops?.[0]?.name && (
+          <Text style={styles.field}>Crop Name: {contract.crops[0].name}</Text>
+        )}
+        {contract.crops?.[0]?.requirements?.length > 0 && (
+          <Text style={styles.field}>
+            Requirements: {contract.crops[0].requirements.join(", ")}
+          </Text>
+        )}
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>Additional Rules and Regulations</Text>
+        {contract.rules?.map((rule, index) => (
+          <Text key={index} style={styles.field}>
+            {rule.title}: {rule.description}
+          </Text>
+        ))}
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>Legal Clauses</Text>
+        {contract.legal_clauses?.map((clause, index) => (
+          <Text key={index} style={styles.field}>
+            {clause.title}: {clause.description}
+          </Text>
+        ))}
+      </View>
+    </Page>
+  </Document>
+);
 
 export default function Manged_contract_page() {
   const { id } = useParams();
@@ -78,6 +211,7 @@ export default function Manged_contract_page() {
       </div>
     );
   }
+
   const handleUpdateContract = () => {
     const currentUserID = localStorage.getItem("Current_User_id");
 
@@ -88,7 +222,7 @@ export default function Manged_contract_page() {
 
   const handleUpdateStatus = async () => {
     let status, subStatus;
-  
+
     if (selectedStatus !== "Initiated" && selectedStatus !== "Completed") {
       status = "In Progress";
       subStatus = selectedStatus;
@@ -96,7 +230,7 @@ export default function Manged_contract_page() {
       status = selectedStatus;
       subStatus = selectedStatus;
     }
-  
+
     const id = statustoUpdate.id;
     const data = {
       status: status,
@@ -105,9 +239,9 @@ export default function Manged_contract_page() {
       deal_person: statustoUpdate.deal_person_id,
       contract: statustoUpdate.contract_id,
     };
-  
+
     console.log(data);
-  
+
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.put(
@@ -127,6 +261,15 @@ export default function Manged_contract_page() {
       console.error("Error updating status:", error);
       alert("Failed to update status.");
     }
+  };
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    alert("File Uploaded Successfully");
+    navigate(`/home`);
   };
 
   const renderSection = (title, children) => (
@@ -159,18 +302,53 @@ export default function Manged_contract_page() {
           Contract is Completed
         </div>
       )}
-
       <div className="max-w-4xl mx-auto my-10 p-6 bg-white">
+        {/* Export and Upload Buttons */}
+        <div className="flex justify-end mb-4 space-x-4">
+          <PDFDownloadLink
+            document={
+              <ExportPDF
+                contract={contract}
+                currentStatus={status}
+                currentSubStatus={subStatus}
+              />
+            }
+            fileName={`Managed_Contract_${id}.pdf`}
+          >
+            {({ loading }) =>
+              loading ? (
+                <button className="px-4 py-2 bg-gray-300 text-black font-semibold rounded-lg shadow">
+                  Preparing PDF...
+                </button>
+              ) : (
+                <button className="px-4 py-2 bg-green-200 text-black font-semibold rounded-lg shadow hover:bg-green-600 transition duration-200">
+                  Export Document
+                </button>
+              )
+            }
+          </PDFDownloadLink>
+          <label className="px-4 py-2 bg-blue-200 text-black font-semibold rounded-lg shadow hover:bg-blue-600 transition duration-200 cursor-pointer">
+            Upload Signed Contract
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+          </label>
+        </div>
+
         {/* Managed Contract Section */}
-        <div className="max-w-4xl mx-auto my-10 p-6 bg-gray-100 shadow-lg rounded-lg">
+        <div className="bg-gray-100 shadow-lg rounded-lg p-6">
           <h1 className="text-2xl font-semibold text-green-600 mb-6 text-center">
             Managed Contract
           </h1>
-          {/* Progress Bar */}
+
           <ProgressBar
             currentStatus={currentStatus}
             currentSubStatus={currentSubStatus}
           />
+
           {/* Buttons */}
           {currentStatus !== "Completed" && (
             <div className="flex justify-center space-x-4 mt-6 mb-10">
@@ -183,32 +361,31 @@ export default function Manged_contract_page() {
                 </button>
               )}
 
-              {currentUserID !== ownerUserID &&
-                currentStatus !== "Completed" && (
-                  <div className="flex justify-center space-x-4 mt-6 mb-10">
-                    <select
-                      value={selectedStatus}
-                      onChange={(e) => setSelectedStatus(e.target.value)}
-                      className="px-4 py-2 bg-green-200 text-black font-semibold rounded-lg shadow hover:bg-green-600 transition duration-200"
-                    >
-                      <option value="" disabled>
-                        Select Next Stage
+              {currentUserID !== ownerUserID && (
+                <div className="flex space-x-4">
+                  <select
+                    value={selectedStatus}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
+                    className="px-4 py-2 bg-green-200 text-black font-semibold rounded-lg shadow hover:bg-green-600 transition duration-200"
+                  >
+                    <option value="" disabled>
+                      Select Next Stage
+                    </option>
+                    {nextStages.map((stage) => (
+                      <option key={stage} value={stage}>
+                        {stage}
                       </option>
-                      {nextStages.map((stage) => (
-                        <option key={stage} value={stage}>
-                          {stage}
-                        </option>
-                      ))}
-                    </select>
-                    <button
-                      onClick={handleUpdateStatus}
-                      className="px-4 py-2 bg-green-200 text-black font-semibold rounded-lg shadow hover:bg-green-600 transition duration-200"
-                      disabled={!selectedStatus}
-                    >
-                      Update Status by Client
-                    </button>
-                  </div>
-                )}
+                    ))}
+                  </select>
+                  <button
+                    onClick={handleUpdateStatus}
+                    className="px-4 py-2 bg-green-200 text-black font-semibold rounded-lg shadow hover:bg-green-600 transition duration-200"
+                    disabled={!selectedStatus}
+                  >
+                    Update Status by Client
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
